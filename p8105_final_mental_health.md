@@ -32,7 +32,7 @@ data = read_csv("data/mental_health.csv")
     ## ℹ Use `spec()` to retrieve the full column specification for this data.
     ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
 
-### Motivation
+### Motivation:
 
 COVID-19 has had serious behavioral and mental health implications. We
 are interested in understanding trends and differences in indicators of

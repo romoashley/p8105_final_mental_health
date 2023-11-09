@@ -1,0 +1,15 @@
+---
+title: "Access to Mental Health Care in the United States from 2020-2022"
+author: "Sarah Younes (smy2122), Caleigh Dwyer (crd2162), Ashley Romo (ar4459), Hsin Yi (Cindy) Tseng (ht2607), Wen Dai (wz2629)"
+date: "2023-11-09"
+output: github_document
+---
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+data = read_csv("data/mental_health.csv")
+```
+

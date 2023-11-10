@@ -9,7 +9,11 @@ data = read_csv("data/mental_health.csv")
 ```
 
 *All five team members wrote this proposal collaboratively in our team
-Google Docs before converting it to .Rmd.*
+Google Docs before converting it to .Rmd. All of our contributions were
+equal, as we each proposed one data source and ultimately voted on this
+data source, we all were present in the writing of this proposal, and we
+all shared ideas for analysis/visualization and suggested coding
+challenges.*
 
 ### Motivation:
 

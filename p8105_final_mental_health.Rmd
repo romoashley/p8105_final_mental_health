@@ -6,11 +6,10 @@ output: github_document
 
 ```{r message = FALSE}
 library(tidyverse)
-```
-
-```{r message = FALSE}
 data = read_csv("data/mental_health.csv")
 ```
+
+*All five team members wrote this proposal collaboratively in our team Google Docs before converting it to .Rmd.*
 
 ### Motivation:
 COVID-19 has had serious behavioral and mental health implications. We are interested in understanding trends and differences in indicators of mental health care access across the United States from August 2020-May 2022 and disaggregating data by state, age group, sex, race/ethnicity, and education level, as well as sexual orientation and disability status in data collected in mid-2021.

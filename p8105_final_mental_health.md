@@ -5,11 +5,11 @@ Hsin Yi (Cindy) Tseng (ht2607), Wen Dai (wz2629)
 
 ``` r
 library(tidyverse)
-```
-
-``` r
 data = read_csv("data/mental_health.csv")
 ```
+
+*All five team members wrote this proposal collaboratively in our team
+Google Docs before converting it to .Rmd.*
 
 ### Motivation:
 

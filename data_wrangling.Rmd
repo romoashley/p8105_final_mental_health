@@ -1,0 +1,25 @@
+---
+title: "Data import and Wrangling"
+output: github_document
+Date: '`r format(Sys.time(), "%Y-%m-%d")`'
+name: Wen Dai
+---
+
+```{r}
+library (tidyverse)
+library(dplyr)
+```
+
+# Step 1: Data import.
+1) In this step I download and renamed the Mental_Health_Care_in_the_Last_4_Weeks.csv to mental_health.csv to my computer, then I imported it to R and name the dataset as rawdata.
+2) during this step, I removing Unnecessary Columns including : phase, quartile range and suppression flag. Then, I also renamed some columns: Improving column names for clarity or consistency.
+
+```{r}
+rawdata = read_csv("data/mental_health.csv") |> 
+  janitor::clean_names() |>
+  mutate(indicator = str_replace(indicator, ", Last 4 Weeks", "")) |> 
+  select(-phase,-quartile_range,-suppression_flag) |> 
+  mutate(group = str_replace(group, "By", ""))|> 
+  select(start_date=time_period_start_date,end_date=time_period_end_date,everything()) 
+
+```

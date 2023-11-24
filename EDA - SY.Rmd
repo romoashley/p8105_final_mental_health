@@ -1,0 +1,131 @@
+---
+title: "EDA"
+author: "Sarah Younes"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r message = FALSE, warning = FALSE}
+library(tidyverse)
+
+library(paletteer)
+paletteer_d("LaCroixColoR::Pamplemousse")
+```
+
+```{r message = FALSE}
+rawdata = read_csv("data/mental_health.csv") |> 
+  janitor::clean_names() |>
+  mutate(indicator = str_replace(indicator, ", Last 4 Weeks", "")) |> 
+  select(-phase,-quartile_range,-suppression_flag) |> 
+  mutate(group = str_replace(group, "By", ""))|> 
+  select(start_date=time_period_start_date,end_date=time_period_end_date,everything()) 
+```
+
+```{r}
+tidydata=rawdata |> 
+  mutate(start_dates=mdy(pull(rawdata, start_date)),
+         end_dates=mdy(pull(rawdata, end_date)))|> 
+        mutate(tpl=time_period_label) |>  
+        mutate(year = as.numeric(str_extract(tpl, "\\d{4}")))|> 
+         separate(col=time_period_label, into=c("month_period_label","years"), sep = ", ", remove = FALSE,extra="merge") |> 
+  select(-time_period_label,-start_date,-end_date) |>
+  mutate(week_number=time_period-12) |> select(indicator,year,start_dates,end_dates,week_number,month_period_label,group,state,subgroup,value,low_ci,high_ci,confidence_interval)
+```
+
+## EDA
+
+My graphs: Differences in indicator variables by gender, sexuality, race/ethnicity
+
+### Gender
+
+```{r}
+tidydata |>
+  filter(group == " Sex", state == "United States") |>
+  group_by(month_period_label, subgroup, indicator) |>
+  ggplot(aes(x = week_number, y = value, color = indicator)) +
+  geom_line() +
+  facet_grid(. ~ subgroup) +
+  scale_x_continuous(limits = c(1, 33)) +
+  theme_gray() +
+  theme(legend.position = "bottom")
+```
+
+```{r}
+tidydata |>
+  filter(group == " Sex", state == "United States") |>
+  group_by(month_period_label, subgroup, indicator) |>
+  ggplot(aes(x = week_number, y = value, color = subgroup)) +
+  geom_line() +
+  facet_grid(. ~ indicator) +
+  scale_x_continuous(limits = c(1, 33)) +
+  theme_gray() +
+  theme(legend.position = "bottom")
+```
+
+```{r}
+library(plotly)
+
+tidydata |>
+  filter(group == " Sex", state == "United States", indicator == "Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy") |>
+  group_by(year, indicator, subgroup) |>
+  summarize(mean_value = mean(value, na.rm = TRUE)) |>
+  plot_ly(x = ~year, y = ~mean_value, color = ~subgroup, type = "bar") |>
+  layout(
+    xaxis = list(title = "Week"),
+    yaxis = list(title = "Percent"))
+```
+
+### Sexuality
+
+```{r}
+tidydata |>
+  filter(group == " Sexual orientation", state == "United States") |>
+  group_by(month_period_label, subgroup, indicator) |>
+  ggplot(aes(x = week_number, y = value, color = subgroup)) +
+  geom_line() +
+  facet_grid(. ~ indicator) +
+  scale_x_continuous(limits = c(24, 33)) +
+  theme_grey() +
+  theme(legend.position = "bottom")
+```
+
+```{r}
+tidydata |>
+  filter(group == " Sexual orientation", state == "United States") |>
+  group_by(month_period_label, subgroup, indicator) |>
+  ggplot(aes(x = week_number, y = value, color = indicator)) +
+  geom_line() +
+  facet_grid(. ~ subgroup) +
+  scale_x_continuous(limits = c(24, 33)) +
+  theme_grey() +
+  theme(legend.position = "bottom")
+```
+
+### Race/ethnicity
+
+```{r}
+tidydata |>
+  filter(group == " Race/Hispanic ethnicity", state == "United States") |>
+  group_by(month_period_label, subgroup, indicator) |>
+  ggplot(aes(x = week_number, y = value, color = subgroup)) +
+  geom_line() +
+  facet_grid(. ~ indicator) +
+  scale_x_continuous(limits = c(1, 33)) +
+  theme_grey() +
+  theme(legend.position = "bottom")
+```
+
+```{r}
+tidydata |>
+  filter(group == " Race/Hispanic ethnicity", state == "United States") |>
+  group_by(month_period_label, subgroup, indicator) |>
+  ggplot(aes(x = week_number, y = value, color = indicator)) +
+  geom_line() +
+  facet_grid(. ~ subgroup) +
+  scale_x_continuous(limits = c(1, 33)) +
+  theme_grey() +
+  theme(legend.position = "bottom")
+```

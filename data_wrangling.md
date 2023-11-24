@@ -5,17 +5,6 @@ Data import and Wrangling
 library (tidyverse)
 ```
 
-    ## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-    ## ✔ dplyr     1.1.3     ✔ readr     2.1.4
-    ## ✔ forcats   1.0.0     ✔ stringr   1.5.0
-    ## ✔ ggplot2   3.4.3     ✔ tibble    3.2.1
-    ## ✔ lubridate 1.9.2     ✔ tidyr     1.3.0
-    ## ✔ purrr     1.0.2     
-    ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-    ## ✖ dplyr::filter() masks stats::filter()
-    ## ✖ dplyr::lag()    masks stats::lag()
-    ## ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
-
 ## Step 1: Data import
 
 First, I download the .csv to my computer and renamed the file from
@@ -54,27 +43,28 @@ tidydata =
   select(start_date = time_period_start_date, end_date = time_period_end_date, everything())
 ```
 
-## Step 3: Create a tidy date
+## Step 3: Tidy the dates
 
-I converted dates to the date format using `mdy` and created a new
-variable named `year` and convert it to a numeric variable. I separated
-the original `time_period_label` variable into two variables:
-`week_label` and `years` and deleted `years` (because this variable is
-unable convert into numeric without causing missing value problem and we
-already had a `year` variable).
+First, I created an indicator for `week_number` using `match` to assign
+a number to the position of the week number. Then, I converted dates to
+the date format using `mdy`. Next, I created a new variable named `year`
+and converted it to a numeric variable. Finally, I separated the
+original `time_period_label` variable into two variables: `week_label`
+and `years` and selected the variables I need (excluding `years` because
+this variable is unable convert into numeric without causing missing
+value problem and we already had a `year` variable).
 
 ``` r
 tidydata =
-  tidydata |> 
+  tidydata |>
+  mutate(week_number = match(time_period_label, unique(time_period_label))) |>
   mutate(
     start_dates = mdy(pull(tidydata, start_date)),
     end_dates = mdy(pull(tidydata, end_date))) |> 
   mutate(tpl = time_period_label) |>  
   mutate(year = as.numeric(str_extract(tpl, "\\d{4}")))|> 
-  separate(col = time_period_label, into = c("week_label", "years"), sep = ", ", remove = FALSE, extra = "merge") |> 
-  select(-time_period_label, -start_date, -end_date) |>
-  mutate(week_number = time_period - 12) |>
-  select(indicator, year, start_dates, end_dates, week_number, week_label, state, group, subgroup, value, low_ci, high_ci, confidence_interval)
+  separate(col = time_period_label, into = c("week_label", "years"), sep = ", ", remove = FALSE, extra = "merge") |>
+  select(indicator, year, start_dates, end_dates, week_number, week_label = time_period_label, state, group, subgroup, value, low_ci, high_ci, confidence_interval)
 ```
 
 ## Comment on variable names
@@ -83,6 +73,9 @@ There are 13 variables in the `tidydata` data set:
 
 - `indicator` (chr): The type of mental health care.
 - `year` (num): The year of the time period for data collection.
+  - If the time period for data collection continued onto the following
+    year, the year that data collection began was used for this
+    variable.
 - `start_dates` (date): The start date of the time period for data
   collection.
 - `end_dates` (date): The end date of the time period for data

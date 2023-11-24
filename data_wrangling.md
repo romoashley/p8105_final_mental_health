@@ -16,27 +16,15 @@ library (tidyverse)
     ## ✖ dplyr::lag()    masks stats::lag()
     ## ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
 
-``` r
-library(dplyr)
-```
+## Step 1: Data import
 
-# Step 1: Data import.
-
-1)  In this step I download and renamed the
-    Mental_Health_Care_in_the_Last_4_Weeks.csv to mental_health.csv to
-    my computer, then I imported it to R and name the dataset as
-    rawdata.
-2)  during this step, I removing Unnecessary Columns including : phase,
-    quartile range and suppression flag. Then, I also renamed some
-    columns: Improving column names for clarity or consistency.
+First, I download the .csv to my computer and renamed the file from
+Mental_Health_Care_in_the_Last_4_Weeks.csv to mental_health.csv. Then, I
+imported it to R with `read_csv` and saved the data set as `rawdata`.
 
 ``` r
-rawdata = read_csv("data/mental_health.csv") |> 
-  janitor::clean_names() |>
-  mutate(indicator = str_replace(indicator, ", Last 4 Weeks", "")) |> 
-  select(-phase,-quartile_range,-suppression_flag) |> 
-  mutate(group = str_replace(group, "By", ""))|> 
-  select(start_date=time_period_start_date,end_date=time_period_end_date,everything()) 
+rawdata =
+  read_csv("data/mental_health.csv")
 ```
 
     ## Rows: 10404 Columns: 15
@@ -48,42 +36,67 @@ rawdata = read_csv("data/mental_health.csv") |>
     ## ℹ Use `spec()` to retrieve the full column specification for this data.
     ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
 
-# Step 2: create a tidy date.
+## Step 2: Rename and clean columns
 
-1)  Create a new column named year and convert it into numeric data.
-2)  Convert dates to date format and change separate the
-    time_period_label into two columns: month_period_label and years.
-    Then delete years (because this years variable is unable convert
-    into numeric without causing missing value problem, so I have to
-    delete it)
-3)  make a comment.
+I removed unnecessary columns, including phase, quartile range, and
+suppression flag, and cleaned and renamed some columns for clarity or
+consistency. Additionally, I dropped missing values in the `value`
+column.
 
 ``` r
-tidydata=rawdata |> 
-  mutate(start_dates=mdy(pull(rawdata, start_date)),
-         end_dates=mdy(pull(rawdata, end_date)))|> 
-        mutate(tpl=time_period_label) |>  
-        mutate(year = as.numeric(str_extract(tpl, "\\d{4}")))|> 
-         separate(col=time_period_label, into=c("month_period_label","years"), sep = ", ", remove = FALSE,extra="merge") |> 
-  select(-time_period_label,-start_date,-end_date) |>
-  mutate(week_number=time_period-12) |> select(indicator,year,start_dates,end_dates,week_number,month_period_label,group,state,subgroup,value,low_ci,high_ci,confidence_interval)
+tidydata = 
+  rawdata |> 
+  janitor::clean_names() |>
+  mutate(indicator = str_replace(indicator, ", Last 4 Weeks", "")) |> 
+  select(-phase, -quartile_range, -suppression_flag) |> 
+  mutate(group = str_replace(group, "By ", "")) |>
+  drop_na(value) |>
+  select(start_date = time_period_start_date, end_date = time_period_end_date, everything())
 ```
 
-### Comment:
+## Step 3: Create a tidy date
 
-There are 13 columns in the rawdata:
+I converted dates to the date format using `mdy` and created a new
+variable named `year` and convert it to a numeric variable. I separated
+the original `time_period_label` variable into two variables:
+`week_label` and `years` and deleted `years` (because this variable is
+unable convert into numeric without causing missing value problem and we
+already had a `year` variable).
 
-- Indicator (chr): The type of mental health care.
-- year(num): year for the time period.
-- Start Date (Date): Start date of the time period.
-- End Date(Date): End date of the time period.
-- Week_number(num):Numeric code for the time period minus 12.
-- Month Period Label(chr): Label for the month time period.
-- Group(chr): The demographic group.
-- State(chr): The state or national level data.
-- Subgroup(chr): The specific subgroup within the group.
-- Value(num): The value (percentage or number) representing the
+``` r
+tidydata =
+  tidydata |> 
+  mutate(
+    start_dates = mdy(pull(tidydata, start_date)),
+    end_dates = mdy(pull(tidydata, end_date))) |> 
+  mutate(tpl = time_period_label) |>  
+  mutate(year = as.numeric(str_extract(tpl, "\\d{4}")))|> 
+  separate(col = time_period_label, into = c("week_label", "years"), sep = ", ", remove = FALSE, extra = "merge") |> 
+  select(-time_period_label, -start_date, -end_date) |>
+  mutate(week_number = time_period - 12) |>
+  select(indicator, year, start_dates, end_dates, week_number, week_label, state, group, subgroup, value, low_ci, high_ci, confidence_interval)
+```
+
+## Comment on variable names
+
+There are 13 variables in the `tidydata` data set:
+
+- `indicator` (chr): The type of mental health care.
+- `year` (num): The year of the time period for data collection.
+- `start_dates` (date): The start date of the time period for data
+  collection.
+- `end_dates` (date): The end date of the time period for data
+  collection.
+- `week_number` (num): The week number of data collection.
+  - It should be noted that the data set refers to “weeks” as the
+    two-week data collection period, so each week number indicates a
+    two-week period.
+- `week_label` (chr): The dates for the corresponding week.
+- `state` (chr): The state or national level data.
+- `group` (chr): The demographic group.
+- `subgroup` (chr): The specific subgroup within the group.
+- `value` (num): The value (percentage or number) representing the
   indicator.
-- LowCI(num): Lower bound of the confidence interval.
-- HighCI(num): Upper bound of the confidence interval.
-- Confidence Interval(chr): Confidence interval as a range.
+- `low_ci` (num): Lower bound of the confidence interval of the value.
+- `high_ci` (num): Upper bound of the confidence interval of the value.
+- `confidence_interval` (chr): Confidence interval as a range.

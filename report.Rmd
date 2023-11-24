@@ -1,0 +1,36 @@
+---
+title: "Report"
+output: html_document
+---
+
+### Motivation
+
+COVID-19 has had serious behavioral and mental health implications. One survey conducted by the Centers for Disease Control and Prevention in July 2020 found that [41%](https://www.cnn.com/2020/08/13/health/mental-health-coronavirus-pandemic-cdc-study-wellness/index.html) of respondents were struggling with mental health issues stemming from the pandemic. Our project aimed to explore trends and differences in indicators of mental health care access across the United States from August 2020-May 2022, as well as disaggregate data by state, age group, sex, race/ethnicity, education level, and sexual orientation.
+
+### Related Work
+
+Many of us remember reading articles about the difficulty of accessing therapists and counselors during the rise of the COVID-19 pandemic in spring 2020. Providers reported month-long waiting lists that they have [never seen](https://www.cnn.com/2020/12/18/health/mental-health-care-demand-wellness/index.html) until the pandemic hit in spring 2020.
+
+Yet these trends did not taper off; instead, they continued to worsen According to the [American Psychological Association](https://www.apa.org/news/press/releases/2021/10/mental-health-treatment-demand), the percent of psychologists who treat anxiety and depression who saw an increase in demand for anxiety or depression treatment increased by 13.5% and 20%, respectively, from 2020 to 2021. The number of psychologists who reported receiving more referrals increased from 37% in 2020 to 62% in 2021. Nearly 7 in 10 psychologists with a waiting list in 2021 reported it had grown longer since the start of the pandemic.
+
+### Data
+
+We are using the [Mental Health Care in the Last 4 Weeks](https://catalog.data.gov/dataset/mental-health-care-in-the-last-4-weeks) data set. Data was collected as part of the Pulse Household Survey across the United States with the U.S. Census Bureau and numerous other federal agencies. The mental health portion of the survey asks respondents to look back in the last 4 weeks and answer whether they:
+
+* Received counseling or therapy for mental health,
+* Took prescription medication for mental health, and
+* Needed counseling or therapy but did not get it.
+
+The data set includes an additional indicator that combines those who received counseling or therapy and/or took prescription medication for mental health.
+
+#### Data Cleaning
+
+The data set is available for download in multiple formats, and we downloaded the Comma Separated Values (.csv) file.
+
+### Initial Questions
+
+### Exploratory Analysis
+
+### Additional analysis
+
+### Results and discussion

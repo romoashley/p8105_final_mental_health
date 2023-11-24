@@ -11,7 +11,7 @@
 
 
 
-<title>Report</title>
+<title>Final Report</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -348,13 +348,13 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">Report</h1>
+<h1 class="title toc-ignore">Final Report</h1>
 
 </div>
 
 
-<div id="motivation" class="section level3">
-<h3>Motivation</h3>
+<div id="motivation" class="section level2">
+<h2>Motivation</h2>
 <p>COVID-19 has had serious behavioral and mental health implications.
 One survey conducted by the Centers for Disease Control and Prevention
 in July 2020 found that <a href="https://www.cnn.com/2020/08/13/health/mental-health-coronavirus-pandemic-cdc-study-wellness/index.html">41%</a>
@@ -364,25 +364,28 @@ indicators of mental health care access across the United States from
 August 2020-May 2022, as well as disaggregate data by state, age group,
 sex, race/ethnicity, education level, and sexual orientation.</p>
 </div>
-<div id="related-work" class="section level3">
-<h3>Related Work</h3>
+<div id="related-work" class="section level2">
+<h2>Related Work</h2>
 <p>Many of us remember reading articles about the difficulty of
 accessing therapists and counselors during the rise of the COVID-19
 pandemic in spring 2020. Providers reported month-long waiting lists
 that they have <a href="https://www.cnn.com/2020/12/18/health/mental-health-care-demand-wellness/index.html">never
 seen</a> until the pandemic hit in spring 2020.</p>
-<p>Yet these trends did not taper off; instead, they continued to worsen
-According to the <a href="https://www.apa.org/news/press/releases/2021/10/mental-health-treatment-demand">American
+<p>Yet these trends did not taper off; instead, they continued to
+worsen. According to the <a href="https://www.apa.org/news/press/releases/2021/10/mental-health-treatment-demand">American
 Psychological Association</a>, the percent of psychologists who treat
 anxiety and depression who saw an increase in demand for anxiety or
 depression treatment increased by 13.5% and 20%, respectively, from 2020
 to 2021. The number of psychologists who reported receiving more
 referrals increased from 37% in 2020 to 62% in 2021. Nearly 7 in 10
 psychologists with a waiting list in 2021 reported it had grown longer
-since the start of the pandemic.</p>
+since the start of the pandemic. Even through March 2022, prospective
+patients are <a href="https://www.washingtonpost.com/health/2022/03/06/therapist-covid-burnout/">still</a>
+struggling to find providers who are accepting new patients or do not
+have month-long waiting lists.</p>
 </div>
-<div id="data" class="section level3">
-<h3>Data</h3>
+<div id="data" class="section level2">
+<h2>Data</h2>
 <p>We are using the <a href="https://catalog.data.gov/dataset/mental-health-care-in-the-last-4-weeks">Mental
 Health Care in the Last 4 Weeks</a> data set. Data was collected as part
 of the Pulse Household Survey across the United States with the U.S.
@@ -397,23 +400,63 @@ and answer whether they:</p>
 <p>The data set includes an additional indicator that combines those who
 received counseling or therapy and/or took prescription medication for
 mental health.</p>
-<div id="data-cleaning" class="section level4">
-<h4>Data Cleaning</h4>
+<div id="data-cleaning" class="section level3">
+<h3>Data Cleaning</h3>
 <p>The data set is available for download in multiple formats, and we
 downloaded the Comma Separated Values (.csv) file.</p>
+<p>The first portion of data cleaning was the data import, which
+involved downloading and importing the .csv using <code>read_csv</code>
+and saving the raw data set.</p>
+<p>The second portion of data cleaning was renaming and cleaning
+columns. This step involved removing unnecessary columns, cleaning and
+renaming columns for clarity, and dropping missing values.</p>
+<p>The third portion of data cleaning was tidying the date formats. This
+step involved converting dates to the date format using
+<code>mdy</code>, creating a new numeric <code>year</code> variable, and
+cleaning the week numbers and labels.</p>
+<p>The final tidy data set included 13 variables:</p>
+<ul>
+<li><code>indicator</code> (chr): The type of mental health care.</li>
+<li><code>year</code> (num): The year of the time period for data
+collection.</li>
+<li><code>start_dates</code> (date): The start date of the time period
+for data collection.</li>
+<li><code>end_dates</code> (date): The end date of the time period for
+data collection.</li>
+<li><code>week_number</code> (num): The week number of data collection.
+<ul>
+<li>It should be noted that the data set refers to “weeks” as the
+two-week data collection period, so each week number indicates a
+two-week period.</li>
+</ul></li>
+<li><code>week_label</code> (chr): The dates for the corresponding
+week.</li>
+<li><code>state</code> (chr): The state or national level data.</li>
+<li><code>group</code> (chr): The demographic group.</li>
+<li><code>subgroup</code> (chr): The specific subgroup within the
+group.</li>
+<li><code>value</code> (num): The value (percentage or number)
+representing the indicator.</li>
+<li><code>low_ci</code> (num): Lower bound of the confidence interval of
+the value.</li>
+<li><code>high_ci</code> (num): Upper bound of the confidence interval
+of the value.</li>
+<li><code>confidence_interval</code> (chr): Confidence interval as a
+range.</li>
+</ul>
 </div>
 </div>
-<div id="initial-questions" class="section level3">
-<h3>Initial Questions</h3>
+<div id="initial-questions" class="section level2">
+<h2>Initial Questions</h2>
 </div>
-<div id="exploratory-analysis" class="section level3">
-<h3>Exploratory Analysis</h3>
+<div id="exploratory-analysis" class="section level2">
+<h2>Exploratory Analysis</h2>
 </div>
-<div id="additional-analysis" class="section level3">
-<h3>Additional analysis</h3>
+<div id="additional-analysis" class="section level2">
+<h2>Additional analysis</h2>
 </div>
-<div id="results-and-discussion" class="section level3">
-<h3>Results and discussion</h3>
+<div id="results-and-discussion" class="section level2">
+<h2>Results and discussion</h2>
 </div>
 
 

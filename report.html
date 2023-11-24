@@ -359,10 +359,13 @@ display: none;
 One survey conducted by the Centers for Disease Control and Prevention
 in July 2020 found that <a href="https://www.cnn.com/2020/08/13/health/mental-health-coronavirus-pandemic-cdc-study-wellness/index.html">41%</a>
 of respondents were struggling with mental health issues stemming from
-the pandemic. Our project aimed to explore trends and differences in
-indicators of mental health care access across the United States from
-August 2020-May 2022, as well as disaggregate data by state, age group,
-sex, race/ethnicity, education level, and sexual orientation.</p>
+the pandemic. Different demographics have worse outcomes, such as <a href="https://www.pewresearch.org/short-reads/2023/03/02/mental-health-and-the-pandemic-what-u-s-surveys-have-found/">young
+people</a>, and these outcomes are <a href="https://www.kff.org/mental-health/issue-brief/the-implications-of-covid-19-for-mental-health-and-substance-use/">continuing</a>
+years after the pandemic first hit.</p>
+<p>Our project aimed to explore trends and differences in indicators of
+mental health care access across the United States from August 2020-May
+2022, as well as disaggregate data by state, age group, sex,
+race/ethnicity, education level, and sexual orientation.</p>
 </div>
 <div id="related-work" class="section level2">
 <h2>Related Work</h2>
@@ -418,7 +421,12 @@ cleaning the week numbers and labels.</p>
 <ul>
 <li><code>indicator</code> (chr): The type of mental health care.</li>
 <li><code>year</code> (num): The year of the time period for data
-collection.</li>
+collection.
+<ul>
+<li>If the time period for data collection continued onto the following
+year, the year that data collection began was used for this
+variable.</li>
+</ul></li>
 <li><code>start_dates</code> (date): The start date of the time period
 for data collection.</li>
 <li><code>end_dates</code> (date): The end date of the time period for

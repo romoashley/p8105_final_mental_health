@@ -5,7 +5,9 @@ output: html_document
 
 ## Motivation
 
-COVID-19 has had serious behavioral and mental health implications. One survey conducted by the Centers for Disease Control and Prevention in July 2020 found that [41%](https://www.cnn.com/2020/08/13/health/mental-health-coronavirus-pandemic-cdc-study-wellness/index.html) of respondents were struggling with mental health issues stemming from the pandemic. Our project aimed to explore trends and differences in indicators of mental health care access across the United States from August 2020-May 2022, as well as disaggregate data by state, age group, sex, race/ethnicity, education level, and sexual orientation.
+COVID-19 has had serious behavioral and mental health implications. One survey conducted by the Centers for Disease Control and Prevention in July 2020 found that [41%](https://www.cnn.com/2020/08/13/health/mental-health-coronavirus-pandemic-cdc-study-wellness/index.html) of respondents were struggling with mental health issues stemming from the pandemic. Different demographics have worse outcomes, such as [young people](https://www.pewresearch.org/short-reads/2023/03/02/mental-health-and-the-pandemic-what-u-s-surveys-have-found/), and these outcomes are [continuing](https://www.kff.org/mental-health/issue-brief/the-implications-of-covid-19-for-mental-health-and-substance-use/) years after the pandemic first hit.
+
+Our project aimed to explore trends and differences in indicators of mental health care access across the United States from August 2020-May 2022, as well as disaggregate data by state, age group, sex, race/ethnicity, education level, and sexual orientation.
 
 ## Related Work
 
@@ -37,6 +39,7 @@ The final tidy data set included 13 variables:
 
 * `indicator` (chr): The type of mental health care.
 * `year` (num): The year of the time period for data collection.
+    * If the time period for data collection continued onto the following year, the year that data collection began was used for this variable.
 * `start_dates` (date): The start date of the time period for data collection.
 * `end_dates` (date): The end date of the time period for data collection.
 * `week_number` (num): The week number of data collection.

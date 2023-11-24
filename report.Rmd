@@ -23,7 +23,9 @@ We are using the [Mental Health Care in the Last 4 Weeks](https://catalog.data.g
 * Took prescription medication for mental health, and
 * Needed counseling or therapy but did not get it.
 
-The data set includes an additional indicator that combines those who received counseling or therapy and/or took prescription medication for mental health.
+The data set includes an additional indicator that combines those who received counseling or therapy and/or took prescription medication for mental health. The percentage of participants who responded "Yes" were calculated for each of the 3 questions they were asked, as well as the additional indicator. It is  possible that participants respond "No" to each of the 3 questions they are asked, so the values for the 3 questions do not add up to 100%.
+
+Data was collected from a nationally representative sample of approximately [50,000-90,000](https://www.cdc.gov/nchs/covid19/pulse/mental-health-care.htm) participants every two weeks for a total of 38 time periods of data collection.
 
 ### Data Cleaning
 
@@ -34,6 +36,8 @@ The first portion of data cleaning was the data import, which involved downloadi
 The second portion of data cleaning was renaming and cleaning columns. This step involved removing unnecessary columns, cleaning and renaming columns for clarity, and dropping missing values.
 
 The third portion of data cleaning was tidying the date formats. This step involved converting dates to the date format using `mdy`, creating a new numeric `year` variable, and cleaning the week numbers and labels.
+
+### Final Data Set
 
 The final tidy data set included 13 variables:
 

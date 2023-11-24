@@ -402,7 +402,15 @@ and answer whether they:</p>
 </ul>
 <p>The data set includes an additional indicator that combines those who
 received counseling or therapy and/or took prescription medication for
-mental health.</p>
+mental health. The percentage of participants who responded “Yes” were
+calculated for each of the 3 questions they were asked, as well as the
+additional indicator. It is possible that participants respond “No” to
+each of the 3 questions they are asked, so the values for the 3
+questions do not add up to 100%.</p>
+<p>Data was collected from a nationally representative sample of
+approximately <a href="https://www.cdc.gov/nchs/covid19/pulse/mental-health-care.htm">50,000-90,000</a>
+participants every two weeks for a total of 38 time periods of data
+collection.</p>
 <div id="data-cleaning" class="section level3">
 <h3>Data Cleaning</h3>
 <p>The data set is available for download in multiple formats, and we
@@ -417,6 +425,9 @@ renaming columns for clarity, and dropping missing values.</p>
 step involved converting dates to the date format using
 <code>mdy</code>, creating a new numeric <code>year</code> variable, and
 cleaning the week numbers and labels.</p>
+</div>
+<div id="final-data-set" class="section level3">
+<h3>Final Data Set</h3>
 <p>The final tidy data set included 13 variables:</p>
 <ul>
 <li><code>indicator</code> (chr): The type of mental health care.</li>

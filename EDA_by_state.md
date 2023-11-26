@@ -36,6 +36,25 @@ library(maps)
     ##     map
 
 ``` r
+library(plotly)
+```
+
+    ## 
+    ## Attaching package: 'plotly'
+    ## 
+    ## The following object is masked from 'package:ggplot2':
+    ## 
+    ##     last_plot
+    ## 
+    ## The following object is masked from 'package:stats':
+    ## 
+    ##     filter
+    ## 
+    ## The following object is masked from 'package:graphics':
+    ## 
+    ##     layout
+
+``` r
 knitr::opts_chunk$set(
     echo = TRUE,
     warning = FALSE,
@@ -155,19 +174,7 @@ us_meds =
 Next, we’ll plot the data using ggplot
 
 ``` r
-ggplot(us_meds)+
-  geom_sf(aes(fill = mean_value), color = "white", size = 0.2)+
-  scale_fill_gradient(low = "white", high = "red", na.value = "grey50", name = "Avg % taking prescription medications")+
-  theme_minimal()+
-  theme(legend.position = "right",
-        plot.title = element_text(hjust= 0.5, size = 16),
-        plot.caption = element_text(hjust=0.5, size = 12))+
-  labs(title = "% who took prescription medication for mental health 2020-2022")
-```
-
-<img src="EDA_by_state_files/figure-gfm/unnamed-chunk-6-1.png" width="90%" />
-
-``` r
+heatmap_meds=
 ggplot(us_meds)+
   geom_sf(aes(fill = mean_value), color = "white", size = 0.2)+
   scale_fill_gradient(low = "white", high = "red", na.value = "grey50", name = "Avg % taking prescription medications")+
@@ -177,10 +184,79 @@ ggplot(us_meds)+
   labs(title = "Average % used prescription medication for mental health 2020-2022, by state")
 ```
 
-<img src="EDA_by_state_files/figure-gfm/unnamed-chunk-6-2.png" width="90%" />
+We can also look at which states have had the greatest change in
+medication use. This shows that not only does WV have the highest
+prevalence of medication use for mental health during this period, but
+it also has had the highest level of change in this indicator between
+2020-2022.
 
-“Average proportion of state residents who took prescription medications
-between 2020-2022”
+``` r
+state_meds_change =
+  state_df |> 
+  filter(indicator == "Took Prescription Medication for Mental Health", year != "2021") |> 
+  group_by(state, year) |> 
+  summarize(mean_value = mean(value)) |> 
+  arrange(state, year) |> 
+  mutate(val_change = c(NA, diff(mean_value)))
+```
 
-“Took Prescription Medication for Mental Health And/Or Received
-Counseling or Therapy”
+    ## `summarise()` has grouped output by 'state'. You can override using the
+    ## `.groups` argument.
+
+``` r
+state_meds_change |> 
+  filter(!is.na(val_change)) |> 
+  ungroup() |> 
+  select(-year) |> 
+  slice_max(order_by = val_change, n=5) |> 
+  knitr::kable()
+```
+
+| state         | mean_value | val_change |
+|:--------------|-----------:|-----------:|
+| West Virginia |     34.200 |   7.044444 |
+| Nebraska      |     27.275 |   5.219444 |
+| North Dakota  |     25.625 |   5.136111 |
+| Minnesota     |     26.925 |   4.502778 |
+| Kentucky      |     30.075 |   4.452778 |
+
+Let’s take a look at the trend for this indicator over time.
+
+``` r
+state_meds_trend =
+state_df |>
+  filter(indicator == "Took Prescription Medication for Mental Health") |> 
+  group_by(state, year) |>
+  summarize(mean_value = mean(value)) |> 
+  ggplot(aes(x = year, y = mean_value, color = state)) +
+  geom_line()
+```
+
+    ## `summarise()` has grouped output by 'state'. You can override using the
+    ## `.groups` argument.
+
+``` r
+print(state_meds_trend)
+```
+
+<img src="EDA_by_state_files/figure-gfm/unnamed-chunk-8-1.png" width="90%" />
+
+``` r
+state_meds_plotly=
+state_df |>
+  filter(indicator == "Took Prescription Medication for Mental Health") |> 
+  group_by(state, year) |>
+  summarize(mean_value = mean(value)) |> 
+plot_ly(x = ~year, y = ~mean_value, color = ~state, type = "scatter", mode = "lines+markers") |>
+  layout(
+    title = "% used prescription medication for mental health by state & year",
+    xaxis = list(title = "Year"),
+    yaxis = list(title = "Average % used prescription medication for mental health"))
+```
+
+    ## `summarise()` has grouped output by 'state'. You can override using the
+    ## `.groups` argument.
+
+``` r
+print(state_meds_plotly)
+```

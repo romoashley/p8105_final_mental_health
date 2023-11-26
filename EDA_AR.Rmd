@@ -1,0 +1,48 @@
+---
+title: "EDA_AR"
+author: "ASHLEY ROMO"
+date: "2023-11-26"
+output: github_document
+---
+
+Loading key packages
+
+```{r}
+library(tidyverse)
+```
+
+Importing clean and tidy dataset 
+```{r}
+data = 
+  read.csv("data/tidydata.csv")
+```
+
+EDA for National Average Per Year
+```{r}
+avg_year =
+  data |> 
+  filter(state == "United States") |> 
+  select(indicator, year, week_number, value) |> 
+  group_by(year, indicator, week_number) |> 
+  summarize(
+    mean = mean(value),
+    indicator_total = n()
+  )
+
+# plot average per year for each indicator
+avg_year |> 
+  ggplot(aes(x = week_number, y = mean, color = indicator)) +
+  geom_point() +
+  geom_line() +
+  labs(
+    x = "Week",
+    y = "Average Value",
+    color = "Indicator",
+    title = "National Average Per Year (2020-2022)",
+  ) +
+  theme(
+    legend.position = "bottom"
+  ) +
+  facet_grid(~ year)
+```
+

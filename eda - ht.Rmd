@@ -63,9 +63,39 @@ Differences in indicator variables by age group and education level
 ## Age group
 
 ```{r}
-age_plot= 
-tidydata |>
-  filter(group == "Age", state == "United States") |>
-  group_by(month_period_label, subgroup, indicator)
+age_plot <- tidydata |> 
+  filter(group == " Age", state == "United States")
+
+age_plot$subgroup[age_plot$subgroup == "80 years and above"] = "80+ years"
+
+age_plot |> 
+  group_by(month_period_label, subgroup, indicator) |> 
+  ggplot(aes(x = week_number, y = value, color = indicator)) +
+  geom_line() +
+  facet_grid(. ~ subgroup) +
+  scale_x_continuous(limits = c(1, 33)) +
+  theme_gray() +
+  theme(legend.position = "bottom")
+
+age_plot
+```
+
+## Education level 
+
+```{r}
+ed_plot= 
+  tidydata |>
+  filter(group == " Education", state == "United States") |> 
+   mutate(ed_name = forcats::fct_relevel(subgroup, c("Bachelor's degree or higher",
+                                                     "Some college/Associate's degree", "High school diploma or GED", "Less than a high school diploma"))) |> 
+  group_by(month_period_label, ed_name, indicator) |> 
+  ggplot(aes(x = week_number, y = value, color = indicator)) +
+  geom_line() +
+  facet_grid(. ~ ed_name) +
+  scale_x_continuous(limits = c(1, 33)) +
+  theme_gray() +
+  theme(legend.position = "bottom")
+
+ed_plot
 ```
 

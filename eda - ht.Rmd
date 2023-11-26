@@ -1,0 +1,71 @@
+---
+title: "eda"
+author: "hsin yi tseng"
+output: html_document
+---
+
+### Setting Up 
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(ggridges)
+library(patchwork)
+
+library(modelr)
+library(purrr)
+library(broom)
+library(dplyr)
+
+
+knitr::opts_chunk$set(
+	echo = TRUE,
+	warning = FALSE,
+	fig.width = 8, 
+  fig.height = 6,
+  out.width = "90%"
+)
+
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+```
+
+## Data wrangling
+
+```{r message = FALSE}
+rawdata = read_csv("data/mental_health.csv") |> 
+  janitor::clean_names() |>
+  mutate(indicator = str_replace(indicator, ", Last 4 Weeks", "")) |> 
+  select(-phase,-quartile_range,-suppression_flag) |> 
+  mutate(group = str_replace(group, "By", ""))|> 
+  select(start_date=time_period_start_date,end_date=time_period_end_date,everything()) 
+```
+
+```{r}
+tidydata=rawdata |> 
+  mutate(start_dates=mdy(pull(rawdata, start_date)),
+         end_dates=mdy(pull(rawdata, end_date)))|> 
+        mutate(tpl=time_period_label) |>  
+        mutate(year = as.numeric(str_extract(tpl, "\\d{4}")))|> 
+         separate(col=time_period_label, into=c("month_period_label","years"), sep = ", ", remove = FALSE,extra="merge") |> 
+  select(-time_period_label,-start_date,-end_date) |>
+  mutate(week_number=time_period-12) |> select(indicator,year,start_dates,end_dates,week_number,month_period_label,group,state,subgroup,value,low_ci,high_ci,confidence_interval)
+```
+
+Differences in indicator variables by age group and education level
+
+## Age group
+
+```{r}
+age_plot= 
+tidydata |>
+  filter(group == "Age", state == "United States") |>
+  group_by(month_period_label, subgroup, indicator)
+```
+

@@ -1,0 +1,78 @@
+---
+title: "EDA_by_state"
+author: "Caleigh Dwyer"
+date: "2023-11-26"
+output: github_document
+---
+
+```{r}
+library(tidyverse)
+```
+
+import tidy dataset:
+
+```{r}
+##note: should we export tidy dataset to our directory on github so we can delete this code from any EDA?
+
+rawdata =
+  read_csv("data/mental_health.csv")
+
+tidydata = 
+  rawdata |> 
+  janitor::clean_names() |>
+  mutate(indicator = str_replace(indicator, ", Last 4 Weeks", "")) |> 
+  select(-phase, -quartile_range, -suppression_flag) |> 
+  mutate(group = str_replace(group, "By ", "")) |>
+  drop_na(value) |>
+  select(start_date = time_period_start_date, end_date = time_period_end_date, everything())
+
+tidydata =
+  tidydata |>
+  mutate(week_number = match(time_period_label, unique(time_period_label))) |>
+  mutate(
+    start_dates = mdy(pull(tidydata, start_date)),
+    end_dates = mdy(pull(tidydata, end_date))) |> 
+  mutate(tpl = time_period_label) |>  
+  mutate(year = as.numeric(str_extract(tpl, "\\d{4}")))|> 
+  separate(col = time_period_label, into = c("week_label", "years"), sep = ", ", remove = FALSE, extra = "merge") |>
+  select(indicator, year, start_dates, end_dates, week_number, week_label = time_period_label, state, group, subgroup, value, low_ci, high_ci, confidence_interval)
+```
+
+
+
+## EDA
+
+This EDA will analyze mental health care access trends by state.
+
+I will first create a dataframe that only includes state-level observations.
+
+```{r}
+state_df =
+  tidydata |> 
+  filter(group == "State")
+```
+
+### Indicator 1: Took prescription
+
+Let's start with the mental health indicator "Took Prescription Medication for Mental Health"
+
+The following chunk shows the top five states with the highest mean percentage of respondents who reported taking prescription medication for mental health from 2020-2022.
+
+```{r}
+
+state_meds =
+  state_df |> 
+  filter(indicator == "Took Prescription Medication for Mental Health") |> 
+  group_by(subgroup) |> 
+  summarize(mean_value = mean(value)) |> 
+  arrange(desc(mean_value)) |> 
+  top_n(5) |> 
+  knitr::kable()
+
+```
+
+
+
+
+ "Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy"
+

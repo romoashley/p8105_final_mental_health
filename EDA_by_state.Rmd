@@ -150,7 +150,7 @@ state_meds_change =
 state_meds_change |> 
   filter(!is.na(val_change)) |> 
   ungroup() |> 
-  select(-year) |> 
+  select(-year, -mean_value) |> 
   slice_max(order_by = val_change, n=5) |> 
   knitr::kable()
   
@@ -245,11 +245,10 @@ state_ther_change =
 state_ther_change |> 
   filter(!is.na(val_change)) |> 
   ungroup() |> 
-  select(-year) |> 
+  select(-year, -mean_value) |> 
   slice_max(order_by = val_change, n=5) |> 
   knitr::kable()
 
-##change mean val?
   
 ```
 
@@ -342,11 +341,10 @@ state_both_change =
 state_both_change |> 
   filter(!is.na(val_change)) |> 
   ungroup() |> 
-  select(-year) |> 
+  select(-year, -mean_value) |> 
   slice_max(order_by = val_change, n=5) |> 
   knitr::kable()
 
-##change mean val?
   
 ```
 
@@ -439,11 +437,10 @@ state_need_change =
 state_need_change |> 
   filter(!is.na(val_change)) |> 
   ungroup() |> 
-  select(-year) |> 
+  select(-year, -mean_value) |> 
   slice_max(order_by = val_change, n=5) |> 
   knitr::kable()
 
-##change mean val?
   
 ```
 
@@ -464,7 +461,4 @@ plot_ly(x = ~year, y = ~mean_value, color = ~state, type = "scatter", mode = "li
     yaxis = list(title = "Avg % did not receive needed therapy"))
 
 ```
-
-
-As a final step, let's compare
 

@@ -165,6 +165,7 @@ state_df |>
   filter(indicator == "Took Prescription Medication for Mental Health") |> 
   group_by(state, year) |>
   summarize(mean_value = mean(value)) |> 
+  mutate(year = factor(year)) |> 
 plot_ly(x = ~year, y = ~mean_value, color = ~state, type = "scatter", mode = "lines+markers") |>
   layout(
     title = "% used prescription medication for mental health by state & year",
@@ -230,7 +231,7 @@ ggplot(us_ther)+
 print(heatmap_ther)
 ```
 
-We can also look at which states have had the greatest change in therapy use. This shows that not only does WV have the highest prevalence of medication use for mental health during this period, but it also has had the highest level of change in this indicator between 2020-2022.
+We can also look at which states have had the greatest change in therapy use. This shows that NE had the highest level of change in this indicator between 2020-2022. It also had a high level of change in indicator 1
 
 ```{r}
 state_ther_change =
@@ -261,6 +262,7 @@ state_df |>
   filter(indicator == "Received Counseling or Therapy") |> 
   group_by(state, year) |>
   summarize(mean_value = mean(value)) |> 
+  mutate(year = factor(year)) |> 
 plot_ly(x = ~year, y = ~mean_value, color = ~state, type = "scatter", mode = "lines+markers") |>
   layout(
     title = "% received counseling or therapy by state & year",
@@ -269,4 +271,200 @@ plot_ly(x = ~year, y = ~mean_value, color = ~state, type = "scatter", mode = "li
 
 ```
 
+## Indicator 3: "Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy"
+
+The third indicator we'll look at combines the first two indicators into one category. This can help give a snapshot of overall mental health care need.
+
+The following chunk shows the top five states with the highest mean percentage of respondents who reported mental health medication and/or therapy use from 2020-2022. The state with the highest percentage during this period was West Virginia.
+
+```{r}
+
+state_both_top5 =
+  state_df |> 
+  filter(indicator == "Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy") |> 
+  group_by(state) |> 
+  summarize(mean_value = mean(value)) |> 
+  arrange(desc(mean_value)) |> 
+  top_n(5) 
+
+state_both_top5 |> 
+  knitr::kable()
+
+```
+
+
+Let's visualize a heat map of this indicator's prevalence by US state.
+
+First, we'll merge the filtered dataset with an existing US state map dataset to assist with mapping.
+
+```{r}
+state_both =
+  state_df |> 
+  filter(indicator == "Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy") |> 
+  group_by(state) |> 
+  summarize(mean_value = mean(value)) |> 
+  mutate(state = tolower(state))
+
+usa = 
+  st_as_sf(map("state", fill = TRUE, plot = FALSE))
+
+us_both =
+  merge(usa, state_both, by.x = "ID", by.y = "state", all.x = TRUE)
+```
+
+
+Next, we'll plot the data using ggplot
+
+```{r}
+heatmap_both=
+ggplot(us_both)+
+  geom_sf(aes(fill = mean_value), color = "white", size = 0.2)+
+  scale_fill_gradient(low = "white", high = "red", na.value = "grey50", name = "Avg % medication and/or therapy use")+
+  theme_minimal()+
+  theme(legend.position = "right",
+        plot.title.position = "plot")+
+  labs(title = "Average % using medication and/or therapy 2020-2022, by state")
+
+print(heatmap_both)
+```
+
+We can also look at which states have had the greatest change in mental health care use. This shows that WV had the highest level of change in this indicator between 2020-2022. This makes sense, as WV had the highest change in medication use.
+
+```{r}
+state_both_change =
+  state_df |> 
+  filter(indicator == "Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy", year != "2021") |> 
+  group_by(state, year) |> 
+  summarize(mean_value = mean(value)) |> 
+  arrange(state, year) |> 
+  mutate(val_change = c(NA, diff(mean_value)))
+
+state_both_change |> 
+  filter(!is.na(val_change)) |> 
+  ungroup() |> 
+  select(-year) |> 
+  slice_max(order_by = val_change, n=5) |> 
+  knitr::kable()
+
+##change mean val?
+  
+```
+
+
+Let's take a look at the trend for this indicator over time. 
+
+```{r, fig.keep="none"}
+
+state_df |>
+  filter(indicator == "Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy") |> 
+  group_by(state, year) |>
+  summarize(mean_value = mean(value)) |> 
+  mutate(year = factor(year)) |> 
+plot_ly(x = ~year, y = ~mean_value, color = ~state, type = "scatter", mode = "lines+markers") |>
+  layout(
+    title = "% medication and/or therapy use by state & year",
+    xaxis = list(title = "Year"),
+    yaxis = list(title = "Average % medication and/or therapy use"))
+
+```
+
+## Indicator 4: Needed Counseling or Therapy But Did Not Get It
+
+The last indicator we'll look at is describes gaps in mental health care access, specifically counseling and therapy. 
+
+The following chunk shows the top five states with the highest mean percentage of respondents who reported no receipt of needed counseling/therapy from 2020-2022. The state with the highest percentage during this period was Oregon. Surprisingly, District of Columbia also appeared on the top 5, even though it was the "state" with the highest level of therapy use during this period.
+
+```{r}
+
+state_need_top5 =
+  state_df |> 
+  filter(indicator == "Needed Counseling or Therapy But Did Not Get It") |> 
+  group_by(state) |> 
+  summarize(mean_value = mean(value)) |> 
+  arrange(desc(mean_value)) |> 
+  top_n(5) 
+
+state_need_top5 |> 
+  knitr::kable()
+
+```
+
+
+Let's visualize a heat map of this indicator's prevalence by US state.
+
+First, we'll merge the filtered dataset with an existing US state map dataset to assist with mapping.
+
+```{r}
+state_need =
+  state_df |> 
+  filter(indicator == "Needed Counseling or Therapy But Did Not Get It") |> 
+  group_by(state) |> 
+  summarize(mean_value = mean(value)) |> 
+  mutate(state = tolower(state))
+
+usa = 
+  st_as_sf(map("state", fill = TRUE, plot = FALSE))
+
+us_need =
+  merge(usa, state_need, by.x = "ID", by.y = "state", all.x = TRUE)
+```
+
+
+Next, we'll plot the data using ggplot
+
+```{r}
+heatmap_need=
+ggplot(us_need)+
+  geom_sf(aes(fill = mean_value), color = "white", size = 0.2)+
+  scale_fill_gradient(low = "white", high = "red", na.value = "grey50", name = "Avg % did not receive needed therapy")+
+  theme_minimal()+
+  theme(legend.position = "right",
+        plot.title.position = "plot")+
+  labs(title = "Average % did not receive needed therapy 2020-2022, by state")
+
+print(heatmap_need)
+```
+
+We can also look at which states have had the greatest change in unmet mental health care need. This shows that AK had the highest level of change in this indicator between 2020-2022.
+
+```{r}
+state_need_change =
+  state_df |> 
+  filter(indicator == "Needed Counseling or Therapy But Did Not Get It", year != "2021") |> 
+  group_by(state, year) |> 
+  summarize(mean_value = mean(value)) |> 
+  arrange(state, year) |> 
+  mutate(val_change = c(NA, diff(mean_value)))
+
+state_need_change |> 
+  filter(!is.na(val_change)) |> 
+  ungroup() |> 
+  select(-year) |> 
+  slice_max(order_by = val_change, n=5) |> 
+  knitr::kable()
+
+##change mean val?
+  
+```
+
+
+Let's take a look at the trend for this indicator over time. 
+
+```{r, fig.keep="none"}
+
+state_df |>
+  filter(indicator == "Needed Counseling or Therapy But Did Not Get It") |> 
+  group_by(state, year) |>
+  summarize(mean_value = mean(value)) |> 
+  mutate(year = factor(year)) |> 
+plot_ly(x = ~year, y = ~mean_value, color = ~state, type = "scatter", mode = "lines+markers") |>
+  layout(
+    title = "% did not receive needed therapy by state & year",
+    xaxis = list(title = "Year"),
+    yaxis = list(title = "Avg % did not receive needed therapy"))
+
+```
+
+
+As a final step, let's compare
 

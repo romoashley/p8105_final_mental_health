@@ -116,3 +116,33 @@ broom::tidy(ny_test) %>%
 | estimate | statistic | p.value | parameter | conf.low | conf.high | method                                               | alternative |
 |---------:|----------:|--------:|----------:|---------:|----------:|:-----------------------------------------------------|:------------|
 |     0.25 |    32.008 |       0 |         1 |    0.181 |     0.334 | 1-sample proportions test with continuity correction | two.sided   |
+
+I apply prop.test and broom:tidy to obtain estimates and confidence
+intervals for the proportion of mental health services not received for
+each state.
+
+``` r
+services_states =
+  states_df |> 
+  mutate(
+    prop_tests = map2(services_not_received, services_total, \(x, y) prop.test(x = x, n = y)),
+    tidy_tests = map(prop_tests, broom::tidy)) |> 
+  select(-prop_tests) |> 
+  unnest(tidy_tests) |> 
+  select(state, estimate, conf.low, conf.high) |> 
+  mutate(state = fct_reorder(state, estimate))
+```
+
+Lastly, below is a plot showing the estimate (and CI) of the proportion
+of mental health services not received in each state.
+
+``` r
+services_states %>% 
+  mutate(state = fct_reorder(state, estimate)) %>% 
+  ggplot(aes(x = state, y = estimate)) + 
+  geom_point() + 
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high)) + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+![](EDA_AR_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->

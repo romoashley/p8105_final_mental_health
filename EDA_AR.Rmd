@@ -27,8 +27,7 @@ avg_year =
   group_by(year, start_dates, indicator) |> 
   summarize(
     mean = mean(value),
-    indicator_total = n()
-  )
+    indicator_total = n())
 
 # plot average per year for each indicator
 avg_year |> 
@@ -37,13 +36,11 @@ avg_year |>
   labs(
     x = "Start Date",
     y = "Average Value",
-    title = "National Average (2020-2022)",
-  ) +
+    title = "National Average (2020-2022)") +
   theme(
     legend.position = "bottom",
     axis.text.x = element_text(angle=90, hjust=1),
-    strip.text = element_text(size = 4)
-  ) +
+    strip.text = element_text(size = 4)) +
   guides(color = guide_legend(nrow = 2))
 ```
 
@@ -58,9 +55,7 @@ received_service =
       indicator == "Took Prescription Medication for Mental Health" ~ "received",
       indicator == "Received Counseling or Therapy" ~ "received",
       indicator == "Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy" ~ "received",
-      indicator == "Needed Counseling or Therapy But Did Not Get It" ~ "not received"
-    )
-  )
+      indicator == "Needed Counseling or Therapy But Did Not Get It" ~ "not received"))
 ```
 
 I created a data frame where I grouped by states to determine the number of total services, which includes the services received and not received, as well as the number of services not received.
@@ -99,7 +94,6 @@ services_states =
   unnest(tidy_tests) |> 
   select(state, estimate, conf.low, conf.high) |> 
   mutate(state = fct_reorder(state, estimate))
-
 ```
 
 
@@ -112,6 +106,5 @@ services_states %>%
   geom_point() + 
   geom_errorbar(aes(ymin = conf.low, ymax = conf.high)) + 
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
-
 ```
 

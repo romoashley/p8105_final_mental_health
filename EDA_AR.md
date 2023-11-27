@@ -63,3 +63,56 @@ avg_year |>
 ```
 
 ![](EDA_AR_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+
+## Confidence Intervals
+
+I relabeled the observations for the variable indicator to “received” if
+they did obtain the mental health services they needed and “not
+received” if they did not obtain the mental health services they needed.
+
+``` r
+received_service = 
+  data |> 
+  mutate(
+    resolution = case_when(
+      indicator == "Took Prescription Medication for Mental Health" ~ "received",
+      indicator == "Received Counseling or Therapy" ~ "received",
+      indicator == "Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy" ~ "received",
+      indicator == "Needed Counseling or Therapy But Did Not Get It" ~ "not received"
+    )
+  )
+```
+
+I created a data frame where I grouped by states to determine the number
+of total services, which includes the services received and not
+received, as well as the number of services not received.
+
+``` r
+states_df =
+  received_service |> 
+  select(state, indicator, resolution) |> 
+  filter(state != "United States") |> 
+  group_by(state) |> 
+  summarize(
+    services_total = n(),
+    services_not_received = sum(resolution == "not received"))
+```
+
+Now, I focus on the states of New York. Using the `prop.test` and
+`broom::tidy` functions, I obtain an estimate and CI of the proportion
+of mental health services not received in New York (shown in the table
+below).
+
+``` r
+ny_test = 
+  prop.test(
+    x = filter(states_df, state == "New York") %>% pull(services_not_received),
+    n = filter(states_df, state == "New York") %>% pull(services_total)) 
+
+broom::tidy(ny_test) %>% 
+  knitr::kable(digits = 3)
+```
+
+| estimate | statistic | p.value | parameter | conf.low | conf.high | method                                               | alternative |
+|---------:|----------:|--------:|----------:|---------:|----------:|:-----------------------------------------------------|:------------|
+|     0.25 |    32.008 |       0 |         1 |    0.181 |     0.334 | 1-sample proportions test with continuity correction | two.sided   |

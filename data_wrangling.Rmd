@@ -50,6 +50,13 @@ tidydata =
   select(indicator, year, start_dates, end_dates, week_number, week_label = time_period_label, state, group, subgroup, value, low_ci, high_ci, confidence_interval)
 ```
 
+
+# Step 4:  exports the tidy data to a csv file named tidydata. 
+
+```{r}
+ write.csv(tidydata, "data/tidydata.csv", row.names=FALSE)
+```
+
 ## Comment on variable names
 
 There are 13 variables in the `tidydata` data set:

@@ -27,39 +27,39 @@ data =
   read.csv("data/tidydata.csv")
 ```
 
-EDA for National Average Per Year
+## EDA for National Average
 
 ``` r
 avg_year =
   data |> 
   filter(state == "United States") |> 
-  select(indicator, year, week_number, value) |> 
-  group_by(year, indicator, week_number) |> 
+  select(indicator, year, week_number, value, start_dates) |> 
+  group_by(year, start_dates, indicator) |> 
   summarize(
     mean = mean(value),
     indicator_total = n()
   )
 ```
 
-    ## `summarise()` has grouped output by 'year', 'indicator'. You can override using
-    ## the `.groups` argument.
+    ## `summarise()` has grouped output by 'year', 'start_dates'. You can override
+    ## using the `.groups` argument.
 
 ``` r
 # plot average per year for each indicator
 avg_year |> 
-  ggplot(aes(x = week_number, y = mean, color = indicator)) +
+  ggplot(aes(x = start_dates, y = mean, color = indicator)) +
   geom_point() +
-  geom_line() +
   labs(
-    x = "Week",
+    x = "Start Date",
     y = "Average Value",
-    color = "Indicator",
-    title = "National Average Per Year (2020-2022)",
+    title = "National Average (2020-2022)",
   ) +
   theme(
-    legend.position = "bottom"
+    legend.position = "bottom",
+    axis.text.x = element_text(angle=90, hjust=1),
+    strip.text = element_text(size = 4)
   ) +
-  facet_grid(~ year)
+  guides(color = guide_legend(nrow = 2))
 ```
 
 ![](EDA_AR_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->

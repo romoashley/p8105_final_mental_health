@@ -11,73 +11,31 @@ library(modelr)
 library(mgcv)
 library(MASS) # for stepAIC
 library(dplyr)
-```
 
-Step1: imporat the tidy dataset
-```{r message = FALSE}
-library(tidyverse)
+knitr::opts_chunk$set(
+	echo = TRUE,
+	warning = FALSE,
+	fig.width = 8, 
+  fig.height = 6,
+  out.width = "90%"
+)
 
-tidydata = 
-  read.csv("data/tidydata.csv")
-```
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
 
-```{r}
-tidydata |> 
-  lm(value~indicator + group+ year+ state+ subgroup,data=_) |> 
-  broom::tidy()
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
 
-tidy_fit=tidydata |> 
-  lm(value~indicator + group+ year+ state+ subgroup,data=_)
-
-tidydata_age=tidydata |>filter(group=="Age")
-linear_mod=lm(value~subgroup,data=tidydata_age)
-
-
-linear_mod |> 
-  broom::tidy() |>
-  select(term, estimate,p.value) |> 
-  knitr::kable(digits=3)
-
-
-```
-
-```{r}
-tidydata |> 
-  modelr::add_residuals(tidy_fit) |> 
-  filter(group=="Age") |> 
-  ggplot(aes(x=subgroup,y=resid))+
-  geom_point()+theme(axis.text.x=element_text(angle=90,vjust=0.5,hjust=1))
-
-
-tidydata_age |> 
-  modelr::add_predictions(linear_mod) |> 
-  filter(group=="Age") |> 
-  ggplot(aes(x=subgroup,y=value))+
-  geom_point()+
-  geom_line(aes(y = pred), color = "red")+theme(axis.text.x=element_text(angle=90,vjust=0.5,hjust=1))
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
 ```
 
 
-```{r}
-tidydata |> 
-  modelr::add_residuals(tidy_fit) |> 
-  filter(group=="State") |> 
-  ggplot(aes(x=subgroup,y=resid))+
-  geom_point()+theme(axis.text.x=element_text(angle=90,vjust=0.5,hjust=1))
-```
 
-```{r}
-tidydata <- tidydata |> 
-  filter(indicator=="Took Prescription Medication for Mental Health")
-  mutate(
-    year_sub =  * year,
-    sex_race = sex * race,
-    year_state = year * state,
-    sex_wcc = sex * wcc,
-    sex_hc = sex * hc,
-    sex_hg = sex * hg,
-    sex_ferr = sex * ferr
-  )
-full.model <- lm(value
-```
+
+
+
+
+
 

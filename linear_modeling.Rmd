@@ -32,7 +32,13 @@ scale_fill_discrete = scale_fill_viridis_d
 ```
 
 
+Step1: imporat the tidy dataset
+```{r message = FALSE}
+library(tidyverse)
 
+tidydata = 
+  read.csv("data/tidydata.csv")
+```
 
 
 

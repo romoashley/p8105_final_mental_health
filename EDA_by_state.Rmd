@@ -5,7 +5,7 @@ date: "2023-11-26"
 output: html_document
 ---
 
-```{r}
+```{r, echo=FALSE, message=FALSE}
 library(tidyverse)
 
 library(sf)
@@ -75,7 +75,6 @@ state_meds_top5 |>
 
 ```
 
-
 Let's visualize a heat map of this indicator's prevalence by US state.
 
 First, we'll merge the filtered dataset with an existing US state map dataset to assist with mapping.
@@ -95,7 +94,6 @@ us_meds =
   merge(usa, state_meds, by.x = "ID", by.y = "state", all.x = TRUE)
 ```
 
-
 Next, we'll plot the data using ggplot
 
 ```{r}
@@ -110,7 +108,6 @@ ggplot(us_meds)+
 
 print(heatmap_meds)
 ```
-
 
 We can also look at which states have had the greatest change in medication use. This shows that not only does WV have the highest prevalence of medication use for mental health during this period, but it also has had the highest level of change in this indicator between 2020-2022.
 
@@ -131,7 +128,6 @@ state_meds_change |>
   knitr::kable()
   
 ```
-
 
 Let's take a look at the trend for this indicator over time. 
 
@@ -171,7 +167,6 @@ state_ther_top5 |>
 
 ```
 
-
 Let's visualize a heat map of this indicator's prevalence by US state.
 
 First, we'll merge the filtered dataset with an existing US state map dataset to assist with mapping.
@@ -190,7 +185,6 @@ usa =
 us_ther =
   merge(usa, state_ther, by.x = "ID", by.y = "state", all.x = TRUE)
 ```
-
 
 Next, we'll plot the data using ggplot
 
@@ -227,7 +221,6 @@ state_ther_change |>
 
   
 ```
-
 
 Let's take a look at the trend for this indicator over time. 
 
@@ -267,7 +260,6 @@ state_both_top5 |>
 
 ```
 
-
 Let's visualize a heat map of this indicator's prevalence by US state.
 
 First, we'll merge the filtered dataset with an existing US state map dataset to assist with mapping.
@@ -286,7 +278,6 @@ usa =
 us_both =
   merge(usa, state_both, by.x = "ID", by.y = "state", all.x = TRUE)
 ```
-
 
 Next, we'll plot the data using ggplot
 
@@ -323,7 +314,6 @@ state_both_change |>
 
   
 ```
-
 
 Let's take a look at the trend for this indicator over time. 
 
@@ -363,7 +353,6 @@ state_need_top5 |>
 
 ```
 
-
 Let's visualize a heat map of this indicator's prevalence by US state.
 
 First, we'll merge the filtered dataset with an existing US state map dataset to assist with mapping.
@@ -382,7 +371,6 @@ usa =
 us_need =
   merge(usa, state_need, by.x = "ID", by.y = "state", all.x = TRUE)
 ```
-
 
 Next, we'll plot the data using ggplot
 
@@ -419,7 +407,6 @@ state_need_change |>
 
   
 ```
-
 
 Let's take a look at the trend for this indicator over time. 
 

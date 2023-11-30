@@ -100,7 +100,10 @@ There are 13 variables in the `tidydata` data set:
 - `high_ci` (num): Upper bound of the confidence interval of the value.
 - `confidence_interval` (chr): Confidence interval as a range.
 
-# Extra Data wrangling:
+# Step 5: Extra Data wrangling:
+
+1)  Separate the dataset into four groups based on the indicator’s
+    categories.
 
 ``` r
 Indicator1=tidydata |> filter(indicator=="Took Prescription Medication for Mental Health")
@@ -109,4 +112,18 @@ Received Counseling or Therapy")
 Indicator3=tidydata |> filter(indicator=="Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy")
 Indicator2=tidydata |> filter(indicator=="  
 Needed Counseling or Therapy But Did Not Get It")
+```
+
+2.  Did some data cleanning for Indicator1.Break the dataset Indicator1
+    into different smaller dataset based on the different categories
+    from the subgroup. Indicator1 is the people who Took Prescription
+    Medication for Mental Health.
+
+``` r
+age_data=Indicator1 |> filter(group=="Age")
+race_data=Indicator1 |> filter(group=="Race/Hispanic ethnicity")
+sex_data=Indicator1 |> filter(group=="Sex")
+education_data=Indicator1 |> filter(group=="Education")
+state_data=Indicator1 |> filter(group=="State")
+Symptoms_data=Indicator1 |> filter(group=="Presence of Symptoms of Anxiety/Depression")
 ```

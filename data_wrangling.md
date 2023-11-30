@@ -99,3 +99,14 @@ There are 13 variables in the `tidydata` data set:
 - `low_ci` (num): Lower bound of the confidence interval of the value.
 - `high_ci` (num): Upper bound of the confidence interval of the value.
 - `confidence_interval` (chr): Confidence interval as a range.
+
+# Extra Data wrangling:
+
+``` r
+Indicator1=tidydata |> filter(indicator=="Took Prescription Medication for Mental Health")
+Indicator2=tidydata |> filter(indicator=="  
+Received Counseling or Therapy")
+Indicator3=tidydata |> filter(indicator=="Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy")
+Indicator2=tidydata |> filter(indicator=="  
+Needed Counseling or Therapy But Did Not Get It")
+```

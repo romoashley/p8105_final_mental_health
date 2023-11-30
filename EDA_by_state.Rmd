@@ -38,33 +38,9 @@ scale_fill_discrete = scale_fill_viridis_d
 import tidy dataset:
 
 ```{r}
-##note: should we export tidy dataset to our directory on github so we can delete this code from any EDA?
-
-rawdata =
-  read_csv("data/mental_health.csv")
-
-tidydata = 
-  rawdata |> 
-  janitor::clean_names() |>
-  mutate(indicator = str_replace(indicator, ", Last 4 Weeks", "")) |> 
-  select(-phase, -quartile_range, -suppression_flag) |> 
-  mutate(group = str_replace(group, "By ", "")) |>
-  drop_na(value) |>
-  select(start_date = time_period_start_date, end_date = time_period_end_date, everything())
-
 tidydata =
-  tidydata |>
-  mutate(week_number = match(time_period_label, unique(time_period_label))) |>
-  mutate(
-    start_dates = mdy(pull(tidydata, start_date)),
-    end_dates = mdy(pull(tidydata, end_date))) |> 
-  mutate(tpl = time_period_label) |>  
-  mutate(year = as.numeric(str_extract(tpl, "\\d{4}")))|> 
-  separate(col = time_period_label, into = c("week_label", "years"), sep = ", ", remove = FALSE, extra = "merge") |>
-  select(indicator, year, start_dates, end_dates, week_number, week_label = time_period_label, state, group, subgroup, value, low_ci, high_ci, confidence_interval)
+  read_csv("data/tidydata.csv")
 ```
-
-
 
 ## EDA
 

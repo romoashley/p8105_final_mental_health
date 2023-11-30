@@ -1,0 +1,44 @@
+---
+title: "Statistical Analysis"
+author: "Sarah Younes"
+date: "2023-11-30"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+
+tidydata = 
+  read.csv("data/tidydata.csv")
+```
+
+Focus on two indicators:
+1. "Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy"
+2. "Needed Counseling or Therapy But Did Not Get It"
+
+## Independent samples t-tests
+
+```{r}
+gender_received_ttest =
+  tidydata |>
+  filter(
+    indicator == "Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy",
+    state == "United States",
+    group == "Sex",
+    subgroup %in% c("Male", "Female")
+  ) |>
+  select(week_number, value, subgroup) |>
+  pivot_wider(
+    names_from = "subgroup",
+    values_from = "value") |>
+  janitor::clean_names()
+
+gender_received_ttest |>
+  summarise(
+    t_statistic = t.test(male, female)$statistic,
+    p_value = t.test(male, female)$p.value)
+```

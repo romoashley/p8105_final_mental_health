@@ -44,7 +44,7 @@ avg_year =
     ## using the `.groups` argument.
 
 ``` r
-# plot average per year for each indicator
+# plot average for each start date for each indicator
 avg_year |> 
   ggplot(aes(x = start_dates, y = mean, color = indicator)) +
   geom_point() +
@@ -60,6 +60,10 @@ avg_year |>
 ```
 
 ![](EDA_AR_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+
+On average, those who took prescription medication for mental health
+and/or received counseling or therapy had a highest values while those
+who received counseling or therapy had the lowest value.
 
 ## Confidence Intervals
 
@@ -79,8 +83,8 @@ received_service =
 ```
 
 I created a data frame where I grouped by states to determine the number
-of total services, which includes the services received and not
-received, as well as the number of services not received.
+of total services, which includes the services received as well as the
+number of services not received.
 
 ``` r
 states_df =
@@ -93,7 +97,7 @@ states_df =
     services_not_received = sum(resolution == "not received"))
 ```
 
-Now, I focus on the states of New York. Using the `prop.test` and
+Now, I focus on the state of New York. Using the `prop.test` and
 `broom::tidy` functions, I obtain an estimate and CI of the proportion
 of mental health services not received in New York (shown in the table
 below).

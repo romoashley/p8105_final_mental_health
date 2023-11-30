@@ -8,120 +8,111 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r message = FALSE, warning = FALSE}
+```{r message = FALSE, echo = FALSE}
 library(tidyverse)
 
-library(paletteer)
-paletteer_d("LaCroixColoR::Pamplemousse")
+library(viridisLite)
+viridisLite::viridis(10)
+
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
 ```
 
-```{r message = FALSE}
-rawdata = read_csv("data/mental_health.csv") |> 
-  janitor::clean_names() |>
-  mutate(indicator = str_replace(indicator, ", Last 4 Weeks", "")) |> 
-  select(-phase,-quartile_range,-suppression_flag) |> 
-  mutate(group = str_replace(group, "By", ""))|> 
-  select(start_date=time_period_start_date,end_date=time_period_end_date,everything()) 
+```{r message = FALSE, echo = FALSE}
+tidydata = 
+  read.csv("data/tidydata.csv") |>
+  mutate(
+    start_dates = as.Date(start_dates))
 ```
-
-```{r}
-tidydata=rawdata |> 
-  mutate(start_dates=mdy(pull(rawdata, start_date)),
-         end_dates=mdy(pull(rawdata, end_date)))|> 
-        mutate(tpl=time_period_label) |>  
-        mutate(year = as.numeric(str_extract(tpl, "\\d{4}")))|> 
-         separate(col=time_period_label, into=c("month_period_label","years"), sep = ", ", remove = FALSE,extra="merge") |> 
-  select(-time_period_label,-start_date,-end_date) |>
-  mutate(week_number=time_period-12) |> select(indicator,year,start_dates,end_dates,week_number,month_period_label,group,state,subgroup,value,low_ci,high_ci,confidence_interval)
-```
-
-## EDA
-
-My graphs: Differences in indicator variables by gender, sexuality, race/ethnicity
 
 ### Gender
 
 ```{r}
 tidydata |>
-  filter(group == " Sex", state == "United States") |>
-  group_by(month_period_label, subgroup, indicator) |>
-  ggplot(aes(x = week_number, y = value, color = indicator)) +
+  filter(
+    group == "Sex",
+    state == "United States") |>
+  group_by(indicator, start_dates, subgroup) |>
+  ggplot(aes(x = start_dates, y = value, color = indicator)) +
   geom_line() +
   facet_grid(. ~ subgroup) +
-  scale_x_continuous(limits = c(1, 33)) +
   theme_gray() +
   theme(legend.position = "bottom")
 ```
 
-```{r}
-tidydata |>
-  filter(group == " Sex", state == "United States") |>
-  group_by(month_period_label, subgroup, indicator) |>
-  ggplot(aes(x = week_number, y = value, color = subgroup)) +
-  geom_line() +
-  facet_grid(. ~ indicator) +
-  scale_x_continuous(limits = c(1, 33)) +
-  theme_gray() +
-  theme(legend.position = "bottom")
-```
+Trends in mental health access by gender were stark. Women reported needing almost twice as much counseling or therapy for mental health as men, and these trends were stable from 2020 to 2022.
 
-```{r}
-library(plotly)
+Women took more prescription medication for mental health and received more counseling or therapy for mental health than men. These trends slightly increased each year from 2020 to 2022.
 
+```{r message = FALSE}
 tidydata |>
-  filter(group == " Sex", state == "United States", indicator == "Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy") |>
+  filter(
+    group == "Sex",
+    state == "United States",
+    indicator %in% c("Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy", "Needed Counseling or Therapy But Did Not Get It")) |>
   group_by(year, indicator, subgroup) |>
   summarize(mean_value = mean(value, na.rm = TRUE)) |>
-  plot_ly(x = ~year, y = ~mean_value, color = ~subgroup, type = "bar") |>
-  layout(
-    xaxis = list(title = "Week"),
-    yaxis = list(title = "Percent"))
+  mutate(year = factor(year, levels = unique(year))) |>
+  ggplot(aes(x = year, y = mean_value, fill = subgroup)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  facet_grid(. ~ indicator) +
+  theme_grey() +
+  expand_limits(y = c(0, 35)) +
+  theme(legend.position = "right")
 ```
 
 ### Sexuality
 
-```{r}
-tidydata |>
-  filter(group == " Sexual orientation", state == "United States") |>
-  group_by(month_period_label, subgroup, indicator) |>
-  ggplot(aes(x = week_number, y = value, color = subgroup)) +
-  geom_line() +
-  facet_grid(. ~ indicator) +
-  scale_x_continuous(limits = c(24, 33)) +
-  theme_grey() +
-  theme(legend.position = "bottom")
-```
+Mental health access strongly differed by sexuality. Bisexual Americans reported the highest trends in both taking prescription medication and/or receiving counseling for mental health and needing counseling or therapy but not receiving it. Their outcomes showed the most variation over time. Straight Americans consistently reported the least unmet need for counseling or therapy.
 
 ```{r}
 tidydata |>
-  filter(group == " Sexual orientation", state == "United States") |>
-  group_by(month_period_label, subgroup, indicator) |>
-  ggplot(aes(x = week_number, y = value, color = indicator)) +
+    filter(group == "Sexual orientation",
+         state == "United States",
+         week_number %in% c(24:33)) |>
+  group_by(start_dates, subgroup, indicator) |>
+  ggplot(aes(x = start_dates, y = value, color = indicator)) +
   geom_line() +
   facet_grid(. ~ subgroup) +
-  scale_x_continuous(limits = c(24, 33)) +
   theme_grey() +
   theme(legend.position = "bottom")
 ```
 
 ### Race/ethnicity
 
-```{r}
-tidydata |>
-  filter(group == " Race/Hispanic ethnicity", state == "United States") |>
-  group_by(month_period_label, subgroup, indicator) |>
-  ggplot(aes(x = week_number, y = value, color = subgroup)) +
-  geom_line() +
-  facet_grid(. ~ indicator) +
-  scale_x_continuous(limits = c(1, 33)) +
-  theme_grey() +
-  theme(legend.position = "bottom")
-```
+Trends by racial and ethnic groups were stark across all three years. Non-Hispanic Multiracial Americans, closely followed by non-Hispanic White Americans, received the most prescription medication and/or counseling or therapy for mental health. However, non-Hispanic multiracial Americans needed counseling or therapy for mental health but did not receive it.
 
 ```{r}
 tidydata |>
-  filter(group == " Race/Hispanic ethnicity", state == "United States") |>
-  group_by(month_period_label, subgroup, indicator) |>
+  filter(
+    group == "Race/Hispanic ethnicity",
+    state == "United States",
+    indicator %in% c("Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy", "Needed Counseling or Therapy But Did Not Get It")) |>
+  mutate(
+    subgroup = replace(subgroup, subgroup == "Non-Hispanic Asian, single race", "Non-Hispanic Asian"),
+    subgroup = replace(subgroup, subgroup == "Non-Hispanic Black, single race", "Non-Hispanic Black"),
+    subgroup = replace(subgroup, subgroup == "Non-Hispanic White, single race", "Non-Hispanic White"),
+    subgroup = replace(subgroup, subgroup == "Non-Hispanic, other races and multiple races", "Non-Hispanic Multi-racial")) |>
+  group_by(year, indicator, subgroup) |>
+  summarize(mean_value = mean(value, na.rm = TRUE)) |>
+  ggplot(aes(x = year, y = mean_value, fill = subgroup)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  facet_grid(. ~ indicator) +
+  theme_grey() +
+  theme(legend.position = "right")
+```
+
+The graph below explores differences in outcome variables by race/ethnicity.
+
+```{r fig.width=12,fig.height=8}
+tidydata |>
+  filter(group == "Race/Hispanic ethnicity", state == "United States") |>
+  group_by(week_number, subgroup, indicator) |>
   ggplot(aes(x = week_number, y = value, color = indicator)) +
   geom_line() +
   facet_grid(. ~ subgroup) +

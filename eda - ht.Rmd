@@ -36,44 +36,39 @@ scale_colour_discrete = scale_colour_viridis_d
 scale_fill_discrete = scale_fill_viridis_d
 ```
 
-## Data wrangling
+## Loading the dataset
 
 ```{r message = FALSE}
-rawdata = read_csv("data/mental_health.csv") |> 
-  janitor::clean_names() |>
-  mutate(indicator = str_replace(indicator, ", Last 4 Weeks", "")) |> 
-  select(-phase,-quartile_range,-suppression_flag) |> 
-  mutate(group = str_replace(group, "By", ""))|> 
-  select(start_date=time_period_start_date,end_date=time_period_end_date,everything()) 
-```
-
-```{r}
-tidydata=rawdata |> 
-  mutate(start_dates=mdy(pull(rawdata, start_date)),
-         end_dates=mdy(pull(rawdata, end_date)))|> 
-        mutate(tpl=time_period_label) |>  
-        mutate(year = as.numeric(str_extract(tpl, "\\d{4}")))|> 
-         separate(col=time_period_label, into=c("month_period_label","years"), sep = ", ", remove = FALSE,extra="merge") |> 
-  select(-time_period_label,-start_date,-end_date) |>
-  mutate(week_number=time_period-12) |> select(indicator,year,start_dates,end_dates,week_number,month_period_label,group,state,subgroup,value,low_ci,high_ci,confidence_interval)
+ tidy = 
+  read.csv("data/tidydata.csv") |>
+  mutate(
+    start_dates = as.Date(start_dates))
 ```
 
 Differences in indicator variables by age group and education level
 
 ## Age group
 
-```{r}
-age_plot <- tidydata |> 
-  filter(group == " Age", state == "United States")
+I started with filtering the tidy dataset to only with age and reside in the United States. Then, I renamed the "80 years and above" subgroup to 80+ years. Afterward, I plotted the age group. 
 
+```{r}
+#Filtering the dataset to age and united states
+age_plot <- tidy |> 
+  filter(group == "Age", state == "United States")
+
+#Renaming the "80 years and above" subgroup to 80+ years
 age_plot$subgroup[age_plot$subgroup == "80 years and above"] = "80+ years"
 
+#Ploting the age group
 age_plot |> 
-  group_by(month_period_label, subgroup, indicator) |> 
+  group_by(indicator, week_number, subgroup) |>
   ggplot(aes(x = week_number, y = value, color = indicator)) +
   geom_line() +
   facet_grid(. ~ subgroup) +
-  scale_x_continuous(limits = c(1, 33)) +
+  labs(
+    x = "WeeK Number",
+    y = "Average Value",
+    title = "Differences in Indicators Among Age Groups (2020-2022)") +
   theme_gray() +
   theme(legend.position = "bottom")
 
@@ -82,17 +77,23 @@ age_plot
 
 ## Education level 
 
+I began with filtering the tidy dataset to only with age and reside in the United States. In the next step, I relevel the education subgroup by create a new variable, ed_name. Afterward, I used the new variable, ed_name to created a education plot.  
+
 ```{r}
+#Filtering the dataset to age and united states, relevel the subgroup, and plot the education plot 
 ed_plot= 
-  tidydata |>
-  filter(group == " Education", state == "United States") |> 
+  tidy |>
+  filter(group == "Education", state == "United States") |> 
    mutate(ed_name = forcats::fct_relevel(subgroup, c("Bachelor's degree or higher",
                                                      "Some college/Associate's degree", "High school diploma or GED", "Less than a high school diploma"))) |> 
-  group_by(month_period_label, ed_name, indicator) |> 
+  group_by(start_dates, ed_name, indicator) |> 
   ggplot(aes(x = week_number, y = value, color = indicator)) +
   geom_line() +
   facet_grid(. ~ ed_name) +
-  scale_x_continuous(limits = c(1, 33)) +
+  labs(
+    x = "WeeK Number",
+    y = "Average Value",
+    title = "Differences in Indicators by Education Levels (2020-2022)") +
   theme_gray() +
   theme(legend.position = "bottom")
 

@@ -110,7 +110,7 @@ Indicator1=tidydata |> filter(indicator=="Took Prescription Medication for Menta
 Indicator2=tidydata |> filter(indicator=="  
 Received Counseling or Therapy")
 Indicator3=tidydata |> filter(indicator=="Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy")
-Indicator2=tidydata |> filter(indicator=="  
+Indicator4=tidydata |> filter(indicator=="  
 Needed Counseling or Therapy But Did Not Get It")
 ```
 
@@ -149,4 +149,16 @@ sex_data=Indicator3 |> filter(group=="Sex")
 education_data=Indicator3 |> filter(group=="Education")
 state_data=Indicator3 |> filter(group=="State")
 Symptoms_data=Indicator3 |> filter(group=="Presence of Symptoms of Anxiety/Depression")
+```
+
+Indicator4 is people who Needed Counseling or Therapy But Did Not Get
+It.
+
+``` r
+age_data=Indicator4 |> filter(group=="Age")
+race_data=Indicator4 |> filter(group=="Race/Hispanic ethnicity")
+sex_data=Indicator4 |> filter(group=="Sex")
+education_data=Indicator4 |> filter(group=="Education")
+state_data=Indicator4 |> filter(group=="State")
+Symptoms_data=Indicator4 |> filter(group=="Presence of Symptoms of Anxiety/Depression")
 ```

@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r}
+```{r message = FALSE}
 library(tidyverse)
 
 tidydata = 
@@ -17,13 +17,16 @@ tidydata =
 ```
 
 Focus on two indicators:
+
 1. "Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy"
 2. "Needed Counseling or Therapy But Did Not Get It"
 
-## Independent samples t-tests
+## Independent samples t-tests: gender
+
+### Took prescription medication for mental health and/or received counseling or therapy
 
 ```{r}
-gender_received_ttest =
+gender_received =
   tidydata |>
   filter(
     indicator == "Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy",
@@ -37,8 +40,63 @@ gender_received_ttest =
     values_from = "value") |>
   janitor::clean_names()
 
-gender_received_ttest |>
+gender_received |>
   summarise(
     t_statistic = t.test(male, female)$statistic,
     p_value = t.test(male, female)$p.value)
+```
+
+### Needed counseling or therapy but did not get it
+
+```{r}
+gender_needed =
+  tidydata |>
+  filter(
+    indicator == "Needed Counseling or Therapy But Did Not Get It",
+    state == "United States",
+    group == "Sex",
+    subgroup %in% c("Male", "Female")
+  ) |>
+  select(week_number, value, subgroup) |>
+  pivot_wider(
+    names_from = "subgroup",
+    values_from = "value") |>
+  janitor::clean_names()
+
+gender_needed |>
+  summarise(
+    t_statistic = t.test(male, female)$statistic,
+    p_value = t.test(male, female)$p.value)
+```
+
+## ANOVA: sexual orientation
+
+```{r}
+sexuality_received =
+  tidydata |>
+  filter(
+    indicator == "Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy",
+    state == "United States",
+    group == "Sexual orientation",
+    week_number %in% c(24:33)) |>
+  select(week_number, value, subgroup) |>
+  pivot_wider(
+    names_from = "subgroup",
+    values_from = "value") |>
+  janitor::clean_names()
+```
+
+```{r}
+sexuality_needed =
+  tidydata |>
+  filter(
+    indicator == "Needed Counseling or Therapy But Did Not Get It",
+    state == "United States",
+    group == "Sexual orientation",
+    week_number %in% c(24:33)) |>
+  select(week_number, value, subgroup) |>
+  pivot_wider(
+    names_from = "subgroup",
+    values_from = "value") |>
+  janitor::clean_names()
 ```

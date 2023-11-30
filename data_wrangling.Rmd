@@ -100,7 +100,7 @@ state_data=Indicator1 |> filter(group=="State")
 Symptoms_data=Indicator1 |> filter(group=="Presence of Symptoms of Anxiety/Depression")
 ```
 
-Indicator2 is the people who Took Prescription Medication for Mental Health. 
+Indicator2 is the people who Received Counseling or Therapy. 
 ```{r}
 age_data=Indicator2 |> filter(group=="Age")
 race_data=Indicator2 |> filter(group=="Race/Hispanic ethnicity")
@@ -108,4 +108,14 @@ sex_data=Indicator2 |> filter(group=="Sex")
 education_data=Indicator2 |> filter(group=="Education")
 state_data=Indicator2 |> filter(group=="State")
 Symptoms_data=Indicator2 |> filter(group=="Presence of Symptoms of Anxiety/Depression")
+```
+
+Indicator3 is the people who Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy. 
+```{r}
+age_data=Indicator3 |> filter(group=="Age")
+race_data=Indicator3 |> filter(group=="Race/Hispanic ethnicity")
+sex_data=Indicator3 |> filter(group=="Sex")
+education_data=Indicator3 |> filter(group=="Education")
+state_data=Indicator3 |> filter(group=="State")
+Symptoms_data=Indicator3 |> filter(group=="Presence of Symptoms of Anxiety/Depression")
 ```

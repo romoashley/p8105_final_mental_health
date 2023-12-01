@@ -410,6 +410,47 @@ scale_fill_discrete = scale_fill_viridis_d</code></pre>
 
 tidydata = 
   read.csv(&quot;data/tidydata.csv&quot;)</code></pre>
+<pre class="r"><code>Indicator1=tidydata |&gt; filter(indicator==&quot;Took Prescription Medication for Mental Health&quot;)
+Indicator2=tidydata |&gt; filter(indicator==&quot;  
+Received Counseling or Therapy&quot;)
+Indicator3=tidydata |&gt; filter(indicator==&quot;Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy&quot;)
+Indicator4=tidydata |&gt; filter(indicator==&quot;  
+Needed Counseling or Therapy But Did Not Get It&quot;)</code></pre>
+<pre class="r"><code>library(MASS)
+fit &lt;- lm(value ~ group + subgroup + year + state, data=Indicator1)
+stepwise_fit &lt;- stepAIC(fit, direction=&quot;both&quot;)</code></pre>
+<pre><code>## Start:  AIC=3614.67
+## value ~ group + subgroup + year + state
+## 
+## 
+## Step:  AIC=3614.67
+## value ~ group + subgroup + year
+## 
+## 
+## Step:  AIC=3614.67
+## value ~ subgroup + year
+## 
+##            Df Sum of Sq   RSS    AIC
+## &lt;none&gt;                   9973 3614.7
+## - year      1      1300 11273 3917.1
+## - subgroup 79     54300 64273 8085.1</code></pre>
+<pre class="r"><code>fit &lt;- lm(value ~ group + subgroup + year + state, data=Indicator3)
+stepwise_fit &lt;- stepAIC(fit, direction=&quot;both&quot;)</code></pre>
+<pre><code>## Start:  AIC=3879.24
+## value ~ group + subgroup + year + state
+## 
+## 
+## Step:  AIC=3879.24
+## value ~ group + subgroup + year
+## 
+## 
+## Step:  AIC=3879.24
+## value ~ subgroup + year
+## 
+##            Df Sum of Sq   RSS    AIC
+## &lt;none&gt;                  11093 3879.2
+## - year      1      1773 12866 4245.5
+## - subgroup 79     64454 75547 8486.6</code></pre>
 
 
 

@@ -40,6 +40,26 @@ tidydata =
   read.csv("data/tidydata.csv")
 ```
 
+```{r}
+Indicator1=tidydata |> filter(indicator=="Took Prescription Medication for Mental Health")
+Indicator2=tidydata |> filter(indicator=="	
+Received Counseling or Therapy")
+Indicator3=tidydata |> filter(indicator=="Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy")
+Indicator4=tidydata |> filter(indicator=="	
+Needed Counseling or Therapy But Did Not Get It")
+```
+
+```{r}
+library(MASS)
+fit <- lm(value ~ group + subgroup + year + state, data=Indicator1)
+stepwise_fit <- stepAIC(fit, direction="both")
+
+
+fit <- lm(value ~ group + subgroup + year + state, data=Indicator3)
+stepwise_fit <- stepAIC(fit, direction="both")
+
+```
+
 
 
 

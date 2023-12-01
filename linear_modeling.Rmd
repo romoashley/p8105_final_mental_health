@@ -59,7 +59,7 @@ fit <- lm(value ~ group + subgroup + year + state, data=Indicator3)
 stepwise_fit <- stepAIC(fit, direction="both")
 
 ```
-
+AIC values are identical across the steps shown, which suggests that removal or addition of a variable did not improve the model's fit. 
 
 
 

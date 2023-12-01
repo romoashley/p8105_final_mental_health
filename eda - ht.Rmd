@@ -38,6 +38,8 @@ scale_fill_discrete = scale_fill_viridis_d
 
 ## Loading the dataset
 
+Since the the date variable does not format it correctly when I loaded the datasets as csv; therefore, I used as.Date() function modify the column name converting its contents into the Date data type.
+
 ```{r message = FALSE}
  tidy = 
   read.csv("data/tidydata.csv") |>
@@ -49,7 +51,7 @@ Differences in indicator variables by age group and education level
 
 ## Age group
 
-I started with filtering the tidy dataset to only with age and reside in the United States. Then, I renamed the "80 years and above" subgroup to 80+ years. Afterward, I plotted the age group. 
+I started by filtering the tidy dataset to only include age and residence in the United States. Then, I renamed the "80 years and above" subgroup to 80+ years. Afterward, I plotted the age group graph; however, because the start_date variable overlapped, the legend was difficult to view when I plotted the graph. As a result, I rotated the x-axis labels vertically and stacked the legend to two columns.
 
 ```{r}
 #Filtering the dataset to age and united states
@@ -61,42 +63,63 @@ age_plot$subgroup[age_plot$subgroup == "80 years and above"] = "80+ years"
 
 #Ploting the age group
 age_plot |> 
-  group_by(indicator, week_number, subgroup) |>
-  ggplot(aes(x = week_number, y = value, color = indicator)) +
+  group_by(indicator, start_dates, subgroup) |>
+  ggplot(aes(x = start_dates, y = value, color = indicator)) +
   geom_line() +
   facet_grid(. ~ subgroup) +
   labs(
-    x = "WeeK Number",
+    x = "Start Date",
     y = "Average Value",
-    title = "Differences in Indicators Among Age Groups (2020-2022)") +
+    title = "Differences in Indicators Among Age Groups (2021-2022)") +
   theme_gray() +
-  theme(legend.position = "bottom")
+  theme(
+    legend.position = "bottom",
+    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)  # Rotate x-axis labels vertically
+  ) +
+  scale_color_hue(h = c(100, 300)) +
+  guides(color = guide_legend(nrow = 2)) # Adding the legend guide adjustment
 
+#View the age plot
 age_plot
 ```
 
+Critical findings:
+
+Based on the graph, it is clear that among the age groups, 18-29 have the highest values across all the indicators. Especially for the indicator of taking prescription medication for mental health and or receiving counseling, followed by the 30-39 age group, then 40-49 years. Since the data is captured from 2021 to 2022 during the pandemic, lockdown and transition to a virtual environment might cause tremendous pressure on these age groups. In addition, limited access to social life might burden the 18-29 age group. In addition, it is surprising to see that age groups from 60 and above have the lowest values of needed counseling or therapy but did not get it and received counseling or therapy. Maybe many of them are in their retirement, or this age group has a stigma around mental health because they might have a negative impression about having mental health issues. Therefore, they are less likely to admit they need counseling or therapy. 
+
+
 ## Education level 
 
-I began with filtering the tidy dataset to only with age and reside in the United States. In the next step, I relevel the education subgroup by create a new variable, ed_name. Afterward, I used the new variable, ed_name to created a education plot.  
+I began by filtering the tidy dataset to only age and participants residing in the United States. In the next step, I re-leveled the education subgroup by creating a new variable, ed_name. Afterward, I used the new variable, ed_name, to create an education plot. Similar to the age plot, the x-axis labels and legend are difficult to view. So, I adjusted the x-axis labels to vertical and stacked the legend columns into two columns. 
 
 ```{r}
-#Filtering the dataset to age and united states, relevel the subgroup, and plot the education plot 
+#Filtering the dataset to age and united states, re-level the subgroup, and plot the education plot 
 ed_plot= 
   tidy |>
   filter(group == "Education", state == "United States") |> 
    mutate(ed_name = forcats::fct_relevel(subgroup, c("Bachelor's degree or higher",
                                                      "Some college/Associate's degree", "High school diploma or GED", "Less than a high school diploma"))) |> 
   group_by(start_dates, ed_name, indicator) |> 
-  ggplot(aes(x = week_number, y = value, color = indicator)) +
+  ggplot(aes(x = start_dates, y = value, color = indicator)) +
   geom_line() +
   facet_grid(. ~ ed_name) +
   labs(
-    x = "WeeK Number",
+    x = "Start Date",
     y = "Average Value",
-    title = "Differences in Indicators by Education Levels (2020-2022)") +
+    title = "Differences in Indicators by Education Levels (2021-2022)") +
   theme_gray() +
-  theme(legend.position = "bottom")
+  theme(
+    legend.position = "bottom",
+    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)  # Rotate x-axis labels vertically
+  ) +
+  scale_color_hue(h = c(100, 300)) +
+  guides(color = guide_legend(nrow = 2)) # Adding the legend guide adjustment
 
+#View the education plot
 ed_plot
 ```
+
+Critical findings:
+
+Among four education groups, the bachelor's degree or higher and some college/ associate's degree groups have the highest value of taking prescription medication for mental health and/or received counseling. This is because individuals with higher education typically have better jobs, more money, and many other benefits, including better health insurance, which leads to better access to quality mental health services than those with a lower education level. On the other hand, those who have a lower education level (high school diploma or GED and less than high school diploma groups) have the least value of needed counseling or therapy but did not get it and received counseling or therapy indicators because they might not have adequate resources to the services which resulting having the lowest values in term of the utilization of the counseling services.
 

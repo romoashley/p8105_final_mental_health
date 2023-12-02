@@ -1,5 +1,5 @@
 ---
-title: "Data import and Wrangling"
+title: "Data Import and Wrangling"
 output: github_document
 Date: '`r format(Sys.time(), "%Y-%m-%d")`'
 name: Wen Dai
@@ -52,7 +52,7 @@ tidydata =
   select(indicator, year, start_dates, end_dates, week_number, week_label = time_period_label, state, group, subgroup, value, low_ci, high_ci, confidence_interval)
 ```
 
-# Step 4: export the tidy data to a csv file named tidydata 
+## Step 4: export the tidy data to a csv file named tidydata 
 
 ```{r}
  write.csv(tidydata, "data/tidydata.csv", row.names=FALSE)

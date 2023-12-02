@@ -105,6 +105,13 @@ sexuality_needed =
 
 #Check normality 
 ```{r}
+
+ggplot(tidydata, aes(sample = value)) +
+  stat_qq() +
+  stat_qq_line()
+
+ hist(tidydata$value, breaks = "FD", main = "Histogram of Data", xlab = "Data Values")
+ 
 ggplot(tidydata, aes(sample = log(value))) +
   stat_qq() +
   stat_qq_line()
@@ -113,4 +120,8 @@ ggplot(tidydata, aes(sample = log(value))) +
 ```
 
 
+#Kruskal-Wallis test
 
+```{r}
+kruskal_result=kruskal.test(value ~ subgroup, data = tidydata)
+```

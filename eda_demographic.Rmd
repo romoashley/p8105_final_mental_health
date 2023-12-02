@@ -45,7 +45,7 @@ tidydata =
 
 I started by filtering the tidy dataset to only include age and residence in the United States. Then, I renamed the "80 years and above" subgroup to 80+ years. Afterward, I plotted the age group graph; however, because the start_date variable overlapped, the legend was difficult to view when I plotted the graph. As a result, I rotated the x-axis labels vertically and stacked the legend to two columns.
 
-```{r}
+```{r age}
 #Filtering the dataset to age and united states
 age_plot <- tidydata |> 
   filter(group == "Age", state == "United States")
@@ -80,7 +80,7 @@ Based on the graph, it is clear that among the age groups, 18-29 have the highes
 
 I began by filtering the tidy dataset to only age and participants residing in the United States. In the next step, I re-leveled the education subgroup by creating a new variable, ed_name. Afterward, I used the new variable, ed_name, to create an education plot. Similar to the age plot, the x-axis labels and legend are difficult to view. So, I adjusted the x-axis labels to vertical and stacked the legend columns into two columns. 
 
-```{r}
+```{r education}
 #Filtering the dataset to age and united states, re-level the subgroup, and plot the education plot 
 ed_plot= 
   tidydata |>
@@ -117,7 +117,7 @@ Trends in mental health access by gender were stark. Women reported needing almo
 
 Women took more prescription medication for mental health and received more counseling or therapy for mental health than men. These trends slightly increased each year from 2020 to 2022.
 
-```{r gender, echo = FALSE}
+```{r gender}
 tidydata |>
   filter(
     group == "Sex",
@@ -142,7 +142,7 @@ tidydata |>
 
 Mental health access strongly differed by sexual orientation. Bisexual Americans reported the highest trends in both taking prescription medication and/or receiving counseling for mental health and needing counseling or therapy but not receiving it. Their outcomes showed the most variation over time. Straight Americans consistently reported the least unmet need for counseling or therapy.
 
-```{r sexuality, echo = FALSE}
+```{r sexuality}
 tidydata |>
     filter(group == "Sexual orientation",
          state == "United States",
@@ -167,7 +167,7 @@ tidydata |>
 
 The graph below explores differences in outcome variables by race/ethnicity. Trends by racial and ethnic groups were stark across all three years. Non-Hispanic Multiracial Americans, closely followed by non-Hispanic White Americans, received the most prescription medication and/or counseling or therapy for mental health. However, non-Hispanic multiracial Americans needed counseling or therapy for mental health but did not receive it.
 
-```{r race ethnicity, echo = FALSE}
+```{r race ethnicity}
 tidydata |>
   filter(group == "Race/Hispanic ethnicity", state == "United States") |>
   mutate(

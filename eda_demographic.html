@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Exploratory Data Analysis (EDA)</title>
+
+<script src="site_libs/header-attrs-2.24/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Home</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Exploratory Analyses
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="eda.html">National and State-Level</a>
+    </li>
+    <li>
+      <a href="eda_demographic.html">Demographic-Level</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="statistical_analysis.html">Statistical Analysis</a>
+</li>
+<li>
+  <a href="report.html">Final Report</a>
+</li>
+<li>
+  <a href="about.html">About Us</a>
+</li>
+<li>
+  <a href="http://github.com/&lt;romoashley/p8105_final_mental_health&gt;/">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Exploratory Data Analysis (EDA)</h1>
+
+</div>
+
+
+<pre><code>##  [1] &quot;#440154FF&quot; &quot;#482878FF&quot; &quot;#3E4A89FF&quot; &quot;#31688EFF&quot; &quot;#26828EFF&quot; &quot;#1F9E89FF&quot;
+##  [7] &quot;#35B779FF&quot; &quot;#6DCD59FF&quot; &quot;#B4DE2CFF&quot; &quot;#FDE725FF&quot;</code></pre>
+<div id="age-group" class="section level2">
+<h2>Age Group</h2>
+<p>I started by filtering the tidy dataset to only include age and
+residence in the United States. Then, I renamed the “80 years and above”
+subgroup to 80+ years. Afterward, I plotted the age group graph;
+however, because the start_date variable overlapped, the legend was
+difficult to view when I plotted the graph. As a result, I rotated the
+x-axis labels vertically and stacked the legend to two columns.</p>
+<pre class="r"><code>#Filtering the dataset to age and united states
+age_plot &lt;- tidydata |&gt; 
+  filter(group == &quot;Age&quot;, state == &quot;United States&quot;)
+
+#Renaming the &quot;80 years and above&quot; subgroup to 80+ years
+age_plot$subgroup[age_plot$subgroup == &quot;80 years and above&quot;] = &quot;80+ years&quot;
+
+#Ploting the age group
+age_plot |&gt; 
+  group_by(indicator, start_dates, subgroup) |&gt;
+  ggplot(aes(x = start_dates, y = value, color = indicator)) +
+  geom_line() +
+  facet_grid(. ~ subgroup) +
+  labs(
+    x = &quot;Start Date&quot;,
+    y = &quot;Average Value&quot;,
+    title = &quot;Differences in Indicators Among Age Groups (2021-2022)&quot;) +
+  theme_gray() +
+  theme(
+    legend.position = &quot;bottom&quot;,
+    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)  # Rotate x-axis labels vertically
+  ) +
+  scale_color_hue(h = c(100, 300)) +
+  guides(color = guide_legend(nrow = 2)) # Adding the legend guide adjustment</code></pre>
+<p><img src="eda_demographic_files/figure-html/age-1.png" width="90%" /></p>
+<p>Critical findings:</p>
+<p>Based on the graph, it is clear that among the age groups, 18-29 have
+the highest values across all the indicators. Especially for the
+indicator of taking prescription medication for mental health and or
+receiving counseling, followed by the 30-39 age group, then 40-49 years.
+Since the data is captured from 2021 to 2022 during the pandemic,
+lockdown and transition to a virtual environment might cause tremendous
+pressure on these age groups. In addition, limited access to social life
+might burden the 18-29 age group. In addition, it is surprising to see
+that age groups from 60 and above have the lowest values of needed
+counseling or therapy but did not get it and received counseling or
+therapy. Maybe many of them are in their retirement, or this age group
+has a stigma around mental health because they might have a negative
+impression about having mental health issues. Therefore, they are less
+likely to admit they need counseling or therapy.</p>
+</div>
+<div id="education-level" class="section level2">
+<h2>Education Level</h2>
+<p>I began by filtering the tidy dataset to only age and participants
+residing in the United States. In the next step, I re-leveled the
+education subgroup by creating a new variable, ed_name. Afterward, I
+used the new variable, ed_name, to create an education plot. Similar to
+the age plot, the x-axis labels and legend are difficult to view. So, I
+adjusted the x-axis labels to vertical and stacked the legend columns
+into two columns.</p>
+<pre class="r"><code>#Filtering the dataset to age and united states, re-level the subgroup, and plot the education plot 
+ed_plot= 
+  tidydata |&gt;
+  filter(group == &quot;Education&quot;, state == &quot;United States&quot;) |&gt; 
+   mutate(ed_name = forcats::fct_relevel(subgroup, c(&quot;Bachelor&#39;s degree or higher&quot;,
+                                                     &quot;Some college/Associate&#39;s degree&quot;, &quot;High school diploma or GED&quot;, &quot;Less than a high school diploma&quot;))) |&gt; 
+  group_by(start_dates, ed_name, indicator) |&gt; 
+  ggplot(aes(x = start_dates, y = value, color = indicator)) +
+  geom_line() +
+  facet_grid(. ~ ed_name) +
+  labs(
+    x = &quot;Start Date&quot;,
+    y = &quot;Average Value&quot;,
+    title = &quot;Differences in Indicators by Education Levels (2021-2022)&quot;) +
+  theme_gray() +
+  theme(
+    legend.position = &quot;bottom&quot;,
+    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)  # Rotate x-axis labels vertically
+  ) +
+  scale_color_hue(h = c(100, 300)) +
+  guides(color = guide_legend(nrow = 2)) # Adding the legend guide adjustment
+
+#View the education plot
+ed_plot</code></pre>
+<p><img src="eda_demographic_files/figure-html/education-1.png" width="90%" /></p>
+<p>Critical findings:</p>
+<p>Among four education groups, the bachelor’s degree or higher and some
+college/ associate’s degree groups have the highest value of taking
+prescription medication for mental health and/or received counseling.
+This is because individuals with higher education typically have better
+jobs, more money, and many other benefits, including better health
+insurance, which leads to better access to quality mental health
+services than those with a lower education level. On the other hand,
+those who have a lower education level (high school diploma or GED and
+less than high school diploma groups) have the least value of needed
+counseling or therapy but did not get it and received counseling or
+therapy indicators because they might not have adequate resources to the
+services which resulting having the lowest values in term of the
+utilization of the counseling services.</p>
+</div>
+<div id="gender" class="section level2">
+<h2>Gender</h2>
+<p>Trends in mental health access by gender were stark. Women reported
+needing almost twice as much counseling or therapy for mental health as
+men, and these trends were consistent from 2020 to 2022.</p>
+<p>Women took more prescription medication for mental health and
+received more counseling or therapy for mental health than men. These
+trends slightly increased each year from 2020 to 2022.</p>
+<pre class="r"><code>tidydata |&gt;
+  filter(
+    group == &quot;Sex&quot;,
+    state == &quot;United States&quot;) |&gt;
+  group_by(indicator, start_dates, subgroup) |&gt;
+  ggplot(aes(x = start_dates, y = value, color = indicator)) +
+  geom_line() +
+  facet_grid(. ~ subgroup) +
+  theme_gray() +
+  theme(
+    legend.position = &quot;bottom&quot;,
+    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+  guides(color = guide_legend(nrow = 2)) +
+    labs(
+    x = &quot;Date&quot;,
+    y = &quot;Prevalence (%)&quot;,
+    title = &quot;Differences in Mental Health Access by Gender&quot;,
+    caption = &quot;Data was collected from August 19, 2020 to May 9, 2022&quot;)</code></pre>
+<p><img src="eda_demographic_files/figure-html/gender-1.png" width="90%" /></p>
+</div>
+<div id="sexual-orientation" class="section level2">
+<h2>Sexual Orientation</h2>
+<p>Mental health access strongly differed by sexual orientation.
+Bisexual Americans reported the highest trends in both taking
+prescription medication and/or receiving counseling for mental health
+and needing counseling or therapy but not receiving it. Their outcomes
+showed the most variation over time. Straight Americans consistently
+reported the least unmet need for counseling or therapy.</p>
+<pre class="r"><code>tidydata |&gt;
+    filter(group == &quot;Sexual orientation&quot;,
+         state == &quot;United States&quot;,
+         week_number %in% c(24:33)) |&gt;
+  group_by(start_dates, subgroup, indicator) |&gt;
+  ggplot(aes(x = start_dates, y = value, color = indicator)) +
+  geom_line() +
+  facet_grid(. ~ subgroup) +
+  theme_grey() +
+  theme(
+    legend.position = &quot;bottom&quot;,
+    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+  guides(color = guide_legend(nrow = 2)) +
+    labs(
+    x = &quot;Date&quot;,
+    y = &quot;Prevalence (%)&quot;,
+    title = &quot;Differences in Mental Health Access by Sexual Orientation&quot;,
+    caption = &quot;Data was collected from August 18, 2021 to May 9, 2022&quot;)</code></pre>
+<p><img src="eda_demographic_files/figure-html/sexuality-1.png" width="90%" /></p>
+</div>
+<div id="raceethnicity" class="section level2">
+<h2>Race/Ethnicity</h2>
+<p>The graph below explores differences in outcome variables by
+race/ethnicity. Trends by racial and ethnic groups were stark across all
+three years. Non-Hispanic Multiracial Americans, closely followed by
+non-Hispanic White Americans, received the most prescription medication
+and/or counseling or therapy for mental health. However, non-Hispanic
+multiracial Americans needed counseling or therapy for mental health but
+did not receive it.</p>
+<pre class="r"><code>tidydata |&gt;
+  filter(group == &quot;Race/Hispanic ethnicity&quot;, state == &quot;United States&quot;) |&gt;
+  mutate(
+    subgroup = replace(subgroup, subgroup == &quot;Non-Hispanic Asian, single race&quot;, &quot;Non-Hispanic Asian&quot;),
+    subgroup = replace(subgroup, subgroup == &quot;Non-Hispanic Black, single race&quot;, &quot;Non-Hispanic Black&quot;),
+    subgroup = replace(subgroup, subgroup == &quot;Non-Hispanic White, single race&quot;, &quot;Non-Hispanic White&quot;),
+    subgroup = replace(subgroup, subgroup == &quot;Non-Hispanic, other races and multiple races&quot;, &quot;Non-Hispanic Multi-racial&quot;)) |&gt;
+  group_by(indicator, start_dates, subgroup) |&gt;
+  ggplot(aes(x = start_dates, y = value, color = indicator)) +
+  geom_line() +
+  facet_grid(. ~ subgroup) +
+  theme_grey() +
+  theme(
+    legend.position = &quot;bottom&quot;,
+    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+  guides(color = guide_legend(nrow = 2)) +
+  labs(
+    x = &quot;Date&quot;,
+    y = &quot;Prevalence (%)&quot;,
+    title = &quot;Differences in Mental Health Access by Race&quot;,
+    caption = &quot;Data was collected from August 19, 2020 to May 9, 2022&quot;)</code></pre>
+<p><img src="eda_demographic_files/figure-html/race%20ethnicity-1.png" width="90%" /></p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

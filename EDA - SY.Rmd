@@ -14,6 +14,16 @@ library(tidyverse)
 library(viridisLite)
 viridisLite::viridis(10)
 
+knitr::opts_chunk$set(
+	echo = TRUE,
+	warning = FALSE,
+	fig.width = 8, 
+  fig.height = 6,
+  out.width = "90%"
+)
+
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+
 options(
   ggplot2.continuous.colour = "viridis",
   ggplot2.continuous.fill = "viridis"
@@ -32,7 +42,11 @@ tidydata =
 
 ### Gender
 
-```{r}
+Trends in mental health access by gender were stark. Women reported needing almost twice as much counseling or therapy for mental health as men, and these trends were consistent from 2020 to 2022.
+
+Women took more prescription medication for mental health and received more counseling or therapy for mental health than men. These trends slightly increased each year from 2020 to 2022.
+
+```{r gender, echo = FALSE}
 tidydata |>
   filter(
     group == "Sex",
@@ -42,35 +56,21 @@ tidydata |>
   geom_line() +
   facet_grid(. ~ subgroup) +
   theme_gray() +
-  theme(legend.position = "bottom")
+  theme(
+    legend.position = "bottom",
+    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+  guides(color = guide_legend(nrow = 2)) +
+    labs(
+    x = "Date of data collection",
+    y = "Prevalence",
+    title = "Differences in Mental Health Access by Gender (2020-2022)")
 ```
 
-Trends in mental health access by gender were stark. Women reported needing almost twice as much counseling or therapy for mental health as men, and these trends were stable from 2020 to 2022.
+### Sexual Orientation
 
-Women took more prescription medication for mental health and received more counseling or therapy for mental health than men. These trends slightly increased each year from 2020 to 2022.
+Mental health access strongly differed by sexual orientation. Bisexual Americans reported the highest trends in both taking prescription medication and/or receiving counseling for mental health and needing counseling or therapy but not receiving it. Their outcomes showed the most variation over time. Straight Americans consistently reported the least unmet need for counseling or therapy.
 
-```{r message = FALSE}
-tidydata |>
-  filter(
-    group == "Sex",
-    state == "United States",
-    indicator %in% c("Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy", "Needed Counseling or Therapy But Did Not Get It")) |>
-  group_by(year, indicator, subgroup) |>
-  summarize(mean_value = mean(value, na.rm = TRUE)) |>
-  mutate(year = factor(year, levels = unique(year))) |>
-  ggplot(aes(x = year, y = mean_value, fill = subgroup)) +
-  geom_bar(stat = "identity", position = "dodge") +
-  facet_grid(. ~ indicator) +
-  theme_grey() +
-  expand_limits(y = c(0, 35)) +
-  theme(legend.position = "right")
-```
-
-### Sexuality
-
-Mental health access strongly differed by sexuality. Bisexual Americans reported the highest trends in both taking prescription medication and/or receiving counseling for mental health and needing counseling or therapy but not receiving it. Their outcomes showed the most variation over time. Straight Americans consistently reported the least unmet need for counseling or therapy.
-
-```{r}
+```{r sexuality, echo = FALSE}
 tidydata |>
     filter(group == "Sexual orientation",
          state == "United States",
@@ -80,43 +80,39 @@ tidydata |>
   geom_line() +
   facet_grid(. ~ subgroup) +
   theme_grey() +
-  theme(legend.position = "bottom")
+  theme(
+    legend.position = "bottom",
+    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+  guides(color = guide_legend(nrow = 2)) +
+    labs(
+    x = "Date of data collection",
+    y = "Prevalence",
+    title = "Differences in Mental Health Access by Sexual Orientation (2021-2022)")
 ```
 
 ### Race/ethnicity
 
-Trends by racial and ethnic groups were stark across all three years. Non-Hispanic Multiracial Americans, closely followed by non-Hispanic White Americans, received the most prescription medication and/or counseling or therapy for mental health. However, non-Hispanic multiracial Americans needed counseling or therapy for mental health but did not receive it.
+The graph below explores differences in outcome variables by race/ethnicity. Trends by racial and ethnic groups were stark across all three years. Non-Hispanic Multiracial Americans, closely followed by non-Hispanic White Americans, received the most prescription medication and/or counseling or therapy for mental health. However, non-Hispanic multiracial Americans needed counseling or therapy for mental health but did not receive it.
 
-```{r}
+```{r race ethnicity, echo = FALSE}
 tidydata |>
-  filter(
-    group == "Race/Hispanic ethnicity",
-    state == "United States",
-    indicator %in% c("Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy", "Needed Counseling or Therapy But Did Not Get It")) |>
+  filter(group == "Race/Hispanic ethnicity", state == "United States") |>
   mutate(
     subgroup = replace(subgroup, subgroup == "Non-Hispanic Asian, single race", "Non-Hispanic Asian"),
     subgroup = replace(subgroup, subgroup == "Non-Hispanic Black, single race", "Non-Hispanic Black"),
     subgroup = replace(subgroup, subgroup == "Non-Hispanic White, single race", "Non-Hispanic White"),
     subgroup = replace(subgroup, subgroup == "Non-Hispanic, other races and multiple races", "Non-Hispanic Multi-racial")) |>
-  group_by(year, indicator, subgroup) |>
-  summarize(mean_value = mean(value, na.rm = TRUE)) |>
-  ggplot(aes(x = year, y = mean_value, fill = subgroup)) +
-  geom_bar(stat = "identity", position = "dodge") +
-  facet_grid(. ~ indicator) +
-  theme_grey() +
-  theme(legend.position = "right")
-```
-
-The graph below explores differences in outcome variables by race/ethnicity.
-
-```{r fig.width=12,fig.height=8}
-tidydata |>
-  filter(group == "Race/Hispanic ethnicity", state == "United States") |>
-  group_by(week_number, subgroup, indicator) |>
-  ggplot(aes(x = week_number, y = value, color = indicator)) +
+  group_by(start_dates, subgroup, indicator) |>
+  ggplot(aes(x = start_dates, y = value, color = indicator)) +
   geom_line() +
   facet_grid(. ~ subgroup) +
-  scale_x_continuous(limits = c(1, 33)) +
   theme_grey() +
-  theme(legend.position = "bottom")
+  theme(
+    legend.position = "bottom",
+    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+  guides(color = guide_legend(nrow = 2)) +
+  labs(
+    x = "Date of data collection",
+    y = "Prevalence",
+    title = "Differences in Mental Health Access by Race (2020-2022)")
 ```

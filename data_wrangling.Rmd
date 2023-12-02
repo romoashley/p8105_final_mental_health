@@ -26,9 +26,10 @@ I removed unnecessary columns, including phase, quartile range, and suppression 
 tidydata = 
   rawdata |> 
   janitor::clean_names() |>
-  mutate(indicator = str_replace(indicator, ", Last 4 Weeks", "")) |> 
-  select(-phase, -quartile_range, -suppression_flag) |> 
-  mutate(group = str_replace(group, "By ", "")) |>
+  select(-phase, -quartile_range, -suppression_flag) |>
+  mutate(
+    indicator = str_replace(indicator, ", Last 4 Weeks", ""),
+    group = str_replace(group, "By ", "")) |>
   drop_na(value) |>
   select(start_date = time_period_start_date, end_date = time_period_end_date, everything())
 ```
@@ -40,18 +41,18 @@ First, I created an indicator for `week_number` using `match` to assign a number
 ```{r}
 tidydata =
   tidydata |>
-  mutate(week_number = match(time_period_label, unique(time_period_label))) |>
   mutate(
+    week_number = match(time_period_label, unique(time_period_label)),
     start_dates = mdy(pull(tidydata, start_date)),
-    end_dates = mdy(pull(tidydata, end_date))) |> 
-  mutate(tpl = time_period_label) |>  
-  mutate(year = as.numeric(str_extract(tpl, "\\d{4}")))|> 
+    end_dates = mdy(pull(tidydata, end_date)),
+    tpl = time_period_label,
+    year = as.numeric(str_extract(tpl, "\\d{4}")),
+    start_dates = as.Date(start_dates)) |>
   separate(col = time_period_label, into = c("week_label", "years"), sep = ", ", remove = FALSE, extra = "merge") |>
   select(indicator, year, start_dates, end_dates, week_number, week_label = time_period_label, state, group, subgroup, value, low_ci, high_ci, confidence_interval)
 ```
 
-
-# Step 4:  exports the tidy data to a csv file named tidydata. 
+# Step 4: export the tidy data to a csv file named tidydata 
 
 ```{r}
  write.csv(tidydata, "data/tidydata.csv", row.names=FALSE)
@@ -87,7 +88,6 @@ Indicator3=tidydata |> filter(indicator=="Took Prescription Medication for Menta
 Indicator4=tidydata |> filter(indicator=="	
 Needed Counseling or Therapy But Did Not Get It")
 ```
-
 
 2. Did some data cleanning for Indicator1.Break the dataset Indicator1 into different smaller dataset based on the different categories from the subgroup. 
 Indicator1 is the people who Took Prescription Medication for Mental Health. 

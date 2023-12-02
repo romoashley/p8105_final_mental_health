@@ -3,8 +3,12 @@ output_dir: "."
 navbar:
   title: "Home"
   right:
-    - text: "About"
-      href: about.html
+    - text: "Exploratory Data Analysis"
+      href: eda.html
+    - text: "Statistical Analysis"
+      href: statistical_analysis.html
+    - text: "Final Report"
+      href: report.html
     - icon: fa-github fa-lg
       href: http://github.com/<romoashley/p8105_final_mental_health>/
 output:

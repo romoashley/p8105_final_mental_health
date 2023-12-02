@@ -1,13 +1,17 @@
 ---
 title: "Final Report"
-output: html_document
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: "hide"
 ---
 
 ## Motivation
 
 COVID-19 has had serious behavioral and mental health implications. One survey conducted by the Centers for Disease Control and Prevention in July 2020 found that [41%](https://www.cnn.com/2020/08/13/health/mental-health-coronavirus-pandemic-cdc-study-wellness/index.html) of respondents were struggling with mental health issues stemming from the pandemic. Different demographics have worse outcomes, such as [young people](https://www.pewresearch.org/short-reads/2023/03/02/mental-health-and-the-pandemic-what-u-s-surveys-have-found/), and these outcomes are [continuing](https://www.kff.org/mental-health/issue-brief/the-implications-of-covid-19-for-mental-health-and-substance-use/) years after the pandemic first hit.
 
-Our project aimed to explore trends and differences in indicators of mental health care access across the United States from August 2020-May 2022, as well as disaggregate data by state, age group, sex, race/ethnicity, education level, and sexual orientation.
+Our project aimed to explore trends and differences in indicators of mental health care access across the United States from August 2020-May 2022, as well as disaggregate data by state, age group, gender, race/ethnicity, education level, and sexual orientation.
 
 ## Related Work
 
@@ -29,13 +33,47 @@ Data was collected from a nationally representative sample of approximately [50,
 
 ### Data Cleaning
 
-The data set is available for download in multiple formats, and we downloaded the Comma Separated Values (.csv) file.
+The data set is available for download in multiple formats on  [catalog.data.gov](https://catalog.data.gov/dataset/mental-health-care-in-the-last-4-weeks), and we downloaded the Comma Separated Values (.csv) file.
 
 The first portion of data cleaning was the data import, which involved downloading and importing the .csv using `read_csv` and saving the raw data set.
 
 The second portion of data cleaning was renaming and cleaning columns. This step involved removing unnecessary columns, cleaning and renaming columns for clarity, and dropping missing values.
 
 The third portion of data cleaning was tidying the date formats. This step involved converting dates to the date format using `mdy`, creating a new numeric `year` variable, and cleaning the week numbers and labels.
+
+```{r message = FALSE}
+## part 1: importing raw data
+
+library(tidyverse)
+
+rawdata =
+  read_csv("data/mental_health.csv")
+
+## part 2: renaming and cleaning columns
+
+tidydata = 
+  rawdata |> 
+  janitor::clean_names() |>
+  select(-phase, -quartile_range, -suppression_flag) |>
+  mutate(
+    indicator = str_replace(indicator, ", Last 4 Weeks", ""),
+    group = str_replace(group, "By ", "")) |>
+  drop_na(value) |>
+  select(start_date = time_period_start_date, end_date = time_period_end_date, everything())
+
+## part 3: tidying dates
+
+tidydata =
+  tidydata |>
+  mutate(
+    week_number = match(time_period_label, unique(time_period_label)),
+    start_dates = mdy(pull(tidydata, start_date)),
+    end_dates = mdy(pull(tidydata, end_date)),
+    tpl = time_period_label,
+    year = as.numeric(str_extract(tpl, "\\d{4}"))) |>
+  separate(col = time_period_label, into = c("week_label", "years"), sep = ", ", remove = FALSE, extra = "merge") |>
+  select(indicator, year, start_dates, end_dates, week_number, week_label = time_period_label, state, group, subgroup, value, low_ci, high_ci, confidence_interval)
+```
 
 ### Final Data Set
 
@@ -61,6 +99,6 @@ The final tidy data set included 13 variables:
 
 ## Exploratory Analysis
 
-## Additional analysis
+## Additional Analysis
 
-## Results and discussion
+## Results and Discussion

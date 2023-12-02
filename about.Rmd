@@ -7,22 +7,24 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Ashley Romo
+### Ashley Romo
 
 Ashley is a second-year MPH candidate in the Department of Epidemiology at Columbia University Mailman School of Public Health. She is pursuing a certificate in ____.
 
-## Caleigh Dwyer
+### Caleigh Dwyer
 
 Caleigh is a second-year MPH candidate in the Department of Sociomedical Sciences at Columbia University Mailman School of Public Health. She is pursuing a certificate in Public Health Research Methods.
 
-## Hsin Yi (Cindy) Tseng
+### Hsin Yi (Cindy) Tseng
 
-Cindy is a second-year MPH candidate in the Department of Epidemiology at Columbia University Mailman School of Public Health. She is pursuing a certificate in ____.
+Hsin Yi (Cindy) is a second-year MPH candidate in the Department of Epidemiology at Columbia University Mailman School of Public Health. She is pursuing a certificate in ____.
 
-## Sarah Younes
+### Sarah Younes
 
-Caleigh is a second-year MPH candidate in the Department of Sociomedical Sciences at Columbia University Mailman School of Public Health. She is pursuing a certificate in Public Health Research Methods.
+Sarah is a second-year MPH candidate in the Department of Sociomedical Sciences at Columbia University Mailman School of Public Health. She is pursuing a certificate in Public Health Research Methods.
 
-## Wen Dai
+[LinkedIn](https://www.linkedin.com/in/sarahmyounes/)
+
+### Wen Dai
 
 Wen is a second-year MPH candidate in the Department of Epidemiology at Columbia University Mailman School of Public Health. She is pursuing a certificate in ____.

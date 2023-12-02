@@ -11,7 +11,7 @@
 
 
 
-<title>Exploratory Data Analysis (EDA)</title>
+<title>EDA by Demopgrahics</title>
 
 <script src="site_libs/header-attrs-2.24/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -374,13 +374,14 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Exploratory Data Analysis (EDA)</h1>
+<h1 class="title toc-ignore">EDA by Demopgrahics</h1>
 
 </div>
 
 
-<pre><code>##  [1] &quot;#440154FF&quot; &quot;#482878FF&quot; &quot;#3E4A89FF&quot; &quot;#31688EFF&quot; &quot;#26828EFF&quot; &quot;#1F9E89FF&quot;
-##  [7] &quot;#35B779FF&quot; &quot;#6DCD59FF&quot; &quot;#B4DE2CFF&quot; &quot;#FDE725FF&quot;</code></pre>
+<p>This page explores trends in mental health access by demographic
+characteristics: age group, education level, gender, sexual orientation,
+and race/ethnicity.</p>
 <div id="age-group" class="section level2">
 <h2>Age Group</h2>
 <p>I started by filtering the tidy dataset to only include age and
@@ -403,16 +404,19 @@ age_plot |&gt;
   geom_line() +
   facet_grid(. ~ subgroup) +
   labs(
-    x = &quot;Start Date&quot;,
-    y = &quot;Average Value&quot;,
-    title = &quot;Differences in Indicators Among Age Groups (2021-2022)&quot;) +
+    x = &quot;Date&quot;,
+    y = &quot;Prevalence (%)&quot;,
+    title = &quot;Differences in Mental Health Access by Age Group&quot;,
+    caption = &quot;Data was collected from August 19, 2020 to May 9, 2022&quot;,
+    color = &quot;Indicator of Mental Health Access&quot;) +
   theme_gray() +
   theme(
     legend.position = &quot;bottom&quot;,
+    plot.title = element_text(size = 18),
     axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)  # Rotate x-axis labels vertically
   ) +
   scale_color_hue(h = c(100, 300)) +
-  guides(color = guide_legend(nrow = 2)) # Adding the legend guide adjustment</code></pre>
+  guides(color = guide_legend(nrow = 4)) # Adding the legend guide adjustment</code></pre>
 <p><img src="eda_demographic_files/figure-html/age-1.png" width="90%" /></p>
 <p>Critical findings:</p>
 <p>Based on the graph, it is clear that among the age groups, 18-29 have
@@ -450,16 +454,19 @@ ed_plot=
   geom_line() +
   facet_grid(. ~ ed_name) +
   labs(
-    x = &quot;Start Date&quot;,
-    y = &quot;Average Value&quot;,
-    title = &quot;Differences in Indicators by Education Levels (2021-2022)&quot;) +
+    x = &quot;Date&quot;,
+    y = &quot;Prevalence (%)&quot;,
+    title = &quot;Differences in Mental Health Access by Education Level&quot;,
+    caption = &quot;Data was collected from August 19, 2020 to May 9, 2022&quot;,
+    color = &quot;Indicator of Mental Health Access&quot;) +
   theme_gray() +
   theme(
     legend.position = &quot;bottom&quot;,
+    plot.title = element_text(size = 18),
     axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)  # Rotate x-axis labels vertically
   ) +
   scale_color_hue(h = c(100, 300)) +
-  guides(color = guide_legend(nrow = 2)) # Adding the legend guide adjustment
+  guides(color = guide_legend(nrow = 4)) # Adding the legend guide adjustment
 
 #View the education plot
 ed_plot</code></pre>
@@ -498,13 +505,15 @@ trends slightly increased each year from 2020 to 2022.</p>
   theme_gray() +
   theme(
     legend.position = &quot;bottom&quot;,
+    plot.title = element_text(size = 18),
     axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
-  guides(color = guide_legend(nrow = 2)) +
+  guides(color = guide_legend(nrow = 4)) +
     labs(
     x = &quot;Date&quot;,
     y = &quot;Prevalence (%)&quot;,
     title = &quot;Differences in Mental Health Access by Gender&quot;,
-    caption = &quot;Data was collected from August 19, 2020 to May 9, 2022&quot;)</code></pre>
+    caption = &quot;Data was collected from August 19, 2020 to May 9, 2022&quot;,
+    color = &quot;Indicator of Mental Health Access&quot;)</code></pre>
 <p><img src="eda_demographic_files/figure-html/gender-1.png" width="90%" /></p>
 </div>
 <div id="sexual-orientation" class="section level2">
@@ -526,13 +535,15 @@ reported the least unmet need for counseling or therapy.</p>
   theme_grey() +
   theme(
     legend.position = &quot;bottom&quot;,
+    plot.title = element_text(size = 18),
     axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
-  guides(color = guide_legend(nrow = 2)) +
+  guides(color = guide_legend(nrow = 4)) +
     labs(
     x = &quot;Date&quot;,
     y = &quot;Prevalence (%)&quot;,
     title = &quot;Differences in Mental Health Access by Sexual Orientation&quot;,
-    caption = &quot;Data was collected from August 18, 2021 to May 9, 2022&quot;)</code></pre>
+    caption = &quot;Data was collected from August 18, 2021 to May 9, 2022&quot;,
+    color = &quot;Indicator of Mental Health Access&quot;)</code></pre>
 <p><img src="eda_demographic_files/figure-html/sexuality-1.png" width="90%" /></p>
 </div>
 <div id="raceethnicity" class="section level2">
@@ -558,13 +569,15 @@ did not receive it.</p>
   theme_grey() +
   theme(
     legend.position = &quot;bottom&quot;,
+    plot.title = element_text(size = 18),
     axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
-  guides(color = guide_legend(nrow = 2)) +
+  guides(color = guide_legend(nrow = 4)) +
   labs(
     x = &quot;Date&quot;,
     y = &quot;Prevalence (%)&quot;,
     title = &quot;Differences in Mental Health Access by Race&quot;,
-    caption = &quot;Data was collected from August 19, 2020 to May 9, 2022&quot;)</code></pre>
+    caption = &quot;Data was collected from August 19, 2020 to May 9, 2022&quot;,
+    color = &quot;Indicator of Mental Health Access&quot;)</code></pre>
 <p><img src="eda_demographic_files/figure-html/race%20ethnicity-1.png" width="90%" /></p>
 </div>
 

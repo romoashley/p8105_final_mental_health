@@ -1,5 +1,5 @@
 ---
-title: "Exploratory Data Analysis (EDA)"
+title: "EDA by Demopgrahics"
 output:
   html_document:
     toc: true
@@ -11,7 +11,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r message = FALSE, echo = FALSE}
+```{r include=FALSE}
 library(tidyverse)
 
 library(viridisLite)
@@ -20,8 +20,8 @@ viridisLite::viridis(10)
 knitr::opts_chunk$set(
 	echo = TRUE,
 	warning = FALSE,
-	fig.width = 8, 
-  fig.height = 6,
+	fig.width = 9, 
+  fig.height = 7,
   out.width = "90%"
 )
 
@@ -40,6 +40,8 @@ tidydata =
   mutate(
     start_dates = as.Date(start_dates))
 ```
+
+This page explores trends in mental health access by demographic characteristics: age group, education level, gender, sexual orientation, and race/ethnicity.
 
 ## Age Group
 
@@ -60,16 +62,19 @@ age_plot |>
   geom_line() +
   facet_grid(. ~ subgroup) +
   labs(
-    x = "Start Date",
-    y = "Average Value",
-    title = "Differences in Indicators Among Age Groups (2021-2022)") +
+    x = "Date",
+    y = "Prevalence (%)",
+    title = "Differences in Mental Health Access by Age Group",
+    caption = "Data was collected from August 19, 2020 to May 9, 2022",
+    color = "Indicator of Mental Health Access") +
   theme_gray() +
   theme(
     legend.position = "bottom",
+    plot.title = element_text(size = 18),
     axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)  # Rotate x-axis labels vertically
   ) +
   scale_color_hue(h = c(100, 300)) +
-  guides(color = guide_legend(nrow = 2)) # Adding the legend guide adjustment
+  guides(color = guide_legend(nrow = 4)) # Adding the legend guide adjustment
 ```
 
 Critical findings:
@@ -92,16 +97,19 @@ ed_plot=
   geom_line() +
   facet_grid(. ~ ed_name) +
   labs(
-    x = "Start Date",
-    y = "Average Value",
-    title = "Differences in Indicators by Education Levels (2021-2022)") +
+    x = "Date",
+    y = "Prevalence (%)",
+    title = "Differences in Mental Health Access by Education Level",
+    caption = "Data was collected from August 19, 2020 to May 9, 2022",
+    color = "Indicator of Mental Health Access") +
   theme_gray() +
   theme(
     legend.position = "bottom",
+    plot.title = element_text(size = 18),
     axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)  # Rotate x-axis labels vertically
   ) +
   scale_color_hue(h = c(100, 300)) +
-  guides(color = guide_legend(nrow = 2)) # Adding the legend guide adjustment
+  guides(color = guide_legend(nrow = 4)) # Adding the legend guide adjustment
 
 #View the education plot
 ed_plot
@@ -129,13 +137,15 @@ tidydata |>
   theme_gray() +
   theme(
     legend.position = "bottom",
+    plot.title = element_text(size = 18),
     axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
-  guides(color = guide_legend(nrow = 2)) +
+  guides(color = guide_legend(nrow = 4)) +
     labs(
     x = "Date",
     y = "Prevalence (%)",
     title = "Differences in Mental Health Access by Gender",
-    caption = "Data was collected from August 19, 2020 to May 9, 2022")
+    caption = "Data was collected from August 19, 2020 to May 9, 2022",
+    color = "Indicator of Mental Health Access")
 ```
 
 ## Sexual Orientation
@@ -154,13 +164,15 @@ tidydata |>
   theme_grey() +
   theme(
     legend.position = "bottom",
+    plot.title = element_text(size = 18),
     axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
-  guides(color = guide_legend(nrow = 2)) +
+  guides(color = guide_legend(nrow = 4)) +
     labs(
     x = "Date",
     y = "Prevalence (%)",
     title = "Differences in Mental Health Access by Sexual Orientation",
-    caption = "Data was collected from August 18, 2021 to May 9, 2022")
+    caption = "Data was collected from August 18, 2021 to May 9, 2022",
+    color = "Indicator of Mental Health Access")
 ```
 
 ## Race/Ethnicity
@@ -182,11 +194,13 @@ tidydata |>
   theme_grey() +
   theme(
     legend.position = "bottom",
+    plot.title = element_text(size = 18),
     axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
-  guides(color = guide_legend(nrow = 2)) +
+  guides(color = guide_legend(nrow = 4)) +
   labs(
     x = "Date",
     y = "Prevalence (%)",
     title = "Differences in Mental Health Access by Race",
-    caption = "Data was collected from August 19, 2020 to May 9, 2022")
+    caption = "Data was collected from August 19, 2020 to May 9, 2022",
+    color = "Indicator of Mental Health Access")
 ```

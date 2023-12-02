@@ -1,0 +1,28 @@
+---
+title: "About Us"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Ashley Romo
+
+Ashley is a second-year MPH candidate in the Department of Epidemiology at Columbia University Mailman School of Public Health. She is pursuing a certificate in ____.
+
+## Caleigh Dwyer
+
+Caleigh is a second-year MPH candidate in the Department of Sociomedical Sciences at Columbia University Mailman School of Public Health. She is pursuing a certificate in Public Health Research Methods.
+
+## Hsin Yi (Cindy) Tseng
+
+Cindy is a second-year MPH candidate in the Department of Epidemiology at Columbia University Mailman School of Public Health. She is pursuing a certificate in ____.
+
+## Sarah Younes
+
+Caleigh is a second-year MPH candidate in the Department of Sociomedical Sciences at Columbia University Mailman School of Public Health. She is pursuing a certificate in Public Health Research Methods.
+
+## Wen Dai
+
+Wen is a second-year MPH candidate in the Department of Epidemiology at Columbia University Mailman School of Public Health. She is pursuing a certificate in ____.

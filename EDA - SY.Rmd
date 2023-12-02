@@ -61,9 +61,10 @@ tidydata |>
     axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
   guides(color = guide_legend(nrow = 2)) +
     labs(
-    x = "Date of data collection",
-    y = "Prevalence",
-    title = "Differences in Mental Health Access by Gender (2020-2022)")
+    x = "Date",
+    y = "Prevalence (%)",
+    title = "Differences in Mental Health Access by Gender",
+    caption = "Data was collected from August 19, 2020 to May 9, 2022")
 ```
 
 ### Sexual Orientation
@@ -85,9 +86,10 @@ tidydata |>
     axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
   guides(color = guide_legend(nrow = 2)) +
     labs(
-    x = "Date of data collection",
-    y = "Prevalence",
-    title = "Differences in Mental Health Access by Sexual Orientation (2021-2022)")
+    x = "Date",
+    y = "Prevalence (%)",
+    title = "Differences in Mental Health Access by Sexual Orientation",
+    caption = "Data was collected from August 18, 2021 to May 9, 2022")
 ```
 
 ### Race/ethnicity
@@ -102,7 +104,7 @@ tidydata |>
     subgroup = replace(subgroup, subgroup == "Non-Hispanic Black, single race", "Non-Hispanic Black"),
     subgroup = replace(subgroup, subgroup == "Non-Hispanic White, single race", "Non-Hispanic White"),
     subgroup = replace(subgroup, subgroup == "Non-Hispanic, other races and multiple races", "Non-Hispanic Multi-racial")) |>
-  group_by(start_dates, subgroup, indicator) |>
+  group_by(indicator, start_dates, subgroup) |>
   ggplot(aes(x = start_dates, y = value, color = indicator)) +
   geom_line() +
   facet_grid(. ~ subgroup) +
@@ -112,7 +114,8 @@ tidydata |>
     axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
   guides(color = guide_legend(nrow = 2)) +
   labs(
-    x = "Date of data collection",
-    y = "Prevalence",
-    title = "Differences in Mental Health Access by Race (2020-2022)")
+    x = "Date",
+    y = "Prevalence (%)",
+    title = "Differences in Mental Health Access by Race",
+    caption = "Data was collected from August 19, 2020 to May 9, 2022")
 ```

@@ -14,7 +14,10 @@ library(tidyverse)
 Importing clean and tidy dataset 
 ```{r}
 data = 
-  read.csv("data/tidydata.csv")
+  read.csv("data/tidydata.csv") |> 
+  mutate(
+    start_dates = as.Date(start_dates)
+  )
 ```
 
 
@@ -32,7 +35,7 @@ avg_year =
 # plot average for each start date for each indicator
 avg_year |> 
   ggplot(aes(x = start_dates, y = mean, color = indicator)) +
-  geom_point() +
+  geom_line() +
   labs(
     x = "Start Date",
     y = "Average Value",
@@ -69,7 +72,11 @@ states_df =
   group_by(state) |> 
   summarize(
     services_total = n(),
-    services_not_received = sum(resolution == "not received"))
+    services_not_received = sum(resolution == "not received")) |> 
+  mutate(
+    services_total = as.numeric(services_total),
+    services_not_received = as.numeric(services_not_received)
+  )
 ```
 
 Now, I focus on the state of New York. Using the `prop.test` and `broom::tidy` functions, I obtain an estimate and CI of the proportion of mental health services not received in New York (shown in the table below).

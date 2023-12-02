@@ -75,13 +75,12 @@ avg_year |>
 
 On average, those who took prescription medication for mental health and/or received counseling or therapy had a highest values while those who received counseling or therapy had the lowest value. 
 
-### Confidence Intervals
+## Confidence Intervals
 
 I relabeled the observations for the variable indicator to "received" if they did obtain the mental health services they needed and "not received" if they did not obtain the mental health services they needed.
-
 ```{r}
 received_service = 
-  tidydata |> 
+  data |> 
   mutate(
     resolution = case_when(
       indicator == "Took Prescription Medication for Mental Health" ~ "received",
@@ -91,7 +90,6 @@ received_service =
 ```
 
 I created a data frame where I grouped by states to determine the number of total services, which includes the services received as well as the number of services not received.
-
 ```{r}
 states_df =
   received_service |> 
@@ -115,9 +113,32 @@ broom::tidy(ny_test) %>%
   knitr::kable(digits = 3)
 ```
 
-I apply prop.test and broom:tidy to obtain estimates and confidence intervals for the proportion of mental health services not received for each state.
 
-***need to add rest of code: 2 chunks for services_states
+I apply prop.test and broom:tidy to obtain estimates and confidence intervals for the proportion of mental health services not received for each state. 
+```{r}
+services_states =
+  states_df |> 
+  mutate(
+    prop_tests = map2(services_not_received, services_total, \(x, y) prop.test(x = x, n = y)),
+    tidy_tests = map(prop_tests, broom::tidy)) |> 
+  select(-prop_tests) |> 
+  unnest(tidy_tests) |> 
+  select(state, estimate, conf.low, conf.high) |> 
+  mutate(state = fct_reorder(state, estimate))
+```
+
+
+Lastly, below is a plot showing the estimate (and CI) of the proportion of mental health services not received in each state.
+
+```{r}
+services_states %>% 
+  mutate(state = fct_reorder(state, estimate)) %>% 
+  ggplot(aes(x = state, y = estimate)) + 
+  geom_point() + 
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high)) + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
 
 ## Disaggregations by State
 
@@ -138,7 +159,6 @@ Let's start with the mental health indicator "Took Prescription Medication for M
 The following chunk shows the top five states with the highest mean percentage of respondents who reported taking prescription medication for mental health from 2020-2022.
 
 ```{r}
-
 state_meds_top5 =
   state_df |> 
   filter(indicator == "Took Prescription Medication for Mental Health") |> 
@@ -149,7 +169,6 @@ state_meds_top5 =
 
 state_meds_top5 |> 
   knitr::kable()
-
 ```
 
 Let's visualize a heat map of this indicator's prevalence by US state.
@@ -295,14 +314,11 @@ state_ther_change |>
   select(-year, -mean_value) |> 
   slice_max(order_by = val_change, n=5) |> 
   knitr::kable()
-
-  
 ```
 
 Let's take a look at the trend for this indicator over time. 
 
 ```{r, fig.keep="none"}
-
 state_df |>
   filter(indicator == "Received Counseling or Therapy") |> 
   group_by(state, year) |>
@@ -313,7 +329,6 @@ plot_ly(x = ~year, y = ~mean_value, color = ~state, type = "scatter", mode = "li
     title = "% received counseling or therapy by state & year",
     xaxis = list(title = "Year"),
     yaxis = list(title = "Average % received therapy"))
-
 ```
 
 ### Indicator 3: "Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy"
@@ -323,7 +338,6 @@ The third indicator we'll look at combines the first two indicators into one cat
 The following chunk shows the top five states with the highest mean percentage of respondents who reported mental health medication and/or therapy use from 2020-2022. The state with the highest percentage during this period was West Virginia.
 
 ```{r}
-
 state_both_top5 =
   state_df |> 
   filter(indicator == "Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy") |> 
@@ -334,7 +348,6 @@ state_both_top5 =
 
 state_both_top5 |> 
   knitr::kable()
-
 ```
 
 Let's visualize a heat map of this indicator's prevalence by US state.
@@ -388,14 +401,11 @@ state_both_change |>
   select(-year, -mean_value) |> 
   slice_max(order_by = val_change, n=5) |> 
   knitr::kable()
-
-  
 ```
 
 Let's take a look at the trend for this indicator over time. 
 
 ```{r, fig.keep="none"}
-
 state_df |>
   filter(indicator == "Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy") |> 
   group_by(state, year) |>
@@ -406,7 +416,6 @@ plot_ly(x = ~year, y = ~mean_value, color = ~state, type = "scatter", mode = "li
     title = "% medication and/or therapy use by state & year",
     xaxis = list(title = "Year"),
     yaxis = list(title = "Average % medication and/or therapy use"))
-
 ```
 
 ### Indicator 4: Needed Counseling or Therapy But Did Not Get It
@@ -416,7 +425,6 @@ The last indicator we'll look at is describes gaps in mental health care access,
 The following chunk shows the top five states with the highest mean percentage of respondents who reported no receipt of needed counseling/therapy from 2020-2022. The state with the highest percentage during this period was Oregon. Surprisingly, District of Columbia also appeared on the top 5, even though it was the "state" with the highest level of therapy use during this period.
 
 ```{r}
-
 state_need_top5 =
   state_df |> 
   filter(indicator == "Needed Counseling or Therapy But Did Not Get It") |> 
@@ -427,7 +435,6 @@ state_need_top5 =
 
 state_need_top5 |> 
   knitr::kable()
-
 ```
 
 Let's visualize a heat map of this indicator's prevalence by US state.
@@ -486,7 +493,6 @@ state_need_change |>
 Let's take a look at the trend for this indicator over time. 
 
 ```{r, fig.keep="none"}
-
 state_df |>
   filter(indicator == "Needed Counseling or Therapy But Did Not Get It") |> 
   group_by(state, year) |>

@@ -1,29 +1,37 @@
 ---
 title: "Statistical Analysis"
-author: "Sarah Younes"
-date: "2023-11-30"
-output: html_document
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: "hide"
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r message = FALSE}
+```{r include = FALSE}
 library(tidyverse)
 
 tidydata = 
   read.csv("data/tidydata.csv")
 ```
 
-Focus on two indicators:
+## Independent Samples T-tests
 
-1. "Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy"
-2. "Needed Counseling or Therapy But Did Not Get It"
+We will first conduct independent samples t-tests to see if there is a statistical relationship between gender and two of our indicators of mental health access:
 
-## Independent samples t-tests: gender
+1. Took prescription medication and/or received counseling or therapy for mental health
+2. Needed counseling or therapy for mental health but did not get it
 
-### Took prescription medication for mental health and/or received counseling or therapy
+Even though the independent samples t-test assumes normality, our sample size (50,000-90,000) is large. The Central Limit Theorem often allows the t-test to be used even when the population distribution is not normal, because the distribution of the sample means will tend to be normal.
+
+P-values less than 0.05 will be considered as statistically significant.
+
+### Took prescription medication and/or received counseling or therapy for mental health
+
+The first independent samples t-test shows statistically significant differences in prescription medication and/or counseling or therapy for mental health rates. Men and women had statistically different mean rates of taking prescription medication for mental health and/or receiving counseling or therapy from 2020 to 2022 in the United States.
 
 ```{r}
 gender_received =
@@ -43,10 +51,13 @@ gender_received =
 gender_received |>
   summarise(
     t_statistic = t.test(male, female)$statistic,
-    p_value = t.test(male, female)$p.value)
+    p_value = t.test(male, female)$p.value) |>
+  knitr::kable()
 ```
 
 ### Needed counseling or therapy but did not get it
+
+The second independent samples t-test shows statistically significant differences in rates of needing counseling or therapy for mental health but not getting it. Men and women had statistically different mean rates of needing counseling or therapy for mental health but not getting it from 2020 to 2022 in the United States.
 
 ```{r}
 gender_needed =
@@ -66,7 +77,8 @@ gender_needed =
 gender_needed |>
   summarise(
     t_statistic = t.test(male, female)$statistic,
-    p_value = t.test(male, female)$p.value)
+    p_value = t.test(male, female)$p.value) |>
+  knitr::kable()
 ```
 
 ## ANOVA: sexual orientation
@@ -94,16 +106,11 @@ sexuality_needed =
     state == "United States",
     group == "Sexual orientation",
     week_number %in% c(24:33)) |>
-  select(week_number, value, subgroup) |>
-  pivot_wider(
-    names_from = "subgroup",
-    values_from = "value") |>
-  janitor::clean_names()
+  group_by(subgroup)
 ```
 
+## Check normality
 
-
-#Check normality 
 ```{r}
 
 ggplot(tidydata, aes(sample = value)) +
@@ -116,8 +123,6 @@ The plot appears to be a Q-Q (quantile-quantile) plot showing that the data devi
 
 The histogram illustrates a bimodal frequency distribution of data values, with significant concentrations of observations around two central peaks, suggesting the presence of two subpopulations within the dataset. The data range from near 0 to just over 60, with the majority of values clustered between 5 and 30, and a notable right skew indicating a tail of higher values extending towards 60. This skewness and the thinning bars towards the right may also point to the existence of outliers or extreme values in the dataset. The bimodal nature and the distribution's spread underscore the potential complexity within the data, hinting at varied underlying characteristics or groups.
 
-
-
 ```{r}
 ggplot(tidydata, aes(sample = log(value))) +
   stat_qq() +
@@ -127,17 +132,15 @@ ggplot(tidydata, aes(sample = log(value))) +
 ```
 Despite the application of a logarithmic transformation to the data, the resulting distribution does not conform to normality. This is evidenced by the Q-Q plot, which exhibits significant deviations from the line of normality, particularly in the tails. Such persistent non-normality suggests that the underlying data may not be log-normally distributed, or there may be influential outliers that resist transformation. Alternative transformations or non-parametric methods may be required to address these distributional issues.
 
-
 ```{r}
 tidydata=tidydata |> mutate(subgroup=as.factor(subgroup),group=as.factor(group))
 summary(pull(tidydata, value))
 ```
 The summary statistics for the value dataset indicate a right-skewed distribution: the minimum value is 1.40, the first quartile is 10.30, the median is 16.20, and the third quartile is 24.00, with a considerably higher maximum value of 62.90. The mean, or average, is 17.45, which is higher than the median, further suggesting a distribution with a right tail. The broad range from the minimum to the maximum value points to a wide variation in the data, and the displacement of the mean towards the higher end of the range hints at the presence of outliers or a long tail to the right of the median.
 
-#Kruskal-Wallis test
+## Kruskal-Wallis test
 
 ```{r}
-
 kruskal_result=kruskal.test(value ~ subgroup, data = tidydata)
 ```
 

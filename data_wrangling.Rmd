@@ -108,6 +108,7 @@ sex_data=Indicator2 |> filter(group=="Sex")
 education_data=Indicator2 |> filter(group=="Education")
 state_data=Indicator2 |> filter(group=="State")
 Symptoms_data=Indicator2 |> filter(group=="Presence of Symptoms of Anxiety/Depression")
+
 ```
 
 Indicator3 is the people who Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy. 

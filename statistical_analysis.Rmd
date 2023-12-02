@@ -100,3 +100,17 @@ sexuality_needed =
     values_from = "value") |>
   janitor::clean_names()
 ```
+
+
+
+#Check normality 
+```{r}
+ggplot(tidydata, aes(sample = log(value))) +
+  stat_qq() +
+  stat_qq_line()
+
+ hist(log(tidydata$value), breaks = "FD", main = "Histogram of Data", xlab = "Data Values")
+```
+
+
+

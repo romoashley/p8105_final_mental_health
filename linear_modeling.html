@@ -385,18 +385,18 @@ div.tocify {
 </div>
 
 
-<div id="step1-import-the-tidy-dataset" class="section level2">
-<h2>Step1: import the tidy dataset</h2>
+<div id="step-1" class="section level2">
+<h2>Step 1</h2>
+<p>Import the tidy dataset</p>
 <pre class="r"><code>library(tidyverse)
 
 tidydata = 
   read.csv(&quot;data/tidydata.csv&quot;)</code></pre>
 </div>
-<div
-id="step2-separate-tidy-dataset-into-4-subgroups-based-on-the-indicator-category."
-class="section level2">
-<h2>Step2: Separate tidy dataset into 4 subgroups based on the indicator
-category.</h2>
+<div id="step-2" class="section level2">
+<h2>Step 2</h2>
+<p>Separate tidy dataset into 4 subgroups based on the indicator
+category.</p>
 <pre class="r"><code>Indicator1=tidydata |&gt; filter(indicator==&quot;Took Prescription Medication for Mental Health&quot;)
 Indicator2=tidydata |&gt; filter(indicator==&quot;  
 Received Counseling or Therapy&quot;)
@@ -404,8 +404,9 @@ Indicator3=tidydata |&gt; filter(indicator==&quot;Took Prescription Medication f
 Indicator4=tidydata |&gt; filter(indicator==&quot;  
 Needed Counseling or Therapy But Did Not Get It&quot;)</code></pre>
 </div>
-<div id="step3-apply-linear-model" class="section level2">
-<h2>Step3: Apply linear model</h2>
+<div id="step-3" class="section level2">
+<h2>Step 3</h2>
+<p>Apply linear model</p>
 <pre class="r"><code>library(MASS)
 fit &lt;- lm(value ~ group + subgroup + year + state, data=Indicator1)
 stepwise_fit &lt;- stepAIC(fit, direction=&quot;both&quot;)</code></pre>
@@ -442,8 +443,8 @@ stepwise_fit &lt;- stepAIC(fit, direction=&quot;both&quot;)</code></pre>
 ## - year      1      1773 12866 4245.5
 ## - subgroup 79     64454 75547 8486.6</code></pre>
 </div>
-<div id="step4-aic-values" class="section level2">
-<h2>Step4: AIC values</h2>
+<div id="step-4" class="section level2">
+<h2>Step 4</h2>
 <p>AIC values are identical across the steps shown, which suggests that
 removal or addition of a variable did not improve the model’s fit.</p>
 </div>

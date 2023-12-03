@@ -601,7 +601,7 @@ distribution, and hence, we reject the null hypothesis of normality at
 transformation. However, the shapiro wilk test’s result is still
 significant to suggest this is not normally distributed.</p>
 <ul>
-<li>Step2: Perform Kruskal-Wallis test:</li>
+<li>Step2: Perform Kruskal-Wallis test for indicator 1 dataset</li>
 </ul>
 <pre class="r"><code>kruskal_result=kruskal.test(value ~ subgroup, data = Indicator1)</code></pre>
 <p>Kruskal-Wallis Chi-squared=1812.7. This is the test statistic that
@@ -634,7 +634,7 @@ distribution, and hence, we reject the null hypothesis of normality at
 transformation. However, the shapiro wilk test’s result is still
 significant to suggest this is not normally distributed.</p>
 <ul>
-<li>step 4: Perform Kruskal-Wallis test:</li>
+<li>step 4: Perform Kruskal-Wallis test for indicator 2 dataset</li>
 </ul>
 <pre class="r"><code>kruskal_result=kruskal.test(value ~ subgroup, data = Indicator2)</code></pre>
 <p>Kruskal-Wallis Chi-squared=1784.5. This is the test statistic that
@@ -667,12 +667,45 @@ distribution, and hence, we reject the null hypothesis of normality at
 transformation. However, the shapiro wilk test’s result is still
 significant to suggest this is not normally distributed.</p>
 <ul>
-<li>step 6: Perform Kruskal-Wallis test:</li>
+<li>step 6: Perform Kruskal-Wallis test for Indicator 3 dataset</li>
 </ul>
 <pre class="r"><code>kruskal_result=kruskal.test(value ~ subgroup, data = Indicator3)</code></pre>
 <p>Kruskal-Wallis Chi-squared=1750.7. This is the test statistic that
 follows a chi-squared distribution under the null hypothesis. A value of
 1750.7 is quite large, suggesting a significant difference.</p>
+<p>The p-value is less than 2.2e-16. It effectively means that the
+p-value is extremely small, much less than the commonly used
+significance levels (like 0.05 or 0.01), indicating that there is a
+statistically significant difference in the medians across the
+groups.</p>
+<p>In summary, the test result is highly significant, which leads to the
+rejection of the null hypothesis of equal medians. Therefore, we have
+sufficient evidence to say that not all group medians are equal.</p>
+<ul>
+<li>Step 7: Check normality for Group of people who Needed Counseling or
+Therapy But Did Not Get It.</li>
+</ul>
+<pre class="r"><code>shapiro_test_result &lt;- shapiro.test(pull(Indicator4,value))
+
+hist(log(Indicator3$value), breaks = &quot;FD&quot;, main = &quot;Histogram of Data&quot;, xlab = &quot;Data Values&quot;)</code></pre>
+<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<pre class="r"><code>Indicator4_log=Indicator4 |&gt; mutate(value=log(value))
+shapiro_test_result &lt;- shapiro.test(pull(Indicator4_log,value))</code></pre>
+<p>Shapiro-Wilk normality test result : (W = 0.8161, p-value &lt;
+2.2e-16), The p-value is extremely small (&lt; 2.2e-16), which provides
+strong evidence suggest that the data does not come from a normal
+distribution, and hence, we reject the null hypothesis of normality at
+0.05 level of significance.</p>
+<p>The histogram looks a little bit like normal after I applied the log
+transformation. However, the shapiro wilk test’s result is still
+significant to suggest this is not normally distributed.</p>
+<ul>
+<li>step 6: Perform Kruskal-Wallis test for Indicator 4 dataset</li>
+</ul>
+<pre class="r"><code>kruskal_result=kruskal.test(value ~ subgroup, data = Indicator4)</code></pre>
+<p>Kruskal-Wallis Chi-squared=1539.6. This is the test statistic that
+follows a chi-squared distribution under the null hypothesis. A value of
+1539.6 is quite large, suggesting a significant difference.</p>
 <p>The p-value is less than 2.2e-16. It effectively means that the
 p-value is extremely small, much less than the commonly used
 significance levels (like 0.05 or 0.01), indicating that there is a

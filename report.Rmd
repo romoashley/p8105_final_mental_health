@@ -101,12 +101,12 @@ We are interested in identifying trends over time at the national, state, and de
 
 * What is the national prevalence over time ? 
 * Are there are the differences among states ? Which states have the highest values and which states have the lowest values?
-* Are there difference by gender, sexuality, race/ethnicity, age, and education?
-* What is the proportion of services needed but not received by individuals in New York? across states?
+* Are there differences by gender, sexuality, race/ethnicity, age, and education?
+* What is the proportion of services needed but not received by individuals in New York? 
 * What is the proportion of services needed but not received by individuals across states?
 * Can we apply a linear model to the data?
 * Is there a significant difference between gender and indicators?
-* Is there a signficant differences between sexual orientation and indiators?
+* Is there a significant difference between sexual orientation and indicators?
 
 ## Exploratory Analysis
 

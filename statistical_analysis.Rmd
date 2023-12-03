@@ -42,7 +42,7 @@ gender_received =
     group == "Sex",
     subgroup %in% c("Male", "Female")
   ) |>
-  select(week_number, value, subgroup) |>
+ dplyr::select(week_number, value, subgroup) |>
   pivot_wider(
     names_from = "subgroup",
     values_from = "value") |>
@@ -68,7 +68,7 @@ gender_needed =
     group == "Sex",
     subgroup %in% c("Male", "Female")
   ) |>
-  select(week_number, value, subgroup) |>
+  dplyr::select(week_number, value, subgroup) |>
   pivot_wider(
     names_from = "subgroup",
     values_from = "value") |>
@@ -91,7 +91,7 @@ sexuality_received =
     state == "United States",
     group == "Sexual orientation",
     week_number %in% c(24:33)) |>
-  select(week_number, value, subgroup) |>
+  dplyr::select(week_number, value, subgroup) |>
   pivot_wider(
     names_from = "subgroup",
     values_from = "value") |>

@@ -9,22 +9,14 @@ Loading key packages
 library(tidyverse)
 ```
 
-    ## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-    ## ✔ dplyr     1.1.3     ✔ readr     2.1.4
-    ## ✔ forcats   1.0.0     ✔ stringr   1.5.0
-    ## ✔ ggplot2   3.4.3     ✔ tibble    3.2.1
-    ## ✔ lubridate 1.9.2     ✔ tidyr     1.3.0
-    ## ✔ purrr     1.0.2     
-    ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-    ## ✖ dplyr::filter() masks stats::filter()
-    ## ✖ dplyr::lag()    masks stats::lag()
-    ## ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
-
 Importing clean and tidy dataset
 
 ``` r
 data = 
-  read.csv("data/tidydata.csv")
+  read.csv("data/tidydata.csv") |> 
+  mutate(
+    start_dates = as.Date(start_dates)
+  )
 ```
 
 ## EDA for National Average
@@ -40,14 +32,14 @@ avg_year =
     indicator_total = n())
 ```
 
-    ## `summarise()` has grouped output by 'year', 'start_dates'. You can override
-    ## using the `.groups` argument.
+    ## `summarise()` has grouped output by 'year', 'start_dates'. You
+    ## can override using the `.groups` argument.
 
 ``` r
 # plot average for each start date for each indicator
 avg_year |> 
   ggplot(aes(x = start_dates, y = mean, color = indicator)) +
-  geom_point() +
+  geom_line() +
   labs(
     x = "Start Date",
     y = "Average Value",
@@ -56,7 +48,7 @@ avg_year |>
     legend.position = "bottom",
     axis.text.x = element_text(angle=90, hjust=1),
     strip.text = element_text(size = 4)) +
-  guides(color = guide_legend(nrow = 2))
+  guides(color = guide_legend(nrow = 4))
 ```
 
 ![](EDA_AR_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
@@ -94,7 +86,11 @@ states_df =
   group_by(state) |> 
   summarize(
     services_total = n(),
-    services_not_received = sum(resolution == "not received"))
+    services_not_received = sum(resolution == "not received")) |> 
+  mutate(
+    services_total = as.numeric(services_total),
+    services_not_received = as.numeric(services_not_received)
+  )
 ```
 
 Now, I focus on the state of New York. Using the `prop.test` and
@@ -141,7 +137,17 @@ services_states %>%
   ggplot(aes(x = state, y = estimate)) + 
   geom_point() + 
   geom_errorbar(aes(ymin = conf.low, ymax = conf.high)) + 
-  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(
+    x = "State",
+    y = "Estimate",
+    title = "Proportion of Mental Health Services Not Received by States"
+  )
 ```
 
 ![](EDA_AR_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+
+The majority of states have a similar estimate of proportion of mental
+health services not received in each states. Vermont, Wyoming, Hawaii,
+and North Dakota had distinct estimates, with a lower estimate compared
+to the remaining states. Vermont had the lowest estimate.

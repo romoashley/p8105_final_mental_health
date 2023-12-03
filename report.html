@@ -327,14 +327,29 @@ div.tocify {
         
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="eda.html">Exploratory Data Analysis</a>
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Exploratory Analyses
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="eda.html">National and State-Level</a>
+    </li>
+    <li>
+      <a href="eda_demographic.html">Demographic-Level</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="statistical_analysis.html">Statistical Analysis</a>
 </li>
 <li>
   <a href="report.html">Final Report</a>
+</li>
+<li>
+  <a href="about.html">About Us</a>
 </li>
 <li>
   <a href="http://github.com/&lt;romoashley/p8105_final_mental_health&gt;/">
@@ -457,25 +472,25 @@ rawdata =
 tidydata = 
   rawdata |&gt; 
   janitor::clean_names() |&gt;
-  select(-phase, -quartile_range, -suppression_flag) |&gt;
-  mutate(
+  dplyr::select(-phase, -quartile_range, -suppression_flag) |&gt;
+  dplyr::mutate(
     indicator = str_replace(indicator, &quot;, Last 4 Weeks&quot;, &quot;&quot;),
     group = str_replace(group, &quot;By &quot;, &quot;&quot;)) |&gt;
   drop_na(value) |&gt;
-  select(start_date = time_period_start_date, end_date = time_period_end_date, everything())
+  dplyr::select(start_date = time_period_start_date, end_date = time_period_end_date, everything())
 
 ## part 3: tidying dates
 
 tidydata =
   tidydata |&gt;
-  mutate(
+  dplyr::mutate(
     week_number = match(time_period_label, unique(time_period_label)),
     start_dates = mdy(pull(tidydata, start_date)),
     end_dates = mdy(pull(tidydata, end_date)),
     tpl = time_period_label,
     year = as.numeric(str_extract(tpl, &quot;\\d{4}&quot;))) |&gt;
   separate(col = time_period_label, into = c(&quot;week_label&quot;, &quot;years&quot;), sep = &quot;, &quot;, remove = FALSE, extra = &quot;merge&quot;) |&gt;
-  select(indicator, year, start_dates, end_dates, week_number, week_label = time_period_label, state, group, subgroup, value, low_ci, high_ci, confidence_interval)</code></pre>
+  dplyr::select(indicator, year, start_dates, end_dates, week_number, week_label = time_period_label, state, group, subgroup, value, low_ci, high_ci, confidence_interval)</code></pre>
 </div>
 <div id="final-data-set" class="section level3">
 <h3>Final Data Set</h3>

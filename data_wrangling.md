@@ -1,4 +1,4 @@
-Data import and Wrangling
+Data Import and Wrangling
 ================
 
 ``` r
@@ -17,7 +17,7 @@ rawdata =
 ```
 
     ## Rows: 10404 Columns: 15
-    ## ── Column specification ────────────────────────────────────────────────────────
+    ## ── Column specification ────────────────────────────────────────
     ## Delimiter: ","
     ## chr (10): Indicator, Group, State, Subgroup, Phase, Time Period Label, Time ...
     ## dbl  (5): Time Period, Value, LowCI, HighCI, Suppression Flag
@@ -36,9 +36,10 @@ column.
 tidydata = 
   rawdata |> 
   janitor::clean_names() |>
-  mutate(indicator = str_replace(indicator, ", Last 4 Weeks", "")) |> 
-  select(-phase, -quartile_range, -suppression_flag) |> 
-  mutate(group = str_replace(group, "By ", "")) |>
+  select(-phase, -quartile_range, -suppression_flag) |>
+  mutate(
+    indicator = str_replace(indicator, ", Last 4 Weeks", ""),
+    group = str_replace(group, "By ", "")) |>
   drop_na(value) |>
   select(start_date = time_period_start_date, end_date = time_period_end_date, everything())
 ```
@@ -57,17 +58,18 @@ value problem and we already had a `year` variable).
 ``` r
 tidydata =
   tidydata |>
-  mutate(week_number = match(time_period_label, unique(time_period_label))) |>
   mutate(
+    week_number = match(time_period_label, unique(time_period_label)),
     start_dates = mdy(pull(tidydata, start_date)),
-    end_dates = mdy(pull(tidydata, end_date))) |> 
-  mutate(tpl = time_period_label) |>  
-  mutate(year = as.numeric(str_extract(tpl, "\\d{4}")))|> 
+    end_dates = mdy(pull(tidydata, end_date)),
+    tpl = time_period_label,
+    year = as.numeric(str_extract(tpl, "\\d{4}")),
+    start_dates = as.Date(start_dates)) |>
   separate(col = time_period_label, into = c("week_label", "years"), sep = ", ", remove = FALSE, extra = "merge") |>
   select(indicator, year, start_dates, end_dates, week_number, week_label = time_period_label, state, group, subgroup, value, low_ci, high_ci, confidence_interval)
 ```
 
-# Step 4: exports the tidy data to a csv file named tidydata.
+## Step 4: export the tidy data to a csv file named tidydata
 
 ``` r
  write.csv(tidydata, "data/tidydata.csv", row.names=FALSE)

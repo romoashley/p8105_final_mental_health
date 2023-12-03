@@ -583,6 +583,21 @@ each subgroup and perform the the most appropriate test.</p>
 Indicator2=tidydata |&gt; filter(indicator==&quot;Received Counseling or Therapy&quot;)
 Indicator3=tidydata |&gt; filter(indicator==&quot;Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy&quot;)
 Indicator4=tidydata |&gt; filter(indicator==&quot;Needed Counseling or Therapy But Did Not Get It&quot;)</code></pre>
+<ul>
+<li>Step 1:</li>
+</ul>
+<ol style="list-style-type: decimal">
+<li>Group of people who Took Prescription Medication for Mental
+Health.</li>
+</ol>
+<pre class="r"><code>shapiro_test_result &lt;- shapiro.test(pull(Indicator1,value))
+hist(log(Indicator1$value), breaks = &quot;FD&quot;, main = &quot;Histogram of Data&quot;, xlab = &quot;Data Values&quot;)</code></pre>
+<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-11-1.png" width="672" />
+Shapiro-Wilk normality test result : (W = 0.93709, p-value &lt;
+2.2e-16), The p-value is extremely small (&lt; 2.2e-16), which provides
+strong evidence suggest that the data does not come from a normal
+distribution, and hence, we reject the null hypothesis of normality at
+0.05 level of significance.</p>
 </div>
 
 

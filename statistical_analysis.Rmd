@@ -160,3 +160,13 @@ Indicator2=tidydata |> filter(indicator=="Received Counseling or Therapy")
 Indicator3=tidydata |> filter(indicator=="Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy")
 Indicator4=tidydata |> filter(indicator=="Needed Counseling or Therapy But Did Not Get It")
 ```
+
+* Step 1: 
+
+1. Group of people who Took Prescription Medication for Mental Health.
+
+```{r}
+shapiro_test_result <- shapiro.test(pull(Indicator1,value))
+hist(log(Indicator1$value), breaks = "FD", main = "Histogram of Data", xlab = "Data Values")
+```
+Shapiro-Wilk normality test result : (W = 0.93709, p-value < 2.2e-16), The p-value is extremely small (< 2.2e-16), which provides strong evidence suggest that the data does not come from a normal distribution, and hence, we reject the null hypothesis of normality at 0.05 level of significance. 

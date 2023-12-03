@@ -1,639 +1,408 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
-<meta charset="utf-8">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="pandoc" />
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Data Import and Wrangling</title>
+
+<script src="site_libs/header-attrs-2.24/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
-@font-face {
-font-family: octicons-link;
-src: url(data:font/woff;charset=utf-8;base64,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) format('woff');
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
 }
-body {
--webkit-text-size-adjust: 100%;
-text-size-adjust: 100%;
-color: #333;
-font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-font-size: 16px;
-line-height: 1.6;
-word-wrap: break-word;
-}
-a {
-background-color: transparent;
-}
-a:active,
-a:hover {
-outline: 0;
-}
-strong {
-font-weight: bold;
-}
-h1 {
-font-size: 2em;
-margin: 0.67em 0;
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
 }
 img {
-border: 0;
+  max-width:100%;
 }
-hr {
-box-sizing: content-box;
-height: 0;
+.tabbed-pane {
+  padding-top: 12px;
 }
-pre {
-overflow: auto;
+.html-widget {
+  margin-bottom: 20px;
 }
-code,
-kbd,
-pre {
-font-family: monospace, monospace;
-font-size: 1em;
+button.code-folding-btn:focus {
+  outline: none;
 }
-input {
-color: inherit;
-font: inherit;
-margin: 0;
+summary {
+  display: list-item;
 }
-html input[disabled] {
-cursor: default;
-}
-input {
-line-height: normal;
-}
-input[type="checkbox"] {
-box-sizing: border-box;
-padding: 0;
-}
-table {
-border-collapse: collapse;
-border-spacing: 0;
-}
-td,
-th {
-padding: 0;
-}
-* {
-box-sizing: border-box;
-}
-input {
-font: 13px / 1.4 Helvetica, arial, nimbussansl, liberationsans, freesans, clean, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-}
-a {
-color: #4078c0;
-text-decoration: none;
-}
-a:hover,
-a:active {
-text-decoration: underline;
-}
-hr {
-height: 0;
-margin: 15px 0;
-overflow: hidden;
-background: transparent;
-border: 0;
-border-bottom: 1px solid #ddd;
-}
-hr:before {
-display: table;
-content: "";
-}
-hr:after {
-display: table;
-clear: both;
-content: "";
-}
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-margin-top: 15px;
-margin-bottom: 15px;
-line-height: 1.1;
-}
-h1 {
-font-size: 30px;
-}
-h2 {
-font-size: 21px;
-}
-h3 {
-font-size: 16px;
-}
-h4 {
-font-size: 14px;
-}
-h5 {
-font-size: 12px;
-}
-h6 {
-font-size: 11px;
-}
-blockquote {
-margin: 0;
-}
-ul,
-ol {
-padding: 0;
-margin-top: 0;
-margin-bottom: 0;
-}
-ol ol,
-ul ol {
-list-style-type: lower-roman;
-}
-ul ul ol,
-ul ol ol,
-ol ul ol,
-ol ol ol {
-list-style-type: lower-alpha;
-}
-dd {
-margin-left: 0;
-}
-code {
-font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
-font-size: 12px;
-}
-pre {
-margin-top: 0;
-margin-bottom: 0;
-font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
-}
-.select::-ms-expand {
-opacity: 0;
-}
-.octicon {
-font: normal normal normal 16px/1 octicons-link;
-display: inline-block;
-text-decoration: none;
-text-rendering: auto;
--webkit-font-smoothing: antialiased;
--moz-osx-font-smoothing: grayscale;
--webkit-user-select: none;
--moz-user-select: none;
--ms-user-select: none;
-user-select: none;
-}
-.octicon-link:before {
-content: '\f05c';
-}
-.markdown-body:before {
-display: table;
-content: "";
-}
-.markdown-body:after {
-display: table;
-clear: both;
-content: "";
-}
-.markdown-body>*:first-child {
-margin-top: 0 !important;
-}
-.markdown-body>*:last-child {
-margin-bottom: 0 !important;
-}
-a:not([href]) {
-color: inherit;
-text-decoration: none;
-}
-.anchor {
-display: inline-block;
-padding-right: 2px;
-margin-left: -18px;
-}
-.anchor:focus {
-outline: none;
-}
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-margin-top: 1em;
-margin-bottom: 16px;
-font-weight: bold;
-line-height: 1.4;
-}
-h1 .octicon-link,
-h2 .octicon-link,
-h3 .octicon-link,
-h4 .octicon-link,
-h5 .octicon-link,
-h6 .octicon-link {
-color: #000;
-vertical-align: middle;
-visibility: hidden;
-}
-h1:hover .anchor,
-h2:hover .anchor,
-h3:hover .anchor,
-h4:hover .anchor,
-h5:hover .anchor,
-h6:hover .anchor {
-text-decoration: none;
-}
-h1:hover .anchor .octicon-link,
-h2:hover .anchor .octicon-link,
-h3:hover .anchor .octicon-link,
-h4:hover .anchor .octicon-link,
-h5:hover .anchor .octicon-link,
-h6:hover .anchor .octicon-link {
-visibility: visible;
-}
-h1 {
-padding-bottom: 0.3em;
-font-size: 2.25em;
-line-height: 1.2;
-border-bottom: 1px solid #eee;
-}
-h1 .anchor {
-line-height: 1;
-}
-h2 {
-padding-bottom: 0.3em;
-font-size: 1.75em;
-line-height: 1.225;
-border-bottom: 1px solid #eee;
-}
-h2 .anchor {
-line-height: 1;
-}
-h3 {
-font-size: 1.5em;
-line-height: 1.43;
-}
-h3 .anchor {
-line-height: 1.2;
-}
-h4 {
-font-size: 1.25em;
-}
-h4 .anchor {
-line-height: 1.2;
-}
-h5 {
-font-size: 1em;
-}
-h5 .anchor {
-line-height: 1.1;
-}
-h6 {
-font-size: 1em;
-color: #777;
-}
-h6 .anchor {
-line-height: 1.1;
-}
-p,
-blockquote,
-ul,
-ol,
-dl,
-table,
-pre {
-margin-top: 0;
-margin-bottom: 16px;
-}
-hr {
-height: 4px;
-padding: 0;
-margin: 16px 0;
-background-color: #e7e7e7;
-border: 0 none;
-}
-ul,
-ol {
-padding-left: 2em;
-}
-ul ul,
-ul ol,
-ol ol,
-ol ul {
-margin-top: 0;
-margin-bottom: 0;
-}
-li>p {
-margin-top: 16px;
-}
-dl {
-padding: 0;
-}
-dl dt {
-padding: 0;
-margin-top: 16px;
-font-size: 1em;
-font-style: italic;
-font-weight: bold;
-}
-dl dd {
-padding: 0 16px;
-margin-bottom: 16px;
-}
-blockquote {
-padding: 0 15px;
-color: #777;
-border-left: 4px solid #ddd;
-}
-blockquote>:first-child {
-margin-top: 0;
-}
-blockquote>:last-child {
-margin-bottom: 0;
-}
-table {
-display: block;
-width: 100%;
-overflow: auto;
-word-break: normal;
-word-break: keep-all;
-}
-table th {
-font-weight: bold;
-}
-table th,
-table td {
-padding: 6px 13px;
-border: 1px solid #ddd;
-}
-table tr {
-background-color: #fff;
-border-top: 1px solid #ccc;
-}
-table tr:nth-child(2n) {
-background-color: #f8f8f8;
-}
-img {
-max-width: 100%;
-box-sizing: content-box;
-background-color: #fff;
-}
-code {
-padding: 0;
-padding-top: 0.2em;
-padding-bottom: 0.2em;
-margin: 0;
-font-size: 85%;
-background-color: rgba(0,0,0,0.04);
-border-radius: 3px;
-}
-code:before,
-code:after {
-letter-spacing: -0.2em;
-content: "\00a0";
-}
-pre>code {
-padding: 0;
-margin: 0;
-font-size: 100%;
-word-break: normal;
-white-space: pre;
-background: transparent;
-border: 0;
-}
-.highlight {
-margin-bottom: 16px;
-}
-.highlight pre,
-pre {
-padding: 16px;
-overflow: auto;
-font-size: 85%;
-line-height: 1.45;
-background-color: #f7f7f7;
-border-radius: 3px;
-}
-.highlight pre {
-margin-bottom: 0;
-word-break: normal;
-}
-pre {
-word-wrap: normal;
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
-display: inline;
-max-width: initial;
-padding: 0;
-margin: 0;
-overflow: initial;
-line-height: inherit;
-word-wrap: normal;
-background-color: transparent;
-border: 0;
-}
-pre code:before,
-pre code:after {
-content: normal;
-}
-kbd {
-display: inline-block;
-padding: 3px 5px;
-font-size: 11px;
-line-height: 10px;
-color: #555;
-vertical-align: middle;
-background-color: #fcfcfc;
-border: solid 1px #ccc;
-border-bottom-color: #bbb;
-border-radius: 3px;
-box-shadow: inset 0 -1px 0 #bbb;
-}
-.pl-c {
-color: #969896;
-}
-.pl-c1,
-.pl-s .pl-v {
-color: #0086b3;
-}
-.pl-e,
-.pl-en {
-color: #795da3;
-}
-.pl-s .pl-s1,
-.pl-smi {
-color: #333;
-}
-.pl-ent {
-color: #63a35c;
-}
-.pl-k {
-color: #a71d5d;
-}
-.pl-pds,
-.pl-s,
-.pl-s .pl-pse .pl-s1,
-.pl-sr,
-.pl-sr .pl-cce,
-.pl-sr .pl-sra,
-.pl-sr .pl-sre {
-color: #183691;
-}
-.pl-v {
-color: #ed6a43;
-}
-.pl-id {
-color: #b52a1d;
-}
-.pl-ii {
-background-color: #b52a1d;
-color: #f8f8f8;
-}
-.pl-sr .pl-cce {
-color: #63a35c;
-font-weight: bold;
-}
-.pl-ml {
-color: #693a17;
-}
-.pl-mh,
-.pl-mh .pl-en,
-.pl-ms {
-color: #1d3e81;
-font-weight: bold;
-}
-.pl-mq {
-color: #008080;
-}
-.pl-mi {
-color: #333;
-font-style: italic;
-}
-.pl-mb {
-color: #333;
-font-weight: bold;
-}
-.pl-md {
-background-color: #ffecec;
-color: #bd2c00;
-}
-.pl-mi1 {
-background-color: #eaffea;
-color: #55a532;
-}
-.pl-mdr {
-color: #795da3;
-font-weight: bold;
-}
-.pl-mo {
-color: #1d3e81;
-}
-kbd {
-display: inline-block;
-padding: 3px 5px;
-font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
-line-height: 10px;
-color: #555;
-vertical-align: middle;
-background-color: #fcfcfc;
-border: solid 1px #ccc;
-border-bottom-color: #bbb;
-border-radius: 3px;
-box-shadow: inset 0 -1px 0 #bbb;
-}
-.task-list-item {
-list-style-type: none;
-}
-.task-list-item+.task-list-item {
-margin-top: 3px;
-}
-.task-list-item input {
-margin: 0 0.35em 0.25em -1.6em;
-vertical-align: middle;
-}
-:checked+.radio-label {
-z-index: 1;
-position: relative;
-border-color: #4078c0;
-}
-.sourceLine {
-display: inline-block;
-}
-code .kw { color: #000000; }
-code .dt { color: #ed6a43; }
-code .dv { color: #009999; }
-code .bn { color: #009999; }
-code .fl { color: #009999; }
-code .ch { color: #009999; }
-code .st { color: #183691; }
-code .co { color: #969896; }
-code .ot { color: #0086b3; }
-code .al { color: #a61717; }
-code .fu { color: #63a35c; }
-code .er { color: #a61717; background-color: #e3d2d2; }
-code .wa { color: #000000; }
-code .cn { color: #008080; }
-code .sc { color: #008080; }
-code .vs { color: #183691; }
-code .ss { color: #183691; }
-code .im { color: #000000; }
-code .va {color: #008080; }
-code .cf { color: #000000; }
-code .op { color: #000000; }
-code .bu { color: #000000; }
-code .ex { color: #000000; }
-code .pp { color: #999999; }
-code .at { color: #008080; }
-code .do { color: #969896; }
-code .an { color: #008080; }
-code .cv { color: #008080; }
-code .in { color: #008080; }
-</style>
-<style>
-body {
-box-sizing: border-box;
-min-width: 200px;
-max-width: 980px;
-margin: 0 auto;
-padding: 45px;
-padding-top: 0px;
+  padding: 0;
 }
 </style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
 
 
 </head>
 
 <body>
 
-<h1 id="data-import-and-wrangling">Data Import and Wrangling</h1>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span> (tidyverse)</span></code></pre></div>
-<h2 id="step-1-data-import">Step 1: Data import</h2>
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Home</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Exploratory Analyses
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="eda.html">National and State-Level</a>
+    </li>
+    <li>
+      <a href="eda_demographic.html">Demographic-Level</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="statistical_analysis.html">Statistical Analysis</a>
+</li>
+<li>
+  <a href="report.html">Final Report</a>
+</li>
+<li>
+  <a href="about.html">About Us</a>
+</li>
+<li>
+  <a href="http://github.com/&lt;romoashley/p8105_final_mental_health&gt;/">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Data Import and Wrangling</h1>
+
+</div>
+
+
+<pre class="r"><code>library (tidyverse)</code></pre>
+<div id="step-1-data-import" class="section level2">
+<h2>Step 1: Data import</h2>
 <p>First, I download the .csv to my computer and renamed the file from
 Mental_Health_Care_in_the_Last_4_Weeks.csv to mental_health.csv. Then, I
 imported it to R with <code>read_csv</code> and saved the data set as
 <code>rawdata</code>.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>rawdata <span class="ot">=</span></span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  <span class="fu">read_csv</span>(<span class="st">&quot;data/mental_health.csv&quot;</span>)</span></code></pre></div>
+<pre class="r"><code>rawdata =
+  read_csv(&quot;data/mental_health.csv&quot;)</code></pre>
 <pre><code>## Rows: 10404 Columns: 15
-## ── Column specification ────────────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## chr (10): Indicator, Group, State, Subgroup, Phase, Time Period Label, Time ...
 ## dbl  (5): Time Period, Value, LowCI, HighCI, Suppression Flag
 ## 
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<h2 id="step-2-rename-and-clean-columns">Step 2: Rename and clean
-columns</h2>
+</div>
+<div id="step-2-rename-and-clean-columns" class="section level2">
+<h2>Step 2: Rename and clean columns</h2>
 <p>I removed unnecessary columns, including phase, quartile range, and
 suppression flag, and cleaned and renamed some columns for clarity or
 consistency. Additionally, I dropped missing values in the
 <code>value</code> column.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>tidydata <span class="ot">=</span> </span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  rawdata <span class="sc">|&gt;</span> </span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  janitor<span class="sc">::</span><span class="fu">clean_names</span>() <span class="sc">|&gt;</span></span>
-<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>phase, <span class="sc">-</span>quartile_range, <span class="sc">-</span>suppression_flag) <span class="sc">|&gt;</span></span>
-<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>    <span class="at">indicator =</span> <span class="fu">str_replace</span>(indicator, <span class="st">&quot;, Last 4 Weeks&quot;</span>, <span class="st">&quot;&quot;</span>),</span>
-<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>    <span class="at">group =</span> <span class="fu">str_replace</span>(group, <span class="st">&quot;By &quot;</span>, <span class="st">&quot;&quot;</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>  <span class="fu">drop_na</span>(value) <span class="sc">|&gt;</span></span>
-<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>  <span class="fu">select</span>(<span class="at">start_date =</span> time_period_start_date, <span class="at">end_date =</span> time_period_end_date, <span class="fu">everything</span>())</span></code></pre></div>
-<h2 id="step-3-tidy-the-dates">Step 3: Tidy the dates</h2>
+<pre class="r"><code>tidydata = 
+  rawdata |&gt; 
+  janitor::clean_names() |&gt;
+  select(-phase, -quartile_range, -suppression_flag) |&gt;
+  mutate(
+    indicator = str_replace(indicator, &quot;, Last 4 Weeks&quot;, &quot;&quot;),
+    group = str_replace(group, &quot;By &quot;, &quot;&quot;)) |&gt;
+  drop_na(value) |&gt;
+  select(start_date = time_period_start_date, end_date = time_period_end_date, everything())</code></pre>
+</div>
+<div id="step-3-tidy-the-dates" class="section level2">
+<h2>Step 3: Tidy the dates</h2>
 <p>First, I created an indicator for <code>week_number</code> using
 <code>match</code> to assign a number to the position of the week
 number. Then, I converted dates to the date format using
@@ -644,21 +413,25 @@ original <code>time_period_label</code> variable into two variables:
 variables I need (excluding <code>years</code> because this variable is
 unable convert into numeric without causing missing value problem and we
 already had a <code>year</code> variable).</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>tidydata <span class="ot">=</span></span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  tidydata <span class="sc">|&gt;</span></span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>    <span class="at">week_number =</span> <span class="fu">match</span>(time_period_label, <span class="fu">unique</span>(time_period_label)),</span>
-<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>    <span class="at">start_dates =</span> <span class="fu">mdy</span>(<span class="fu">pull</span>(tidydata, start_date)),</span>
-<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>    <span class="at">end_dates =</span> <span class="fu">mdy</span>(<span class="fu">pull</span>(tidydata, end_date)),</span>
-<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>    <span class="at">tpl =</span> time_period_label,</span>
-<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>    <span class="at">year =</span> <span class="fu">as.numeric</span>(<span class="fu">str_extract</span>(tpl, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">d{4}&quot;</span>)),</span>
-<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>    <span class="at">start_dates =</span> <span class="fu">as.Date</span>(start_dates)) <span class="sc">|&gt;</span></span>
-<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>  <span class="fu">separate</span>(<span class="at">col =</span> time_period_label, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">&quot;week_label&quot;</span>, <span class="st">&quot;years&quot;</span>), <span class="at">sep =</span> <span class="st">&quot;, &quot;</span>, <span class="at">remove =</span> <span class="cn">FALSE</span>, <span class="at">extra =</span> <span class="st">&quot;merge&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>  <span class="fu">select</span>(indicator, year, start_dates, end_dates, week_number, <span class="at">week_label =</span> time_period_label, state, group, subgroup, value, low_ci, high_ci, confidence_interval)</span></code></pre></div>
-<h2 id="step-4-export-the-tidy-data-to-a-csv-file-named-tidydata">Step
-4: export the tidy data to a csv file named tidydata</h2>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a> <span class="fu">write.csv</span>(tidydata, <span class="st">&quot;data/tidydata.csv&quot;</span>, <span class="at">row.names=</span><span class="cn">FALSE</span>)</span></code></pre></div>
-<h2 id="comment-on-variable-names">Comment on variable names</h2>
+<pre class="r"><code>tidydata =
+  tidydata |&gt;
+  mutate(
+    week_number = match(time_period_label, unique(time_period_label)),
+    start_dates = mdy(pull(tidydata, start_date)),
+    end_dates = mdy(pull(tidydata, end_date)),
+    tpl = time_period_label,
+    year = as.numeric(str_extract(tpl, &quot;\\d{4}&quot;)),
+    start_dates = as.Date(start_dates)) |&gt;
+  separate(col = time_period_label, into = c(&quot;week_label&quot;, &quot;years&quot;), sep = &quot;, &quot;, remove = FALSE, extra = &quot;merge&quot;) |&gt;
+  select(indicator, year, start_dates, end_dates, week_number, week_label = time_period_label, state, group, subgroup, value, low_ci, high_ci, confidence_interval)</code></pre>
+</div>
+<div id="step-4-export-the-tidy-data-to-a-csv-file-named-tidydata"
+class="section level2">
+<h2>Step 4: export the tidy data to a csv file named tidydata</h2>
+<pre class="r"><code> write.csv(tidydata, &quot;data/tidydata.csv&quot;, row.names=FALSE)</code></pre>
+</div>
+<div id="comment-on-variable-names" class="section level2">
+<h2>Comment on variable names</h2>
 <p>There are 13 variables in the <code>tidydata</code> data set:</p>
 <ul>
 <li><code>indicator</code> (chr): The type of mental health care.</li>
@@ -694,52 +467,129 @@ of the value.</li>
 <li><code>confidence_interval</code> (chr): Confidence interval as a
 range.</li>
 </ul>
-<h1 id="step-5-extra-data-wrangling">Step 5: Extra Data wrangling:</h1>
+</div>
+<div id="step-5-extra-data-wrangling" class="section level1">
+<h1>Step 5: Extra Data wrangling:</h1>
 <ol style="list-style-type: decimal">
 <li>Separate the dataset into four groups based on the indicator’s
 categories.</li>
 </ol>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>Indicator1<span class="ot">=</span>tidydata <span class="sc">|&gt;</span> <span class="fu">filter</span>(indicator<span class="sc">==</span><span class="st">&quot;Took Prescription Medication for Mental Health&quot;</span>)</span>
-<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>Indicator2<span class="ot">=</span>tidydata <span class="sc">|&gt;</span> <span class="fu">filter</span>(indicator<span class="sc">==</span><span class="st">&quot;  </span></span>
-<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="st">Received Counseling or Therapy&quot;</span>)</span>
-<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>Indicator3<span class="ot">=</span>tidydata <span class="sc">|&gt;</span> <span class="fu">filter</span>(indicator<span class="sc">==</span><span class="st">&quot;Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy&quot;</span>)</span>
-<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>Indicator4<span class="ot">=</span>tidydata <span class="sc">|&gt;</span> <span class="fu">filter</span>(indicator<span class="sc">==</span><span class="st">&quot;  </span></span>
-<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a><span class="st">Needed Counseling or Therapy But Did Not Get It&quot;</span>)</span></code></pre></div>
+<pre class="r"><code>Indicator1=tidydata |&gt; filter(indicator==&quot;Took Prescription Medication for Mental Health&quot;)
+Indicator2=tidydata |&gt; filter(indicator==&quot;Received Counseling or Therapy&quot;)
+Indicator3=tidydata |&gt; filter(indicator==&quot;Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy&quot;)
+Indicator4=tidydata |&gt; filter(indicator==&quot;Needed Counseling or Therapy But Did Not Get It&quot;)</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>Did some data cleanning for Indicator1.Break the dataset Indicator1
 into different smaller dataset based on the different categories from
 the subgroup. Indicator1 is the people who Took Prescription Medication
 for Mental Health.</li>
 </ol>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>age_data<span class="ot">=</span>Indicator1 <span class="sc">|&gt;</span> <span class="fu">filter</span>(group<span class="sc">==</span><span class="st">&quot;Age&quot;</span>)</span>
-<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>race_data<span class="ot">=</span>Indicator1 <span class="sc">|&gt;</span> <span class="fu">filter</span>(group<span class="sc">==</span><span class="st">&quot;Race/Hispanic ethnicity&quot;</span>)</span>
-<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>sex_data<span class="ot">=</span>Indicator1 <span class="sc">|&gt;</span> <span class="fu">filter</span>(group<span class="sc">==</span><span class="st">&quot;Sex&quot;</span>)</span>
-<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>education_data<span class="ot">=</span>Indicator1 <span class="sc">|&gt;</span> <span class="fu">filter</span>(group<span class="sc">==</span><span class="st">&quot;Education&quot;</span>)</span>
-<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>state_data<span class="ot">=</span>Indicator1 <span class="sc">|&gt;</span> <span class="fu">filter</span>(group<span class="sc">==</span><span class="st">&quot;State&quot;</span>)</span>
-<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>Symptoms_data<span class="ot">=</span>Indicator1 <span class="sc">|&gt;</span> <span class="fu">filter</span>(group<span class="sc">==</span><span class="st">&quot;Presence of Symptoms of Anxiety/Depression&quot;</span>)</span></code></pre></div>
+<pre class="r"><code>age_data=Indicator1 |&gt; filter(group==&quot;Age&quot;)
+race_data=Indicator1 |&gt; filter(group==&quot;Race/Hispanic ethnicity&quot;)
+sex_data=Indicator1 |&gt; filter(group==&quot;Sex&quot;)
+education_data=Indicator1 |&gt; filter(group==&quot;Education&quot;)
+state_data=Indicator1 |&gt; filter(group==&quot;State&quot;)
+Symptoms_data=Indicator1 |&gt; filter(group==&quot;Presence of Symptoms of Anxiety/Depression&quot;)</code></pre>
 <p>Indicator2 is the people who Received Counseling or Therapy.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>age_data<span class="ot">=</span>Indicator2 <span class="sc">|&gt;</span> <span class="fu">filter</span>(group<span class="sc">==</span><span class="st">&quot;Age&quot;</span>)</span>
-<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>race_data<span class="ot">=</span>Indicator2 <span class="sc">|&gt;</span> <span class="fu">filter</span>(group<span class="sc">==</span><span class="st">&quot;Race/Hispanic ethnicity&quot;</span>)</span>
-<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>sex_data<span class="ot">=</span>Indicator2 <span class="sc">|&gt;</span> <span class="fu">filter</span>(group<span class="sc">==</span><span class="st">&quot;Sex&quot;</span>)</span>
-<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>education_data<span class="ot">=</span>Indicator2 <span class="sc">|&gt;</span> <span class="fu">filter</span>(group<span class="sc">==</span><span class="st">&quot;Education&quot;</span>)</span>
-<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>state_data<span class="ot">=</span>Indicator2 <span class="sc">|&gt;</span> <span class="fu">filter</span>(group<span class="sc">==</span><span class="st">&quot;State&quot;</span>)</span>
-<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>Symptoms_data<span class="ot">=</span>Indicator2 <span class="sc">|&gt;</span> <span class="fu">filter</span>(group<span class="sc">==</span><span class="st">&quot;Presence of Symptoms of Anxiety/Depression&quot;</span>)</span></code></pre></div>
+<pre class="r"><code>age_data=Indicator2 |&gt; filter(group==&quot;Age&quot;)
+race_data=Indicator2 |&gt; filter(group==&quot;Race/Hispanic ethnicity&quot;)
+sex_data=Indicator2 |&gt; filter(group==&quot;Sex&quot;)
+education_data=Indicator2 |&gt; filter(group==&quot;Education&quot;)
+state_data=Indicator2 |&gt; filter(group==&quot;State&quot;)
+Symptoms_data=Indicator2 |&gt; filter(group==&quot;Presence of Symptoms of Anxiety/Depression&quot;)</code></pre>
 <p>Indicator3 is the people who Took Prescription Medication for Mental
 Health And/Or Received Counseling or Therapy.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>age_data<span class="ot">=</span>Indicator3 <span class="sc">|&gt;</span> <span class="fu">filter</span>(group<span class="sc">==</span><span class="st">&quot;Age&quot;</span>)</span>
-<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>race_data<span class="ot">=</span>Indicator3 <span class="sc">|&gt;</span> <span class="fu">filter</span>(group<span class="sc">==</span><span class="st">&quot;Race/Hispanic ethnicity&quot;</span>)</span>
-<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>sex_data<span class="ot">=</span>Indicator3 <span class="sc">|&gt;</span> <span class="fu">filter</span>(group<span class="sc">==</span><span class="st">&quot;Sex&quot;</span>)</span>
-<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>education_data<span class="ot">=</span>Indicator3 <span class="sc">|&gt;</span> <span class="fu">filter</span>(group<span class="sc">==</span><span class="st">&quot;Education&quot;</span>)</span>
-<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>state_data<span class="ot">=</span>Indicator3 <span class="sc">|&gt;</span> <span class="fu">filter</span>(group<span class="sc">==</span><span class="st">&quot;State&quot;</span>)</span>
-<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a>Symptoms_data<span class="ot">=</span>Indicator3 <span class="sc">|&gt;</span> <span class="fu">filter</span>(group<span class="sc">==</span><span class="st">&quot;Presence of Symptoms of Anxiety/Depression&quot;</span>)</span></code></pre></div>
+<pre class="r"><code>age_data=Indicator3 |&gt; filter(group==&quot;Age&quot;)
+race_data=Indicator3 |&gt; filter(group==&quot;Race/Hispanic ethnicity&quot;)
+sex_data=Indicator3 |&gt; filter(group==&quot;Sex&quot;)
+education_data=Indicator3 |&gt; filter(group==&quot;Education&quot;)
+state_data=Indicator3 |&gt; filter(group==&quot;State&quot;)
+Symptoms_data=Indicator3 |&gt; filter(group==&quot;Presence of Symptoms of Anxiety/Depression&quot;)</code></pre>
 <p>Indicator4 is people who Needed Counseling or Therapy But Did Not Get
 It.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>age_data<span class="ot">=</span>Indicator4 <span class="sc">|&gt;</span> <span class="fu">filter</span>(group<span class="sc">==</span><span class="st">&quot;Age&quot;</span>)</span>
-<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>race_data<span class="ot">=</span>Indicator4 <span class="sc">|&gt;</span> <span class="fu">filter</span>(group<span class="sc">==</span><span class="st">&quot;Race/Hispanic ethnicity&quot;</span>)</span>
-<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>sex_data<span class="ot">=</span>Indicator4 <span class="sc">|&gt;</span> <span class="fu">filter</span>(group<span class="sc">==</span><span class="st">&quot;Sex&quot;</span>)</span>
-<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>education_data<span class="ot">=</span>Indicator4 <span class="sc">|&gt;</span> <span class="fu">filter</span>(group<span class="sc">==</span><span class="st">&quot;Education&quot;</span>)</span>
-<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a>state_data<span class="ot">=</span>Indicator4 <span class="sc">|&gt;</span> <span class="fu">filter</span>(group<span class="sc">==</span><span class="st">&quot;State&quot;</span>)</span>
-<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a>Symptoms_data<span class="ot">=</span>Indicator4 <span class="sc">|&gt;</span> <span class="fu">filter</span>(group<span class="sc">==</span><span class="st">&quot;Presence of Symptoms of Anxiety/Depression&quot;</span>)</span></code></pre></div>
+<pre class="r"><code>age_data=Indicator4 |&gt; filter(group==&quot;Age&quot;)
+race_data=Indicator4 |&gt; filter(group==&quot;Race/Hispanic ethnicity&quot;)
+sex_data=Indicator4 |&gt; filter(group==&quot;Sex&quot;)
+education_data=Indicator4 |&gt; filter(group==&quot;Education&quot;)
+state_data=Indicator4 |&gt; filter(group==&quot;State&quot;)
+Symptoms_data=Indicator4 |&gt; filter(group==&quot;Presence of Symptoms of Anxiety/Depression&quot;)</code></pre>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 
 </body>
 </html>

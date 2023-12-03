@@ -110,6 +110,8 @@ We are interested in identifying trends over time at the national, state, and de
 
 ## Exploratory Analysis
 
+We conducted Exploratory Data Analysis (EDA) at the [national-level](EDA_AR.html), [state-level](eda.html), and [demographic-level](eda_demographic.html).
+
 ## Additional Analysis
 
 ## Results and Discussion

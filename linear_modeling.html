@@ -398,17 +398,14 @@ tidydata =
 <p>Separate tidy dataset into 4 subgroups based on the indicator
 category.</p>
 <pre class="r"><code>Indicator1=tidydata |&gt; filter(indicator==&quot;Took Prescription Medication for Mental Health&quot;)
-Indicator2=tidydata |&gt; filter(indicator==&quot;  
-Received Counseling or Therapy&quot;)
+Indicator2=tidydata |&gt; filter(indicator==&quot;Received Counseling or Therapy&quot;)
 Indicator3=tidydata |&gt; filter(indicator==&quot;Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy&quot;)
-Indicator4=tidydata |&gt; filter(indicator==&quot;  
-Needed Counseling or Therapy But Did Not Get It&quot;)</code></pre>
+Indicator4=tidydata |&gt; filter(indicator==&quot;Needed Counseling or Therapy But Did Not Get It&quot;)</code></pre>
 </div>
 <div id="step-3" class="section level2">
 <h2>Step 3</h2>
 <p>Apply linear model</p>
-<pre class="r"><code>library(MASS)
-fit &lt;- lm(value ~ group + subgroup + year + state, data=Indicator1)
+<pre class="r"><code>fit &lt;- lm(value ~ group + subgroup + year + state, data=Indicator1)
 stepwise_fit &lt;- stepAIC(fit, direction=&quot;both&quot;)</code></pre>
 <pre><code>## Start:  AIC=3614.67
 ## value ~ group + subgroup + year + state
@@ -425,6 +422,23 @@ stepwise_fit &lt;- stepAIC(fit, direction=&quot;both&quot;)</code></pre>
 ## &lt;none&gt;                   9973 3614.7
 ## - year      1      1300 11273 3917.1
 ## - subgroup 79     54300 64273 8085.1</code></pre>
+<pre class="r"><code>fit &lt;- lm(value ~ group + subgroup + year + state, data=Indicator2)
+stepwise_fit &lt;- stepAIC(fit, direction=&quot;both&quot;)</code></pre>
+<pre><code>## Start:  AIC=1848.9
+## value ~ group + subgroup + year + state
+## 
+## 
+## Step:  AIC=1848.9
+## value ~ group + subgroup + year
+## 
+## 
+## Step:  AIC=1848.9
+## value ~ subgroup + year
+## 
+##            Df Sum of Sq   RSS    AIC
+## &lt;none&gt;                   4894 1848.9
+## - year      1     635.1  5529 2149.0
+## - subgroup 79   30155.9 35050 6565.7</code></pre>
 <pre class="r"><code>fit &lt;- lm(value ~ group + subgroup + year + state, data=Indicator3)
 stepwise_fit &lt;- stepAIC(fit, direction=&quot;both&quot;)</code></pre>
 <pre><code>## Start:  AIC=3879.24
@@ -442,6 +456,23 @@ stepwise_fit &lt;- stepAIC(fit, direction=&quot;both&quot;)</code></pre>
 ## &lt;none&gt;                  11093 3879.2
 ## - year      1      1773 12866 4245.5
 ## - subgroup 79     64454 75547 8486.6</code></pre>
+<pre class="r"><code>fit &lt;- lm(value ~ group + subgroup + year + state, data=Indicator4)
+stepwise_fit &lt;- stepAIC(fit, direction=&quot;both&quot;)</code></pre>
+<pre><code>## Start:  AIC=2722.17
+## value ~ group + subgroup + year + state
+## 
+## 
+## Step:  AIC=2722.17
+## value ~ group + subgroup + year
+## 
+## 
+## Step:  AIC=2722.17
+## value ~ subgroup + year
+## 
+##            Df Sum of Sq   RSS    AIC
+## &lt;none&gt;                   6964 2722.2
+## - year      1       141  7105 2769.7
+## - subgroup 79     40494 47457 7304.4</code></pre>
 </div>
 <div id="step-4" class="section level2">
 <h2>Step 4</h2>

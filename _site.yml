@@ -14,7 +14,7 @@ navbar:
     - text: "Statistical Analysis"
       href: statistical_analysis.html
     - text: "Linear Modeling"
-      href: linaer_modeling.html
+      href: linear_modeling.html
     - text: "Final Report"
       href: report.html
     - text: "About Us"

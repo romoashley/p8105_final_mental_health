@@ -114,8 +114,12 @@ We conducted Exploratory Data Analysis (EDA) at the [national-level](EDA_AR.html
 
 ## Additional Analysis
 
-We conducted a [Two Sample T Test and ANOVA](statistical_analysis.html)
+We conducted a [Two Sample T Test and ANOVA](statistical_analysis.html) to determine if there were difference across indicator categories.
 
 ## Results and Discussion
+
+### National Level
+On average, those who took prescription medication for mental health and/or received counseling or therapy had a highest values while those who received counseling or therapy had the lowest value. There is a wide gap in average values between those who took prescription medication for mental health and those who needed counseling or therapy but did not get it. Overall, each indicator had a small increase in average value between 2020 and 2022. Additionally, the majority of states had a similar estimate of proportion of mental health services not received within each state. However, Vermont, Wyoming, Hawaii, and North Dakota had distinct estimates, with a lower estimate compared to the remaining states. Overall, Vermont had the lowest estimate. 
+
 
 

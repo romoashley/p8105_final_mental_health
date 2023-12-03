@@ -146,7 +146,7 @@ kruskal_result=kruskal.test(value ~ subgroup, data = tidydata)
 
 Kruskal-Wallis Chi-squared=1680.6. This is the test statistic that follows a chi-squared distribution under the null hypothesis. A value of 1680.6 is quite large, suggesting a significant difference.
 
-The p-value is less than 2.2e-16, which is a commonly used threshold to denote a p-value smaller than can be represented in R's default numerical precision. It effectively means that the p-value is extremely small, much less than the commonly used significance levels (like 0.05 or 0.01), indicating that there is a statistically significant difference in the medians across the groups.
+The p-value is less than 2.2e-16. It effectively means that the p-value is extremely small, much less than the commonly used significance levels (like 0.05 or 0.01), indicating that there is a statistically significant difference in the medians across the groups.
 
 In summary, the test result is highly significant, which leads to the rejection of the null hypothesis of equal medians. Therefore, we have sufficient evidence to say that not all group medians are equal.
 
@@ -170,3 +170,14 @@ shapiro_test_result <- shapiro.test(pull(Indicator1,value))
 hist(log(Indicator1$value), breaks = "FD", main = "Histogram of Data", xlab = "Data Values")
 ```
 Shapiro-Wilk normality test result : (W = 0.93709, p-value < 2.2e-16), The p-value is extremely small (< 2.2e-16), which provides strong evidence suggest that the data does not come from a normal distribution, and hence, we reject the null hypothesis of normality at 0.05 level of significance. 
+
+```{r}
+kruskal_result=kruskal.test(value ~ subgroup, data = Indicator1)
+```
+
+Kruskal-Wallis Chi-squared=1812.7. This is the test statistic that follows a chi-squared distribution under the null hypothesis. A value of 1812.7 is quite large, suggesting a significant difference.
+
+The p-value is less than 2.2e-16. It effectively means that the p-value is extremely small, much less than the commonly used significance levels (like 0.05 or 0.01), indicating that there is a statistically significant difference in the medians across the groups.
+
+In summary, the test result is highly significant, which leads to the rejection of the null hypothesis of equal medians. Therefore, we have sufficient evidence to say that not all group medians are equal.
+

@@ -114,4 +114,8 @@ We conducted Exploratory Data Analysis (EDA) at the [national-level](EDA_AR.html
 
 ## Additional Analysis
 
+We conducted a [Two Sample T Test and ANOVA](statistical_analysis.html)
+
 ## Results and Discussion
+
+

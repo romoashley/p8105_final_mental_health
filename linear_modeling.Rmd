@@ -1,11 +1,18 @@
 ---
 title: "Linear Modeling"
-author: "Wen Dai"
-date: "2023-11-30"
-output: html_document
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: "hide"
 ---
 
-```{r}
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r message = FALSE, echo = FALSE}
 library(tidyverse)
 library(modelr)
 library(mgcv)
@@ -32,14 +39,15 @@ scale_fill_discrete = scale_fill_viridis_d
 ```
 
 
-Step1: imporat the tidy dataset
-```{r message = FALSE}
+Step1: import the tidy dataset
+```{r}
 library(tidyverse)
 
 tidydata = 
   read.csv("data/tidydata.csv")
 ```
 
+Step2: Separate tidy dataset into 4 subgroups based on the indicator category.
 ```{r}
 Indicator1=tidydata |> filter(indicator=="Took Prescription Medication for Mental Health")
 Indicator2=tidydata |> filter(indicator=="	
@@ -49,6 +57,7 @@ Indicator4=tidydata |> filter(indicator=="
 Needed Counseling or Therapy But Did Not Get It")
 ```
 
+Step3: Apply linear model
 ```{r}
 library(MASS)
 fit <- lm(value ~ group + subgroup + year + state, data=Indicator1)
@@ -59,6 +68,8 @@ fit <- lm(value ~ group + subgroup + year + state, data=Indicator3)
 stepwise_fit <- stepAIC(fit, direction="both")
 
 ```
+
+Step4: AIC values
 AIC values are identical across the steps shown, which suggests that removal or addition of a variable did not improve the model's fit. 
 
 

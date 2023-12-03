@@ -53,7 +53,7 @@ avg_year |>
   guides(color = guide_legend(nrow = 4))
 ```
 
-On average, those who took prescription medication for mental health and/or received counseling or therapy had a highest values while those who received counseling or therapy had the lowest value. 
+On average, those who took prescription medication for mental health and/or received counseling or therapy had a highest values while those who received counseling or therapy had the lowest value. There wide gap in average values between those who took prescription medication for mental health and those who needed counseling or therapy but did not get it. Overall, each indicator had a small increase in average value between 2020 and 2022. 
 
 ## Confidence Intervals
 
@@ -107,7 +107,7 @@ services_states =
     tidy_tests = map(prop_tests, broom::tidy)) |> 
   select(-prop_tests) |> 
   unnest(tidy_tests) |> 
-  select(state, estimate, conf.low, conf.high) |> 
+  select(state, estimate, conf.low, conf.high) |>  
   mutate(state = fct_reorder(state, estimate))
 ```
 
@@ -126,5 +126,5 @@ services_states %>%
   )
 ```
 
-According to the plot, the majority of states have a similar estimate of proportion of mental health services not received in each states. Vermont, Wyoming, Hawaii, and North Dakota had distinct estimates, with a lower estimate compared to the remaining states. Overall, Vermont had the lowest estimate. 
+According to the plot, the majority of states had a similar estimate of proportion of mental health services not received within each state. However, Vermont, Wyoming, Hawaii, and North Dakota had distinct estimates, with a lower estimate compared to the remaining states. Overall, Vermont had the lowest estimate.
 

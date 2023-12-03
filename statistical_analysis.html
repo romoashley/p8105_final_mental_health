@@ -385,8 +385,8 @@ div.tocify {
 </div>
 
 
-<div id="independent-samples-t-tests" class="section level1">
-<h1>Independent Samples T-tests</h1>
+<div id="independent-samples-t-tests" class="section level2">
+<h2>Independent Samples T-tests</h2>
 <p>We will first conduct independent samples t-tests to see if there is
 a statistical relationship between gender and two of our indicators of
 mental health access:</p>
@@ -491,8 +491,8 @@ gender_needed |&gt;
 </table>
 </div>
 </div>
-<div id="anova-sexual-orientation" class="section level1">
-<h1>ANOVA: sexual orientation</h1>
+<div id="anova-sexual-orientation" class="section level2">
+<h2>ANOVA: sexual orientation</h2>
 <pre class="r"><code>sexuality_received =
   tidydata |&gt;
   filter(
@@ -513,8 +513,8 @@ gender_needed |&gt;
     group == &quot;Sexual orientation&quot;,
     week_number %in% c(24:33)) |&gt;
   group_by(subgroup)</code></pre>
-<div id="check-normality" class="section level2">
-<h2>Check normality</h2>
+<div id="check-normality" class="section level3">
+<h3>Check normality</h3>
 <pre class="r"><code>ggplot(tidydata, aes(sample = value)) +
   stat_qq() +
   stat_qq_line()</code></pre>
@@ -563,8 +563,8 @@ maximum value points to a wide variation in the data, and the
 displacement of the mean towards the higher end of the range hints at
 the presence of outliers or a long tail to the right of the median.</p>
 </div>
-<div id="kruskal-wallis-test" class="section level2">
-<h2>Kruskal-Wallis test</h2>
+<div id="kruskal-wallis-test" class="section level3">
+<h3>Kruskal-Wallis test</h3>
 <pre class="r"><code>kruskal_result=kruskal.test(value ~ subgroup, data = tidydata)</code></pre>
 <p>Kruskal-Wallis Chi-squared=1680.6. This is the test statistic that
 follows a chi-squared distribution under the null hypothesis. A value of
@@ -579,8 +579,8 @@ rejection of the null hypothesis of equal medians. Therefore, we have
 sufficient evidence to say that not all group medians are equal.</p>
 </div>
 </div>
-<div id="continue-data-explorartion" class="section level1">
-<h1>Continue Data Explorartion:</h1>
+<div id="continue-data-explorartion" class="section level2">
+<h2>Continue Data Explorartion:</h2>
 <p>Now we are going to break down the dataset into four subgroups based
 the Indicator’s categories. We are going to explore the distribution of
 each subgroup and perform the the most appropriate test.</p>

@@ -349,7 +349,7 @@ div.tocify {
   <a href="statistical_analysis.html">Statistical Analysis</a>
 </li>
 <li>
-  <a href="linaer_modeling.html">Linear Modeling</a>
+  <a href="linear_modeling.html">Linear Modeling</a>
 </li>
 <li>
   <a href="report.html">Final Report</a>
@@ -358,7 +358,7 @@ div.tocify {
   <a href="about.html">About Us</a>
 </li>
 <li>
-  <a href="http://github.com/&lt;romoashley/p8105_final_mental_health&gt;/">
+  <a href="http://github.com/&lt;romoashley/p8105_final_mental_health">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -397,7 +397,11 @@ date to showcase the mean national value over time.
 <img src="EDA_AR_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <p>On average, those who took prescription medication for mental health
 and/or received counseling or therapy had a highest values while those
-who received counseling or therapy had the lowest value.</p>
+who received counseling or therapy had the lowest value. There wide gap
+in average values between those who took prescription medication for
+mental health and those who needed counseling or therapy but did not get
+it. Overall, each indicator had a small increase in average value
+between 2020 and 2022.</p>
 </div>
 <div id="confidence-intervals" class="section level2">
 <h2>Confidence Intervals</h2>
@@ -490,7 +494,7 @@ each state.</p>
     tidy_tests = map(prop_tests, broom::tidy)) |&gt; 
   select(-prop_tests) |&gt; 
   unnest(tidy_tests) |&gt; 
-  select(state, estimate, conf.low, conf.high) |&gt; 
+  select(state, estimate, conf.low, conf.high) |&gt;  
   mutate(state = fct_reorder(state, estimate))</code></pre>
 <p>Lastly, I plot showing the estimate (and CI) of the proportion of
 mental health services not received in each state.</p>
@@ -506,11 +510,11 @@ mental health services not received in each state.</p>
     title = &quot;Proportion of Mental Health Services Not Received by State&quot;
   )</code></pre>
 <p><img src="EDA_AR_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-<p>According to the plot, the majority of states have a similar estimate
-of proportion of mental health services not received in each states.
-Vermont, Wyoming, Hawaii, and North Dakota had distinct estimates, with
-a lower estimate compared to the remaining states. Overall, Vermont had
-the lowest estimate.</p>
+<p>According to the plot, the majority of states had a similar estimate
+of proportion of mental health services not received within each state.
+However, Vermont, Wyoming, Hawaii, and North Dakota had distinct
+estimates, with a lower estimate compared to the remaining states.
+Overall, Vermont had the lowest estimate.</p>
 </div>
 
 

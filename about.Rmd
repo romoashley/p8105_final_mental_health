@@ -9,6 +9,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ### Ashley Romo
 
+![](images/ashley.jpg)
+
 Ashley is a second-year MPH candidate in the Department of Epidemiology at Columbia University Mailman School of Public Health. She is pursuing a certificate in Applied Biostatistics and Public Health Data Science.
 
 [LinkedIn](https://www.linkedin.com/in/ashley-romo-963a35129/)
@@ -22,6 +24,8 @@ Caleigh is a second-year MPH candidate in the Department of Sociomedical Science
 ![](images/cindy.jpeg)
 
 Hsin Yi (Cindy) is a second-year MPH candidate in the Department of Epidemiology at Columbia University Mailman School of Public Health. She is pursuing a certificate in Applied Biostatistics and Public Health Data Science.
+
+[LinkedIn](https://www.linkedin.com/in/hsin-yi-t-012b1097?trk=contact-info)
 
 ### Sarah Younes
 

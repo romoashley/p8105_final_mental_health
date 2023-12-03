@@ -574,6 +574,16 @@ difference in the medians across the groups.</p>
 rejection of the null hypothesis of equal medians. Therefore, we have
 sufficient evidence to say that not all group medians are equal.</p>
 </div>
+<div id="continue-data-explore" class="section level1">
+<h1>Continue Data Explore:</h1>
+<p>Now we are going to break down the dataset into four subgroups based
+the Indicator’s categories. We are going to explore the distribution of
+each subgroup and perform the the most appropriate test.</p>
+<pre class="r"><code>Indicator1=tidydata |&gt; filter(indicator==&quot;Took Prescription Medication for Mental Health&quot;)
+Indicator2=tidydata |&gt; filter(indicator==&quot;Received Counseling or Therapy&quot;)
+Indicator3=tidydata |&gt; filter(indicator==&quot;Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy&quot;)
+Indicator4=tidydata |&gt; filter(indicator==&quot;Needed Counseling or Therapy But Did Not Get It&quot;)</code></pre>
+</div>
 
 
 

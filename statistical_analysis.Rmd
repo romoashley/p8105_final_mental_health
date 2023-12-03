@@ -149,3 +149,14 @@ Kruskal-Wallis Chi-squared=1680.6. This is the test statistic that follows a chi
 The p-value is less than 2.2e-16, which is a commonly used threshold to denote a p-value smaller than can be represented in R's default numerical precision. It effectively means that the p-value is extremely small, much less than the commonly used significance levels (like 0.05 or 0.01), indicating that there is a statistically significant difference in the medians across the groups.
 
 In summary, the test result is highly significant, which leads to the rejection of the null hypothesis of equal medians. Therefore, we have sufficient evidence to say that not all group medians are equal.
+
+# Continue Data Explore:
+
+Now we are going to break down the dataset into four subgroups based the Indicator's categories. We are going to explore the distribution of each subgroup and perform the the most appropriate test.
+
+```{r}
+Indicator1=tidydata |> filter(indicator=="Took Prescription Medication for Mental Health")
+Indicator2=tidydata |> filter(indicator=="Received Counseling or Therapy")
+Indicator3=tidydata |> filter(indicator=="Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy")
+Indicator4=tidydata |> filter(indicator=="Needed Counseling or Therapy But Did Not Get It")
+```

@@ -166,13 +166,10 @@ Indicator4=tidydata |> filter(indicator=="Needed Counseling or Therapy But Did N
 ```{r}
 shapiro_test_result <- shapiro.test(pull(Indicator1,value))
 
-hist(log(Indicator1$value), breaks = "FD", main = "Histogram of Data", xlab = "Data Values")
-Indicator1_log=Indicator1 |> mutate(value=log(value))
-shapiro_test_result <- shapiro.test(pull(Indicator1_log,value))
+hist(Indicator1$value, breaks = "FD", main = "Histogram of Data", xlab = "Data Values")
 ```
 Shapiro-Wilk normality test result : (W = 0.93709, p-value < 2.2e-16), The p-value is extremely small (< 2.2e-16), which provides strong evidence suggest that the data does not come from a normal distribution, and hence, we reject the null hypothesis of normality at 0.05 level of significance. 
 
-The histogram looks a little bit like normal after I applied the log transformation. However, the shapiro wilk test's result is still significant to suggest this is not normally distributed.
 
 * Step2: Perform Kruskal-Wallis test for indicator 1 dataset
 
@@ -191,13 +188,10 @@ In summary, the test result is highly significant, which leads to the rejection 
 ```{r}
 shapiro_test_result <- shapiro.test(pull(Indicator2,value))
 
-hist(log(Indicator2$value), breaks = "FD", main = "Histogram of Data", xlab = "Data Values")
-Indicator2_log=Indicator2 |> mutate(value=log(value))
-shapiro_test_result <- shapiro.test(pull(Indicator2_log,value))
+hist(Indicator2$value, breaks = "FD", main = "Histogram of Data", xlab = "Data Values")
 ```
 Shapiro-Wilk normality test result : (W = 0.83846, p-value < 2.2e-16), The p-value is extremely small (< 2.2e-16), which provides strong evidence suggest that the data does not come from a normal distribution, and hence, we reject the null hypothesis of normality at 0.05 level of significance. 
 
-The histogram looks a little bit like normal after I applied the log transformation. However, the shapiro wilk test's result is still significant to suggest this is not normally distributed. 
 
 * step 4: Perform Kruskal-Wallis test for indicator 2 dataset
 
@@ -216,13 +210,10 @@ In summary, the test result is highly significant, which leads to the rejection 
 ```{r}
 shapiro_test_result <- shapiro.test(pull(Indicator3,value))
 
-hist(log(Indicator3$value), breaks = "FD", main = "Histogram of Data", xlab = "Data Values")
-Indicator3_log=Indicator3 |> mutate(value=log(value))
-shapiro_test_result <- shapiro.test(pull(Indicator3_log,value))
+hist(Indicator3$value, breaks = "FD", main = "Histogram of Data", xlab = "Data Values")
 ```
 Shapiro-Wilk normality test result : (W = 0.95871, p-value < 2.2e-16), The p-value is extremely small (< 2.2e-16), which provides strong evidence suggest that the data does not come from a normal distribution, and hence, we reject the null hypothesis of normality at 0.05 level of significance. 
 
-The histogram looks a little bit like normal after I applied the log transformation. However, the shapiro wilk test's result is still significant to suggest this is not normally distributed. 
 
 * step 6: Perform Kruskal-Wallis test for Indicator 3 dataset
 
@@ -241,15 +232,13 @@ In summary, the test result is highly significant, which leads to the rejection 
 ```{r}
 shapiro_test_result <- shapiro.test(pull(Indicator4,value))
 
-hist(log(Indicator3$value), breaks = "FD", main = "Histogram of Data", xlab = "Data Values")
-Indicator4_log=Indicator4 |> mutate(value=log(value))
-shapiro_test_result <- shapiro.test(pull(Indicator4_log,value))
+hist(Indicator4$value, breaks = "FD", main = "Histogram of Data", xlab = "Data Values")
+
 ```
 Shapiro-Wilk normality test result : (W = 0.8161, p-value < 2.2e-16), The p-value is extremely small (< 2.2e-16), which provides strong evidence suggest that the data does not come from a normal distribution, and hence, we reject the null hypothesis of normality at 0.05 level of significance. 
 
-The histogram looks a little bit like normal after I applied the log transformation. However, the shapiro wilk test's result is still significant to suggest this is not normally distributed. 
 
-* step 6: Perform Kruskal-Wallis test for Indicator 4 dataset 
+* step 8: Perform Kruskal-Wallis test for Indicator 4 dataset 
 
 ```{r}
 kruskal_result=kruskal.test(value ~ subgroup, data = Indicator4)

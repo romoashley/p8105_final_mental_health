@@ -109,11 +109,9 @@ There are 13 variables in the `tidydata` data set:
 
 ``` r
 Indicator1=tidydata |> filter(indicator=="Took Prescription Medication for Mental Health")
-Indicator2=tidydata |> filter(indicator=="  
-Received Counseling or Therapy")
+Indicator2=tidydata |> filter(indicator=="Received Counseling or Therapy")
 Indicator3=tidydata |> filter(indicator=="Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy")
-Indicator4=tidydata |> filter(indicator=="  
-Needed Counseling or Therapy But Did Not Get It")
+Indicator4=tidydata |> filter(indicator=="Needed Counseling or Therapy But Did Not Get It")
 ```
 
 2.  Did some data cleanning for Indicator1.Break the dataset Indicator1

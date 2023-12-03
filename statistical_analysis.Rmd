@@ -109,7 +109,7 @@ sexuality_needed =
   group_by(subgroup)
 ```
 
-## Check normality
+### Check normality
 
 ```{r}
 
@@ -138,7 +138,7 @@ summary(pull(tidydata, value))
 ```
 The summary statistics for the value dataset indicate a right-skewed distribution: the minimum value is 1.40, the first quartile is 10.30, the median is 16.20, and the third quartile is 24.00, with a considerably higher maximum value of 62.90. The mean, or average, is 17.45, which is higher than the median, further suggesting a distribution with a right tail. The broad range from the minimum to the maximum value points to a wide variation in the data, and the displacement of the mean towards the higher end of the range hints at the presence of outliers or a long tail to the right of the median.
 
-## Kruskal-Wallis test
+### Kruskal-Wallis test
 
 ```{r}
 kruskal_result=kruskal.test(value ~ subgroup, data = tidydata)
@@ -150,7 +150,7 @@ The p-value is less than 2.2e-16. It effectively means that the p-value is extre
 
 In summary, the test result is highly significant, which leads to the rejection of the null hypothesis of equal medians. Therefore, we have sufficient evidence to say that not all group medians are equal.
 
-# Continue Data Explore:
+## Continue Data Explorartion:
 
 Now we are going to break down the dataset into four subgroups based the Indicator's categories. We are going to explore the distribution of each subgroup and perform the the most appropriate test.
 

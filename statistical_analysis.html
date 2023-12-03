@@ -349,7 +349,7 @@ div.tocify {
   <a href="statistical_analysis.html">Statistical Analysis</a>
 </li>
 <li>
-  <a href="linaer_modeling.html">Linear Modeling</a>
+  <a href="linear_modeling.html">Linear Modeling</a>
 </li>
 <li>
   <a href="report.html">Final Report</a>
@@ -358,7 +358,7 @@ div.tocify {
   <a href="about.html">About Us</a>
 </li>
 <li>
-  <a href="http://github.com/&lt;romoashley/p8105_final_mental_health&gt;/">
+  <a href="http://github.com/&lt;romoashley/p8105_final_mental_health">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -385,8 +385,8 @@ div.tocify {
 </div>
 
 
-<div id="independent-samples-t-tests" class="section level2">
-<h2>Independent Samples T-tests</h2>
+<div id="independent-samples-t-tests" class="section level1">
+<h1>Independent Samples T-tests</h1>
 <p>We will first conduct independent samples t-tests to see if there is
 a statistical relationship between gender and two of our indicators of
 mental health access:</p>
@@ -491,8 +491,8 @@ gender_needed |&gt;
 </table>
 </div>
 </div>
-<div id="anova-sexual-orientation" class="section level2">
-<h2>ANOVA: sexual orientation</h2>
+<div id="anova-sexual-orientation" class="section level1">
+<h1>ANOVA: sexual orientation</h1>
 <pre class="r"><code>sexuality_received =
   tidydata |&gt;
   filter(
@@ -513,7 +513,6 @@ gender_needed |&gt;
     group == &quot;Sexual orientation&quot;,
     week_number %in% c(24:33)) |&gt;
   group_by(subgroup)</code></pre>
-</div>
 <div id="check-normality" class="section level2">
 <h2>Check normality</h2>
 <pre class="r"><code>ggplot(tidydata, aes(sample = value)) +
@@ -579,8 +578,9 @@ groups.</p>
 rejection of the null hypothesis of equal medians. Therefore, we have
 sufficient evidence to say that not all group medians are equal.</p>
 </div>
-<div id="continue-data-explore" class="section level1">
-<h1>Continue Data Explore:</h1>
+</div>
+<div id="continue-data-explorartion" class="section level1">
+<h1>Continue Data Explorartion:</h1>
 <p>Now we are going to break down the dataset into four subgroups based
 the Indicator’s categories. We are going to explore the distribution of
 each subgroup and perform the the most appropriate test.</p>

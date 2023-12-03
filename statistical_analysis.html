@@ -583,10 +583,9 @@ Indicator2=tidydata |&gt; filter(indicator==&quot;Received Counseling or Therapy
 Indicator3=tidydata |&gt; filter(indicator==&quot;Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy&quot;)
 Indicator4=tidydata |&gt; filter(indicator==&quot;Needed Counseling or Therapy But Did Not Get It&quot;)</code></pre>
 <ul>
-<li>Step 1:</li>
+<li>Step 1: Check Normality for Group of people who Took Prescription
+Medication for Mental Health.</li>
 </ul>
-<p>Check Normality for Group of people who Took Prescription Medication
-for Mental Health.</p>
 <pre class="r"><code>shapiro_test_result &lt;- shapiro.test(pull(Indicator1,value))
 hist(log(Indicator1$value), breaks = &quot;FD&quot;, main = &quot;Histogram of Data&quot;, xlab = &quot;Data Values&quot;)</code></pre>
 <p><img src="statistical_analysis_files/figure-html/unnamed-chunk-11-1.png" width="672" />
@@ -595,6 +594,9 @@ Shapiro-Wilk normality test result : (W = 0.93709, p-value &lt;
 strong evidence suggest that the data does not come from a normal
 distribution, and hence, we reject the null hypothesis of normality at
 0.05 level of significance.</p>
+<ul>
+<li>Step2: Perform Kruskal-Wallis test:</li>
+</ul>
 <pre class="r"><code>kruskal_result=kruskal.test(value ~ subgroup, data = Indicator1)</code></pre>
 <p>Kruskal-Wallis Chi-squared=1812.7. This is the test statistic that
 follows a chi-squared distribution under the null hypothesis. A value of
@@ -607,9 +609,10 @@ groups.</p>
 <p>In summary, the test result is highly significant, which leads to the
 rejection of the null hypothesis of equal medians. Therefore, we have
 sufficient evidence to say that not all group medians are equal.</p>
-<p>Step 3:</p>
-<p>Check normality for Group of people who Received Counseling or
-Therapy</p>
+<ul>
+<li>Step 3: Check normality for Group of people who Received Counseling
+or Therapy</li>
+</ul>
 <pre class="r"><code>shapiro_test_result &lt;- shapiro.test(pull(Indicator2,value))
 hist(log(Indicator2$value), breaks = &quot;FD&quot;, main = &quot;Histogram of Data&quot;, xlab = &quot;Data Values&quot;)</code></pre>
 <p><img src="statistical_analysis_files/figure-html/unnamed-chunk-13-1.png" width="672" />
@@ -618,6 +621,21 @@ Shapiro-Wilk normality test result : (W = 0.83846, p-value &lt;
 strong evidence suggest that the data does not come from a normal
 distribution, and hence, we reject the null hypothesis of normality at
 0.05 level of significance.</p>
+<ul>
+<li>step 4: Perform Kruskal-Wallis test:</li>
+</ul>
+<pre class="r"><code>kruskal_result=kruskal.test(value ~ subgroup, data = Indicator2)</code></pre>
+<p>Kruskal-Wallis Chi-squared=1784.5. This is the test statistic that
+follows a chi-squared distribution under the null hypothesis. A value of
+1784.5 is quite large, suggesting a significant difference.</p>
+<p>The p-value is less than 2.2e-16. It effectively means that the
+p-value is extremely small, much less than the commonly used
+significance levels (like 0.05 or 0.01), indicating that there is a
+statistically significant difference in the medians across the
+groups.</p>
+<p>In summary, the test result is highly significant, which leads to the
+rejection of the null hypothesis of equal medians. Therefore, we have
+sufficient evidence to say that not all group medians are equal.</p>
 </div>
 
 

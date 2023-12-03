@@ -39,7 +39,7 @@ scale_fill_discrete = scale_fill_viridis_d
 ```
 
 
-Step1: import the tidy dataset
+## Step1: import the tidy dataset
 ```{r}
 library(tidyverse)
 
@@ -47,7 +47,7 @@ tidydata =
   read.csv("data/tidydata.csv")
 ```
 
-Step2: Separate tidy dataset into 4 subgroups based on the indicator category.
+## Step2: Separate tidy dataset into 4 subgroups based on the indicator category.
 ```{r}
 Indicator1=tidydata |> filter(indicator=="Took Prescription Medication for Mental Health")
 Indicator2=tidydata |> filter(indicator=="	
@@ -57,7 +57,7 @@ Indicator4=tidydata |> filter(indicator=="
 Needed Counseling or Therapy But Did Not Get It")
 ```
 
-Step3: Apply linear model
+## Step3: Apply linear model
 ```{r}
 library(MASS)
 fit <- lm(value ~ group + subgroup + year + state, data=Indicator1)
@@ -69,7 +69,7 @@ stepwise_fit <- stepAIC(fit, direction="both")
 
 ```
 
-Step4: AIC values
+## Step4: AIC values
 AIC values are identical across the steps shown, which suggests that removal or addition of a variable did not improve the model's fit. 
 
 

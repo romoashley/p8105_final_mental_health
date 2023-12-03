@@ -358,7 +358,7 @@ div.tocify {
   <a href="about.html">About Us</a>
 </li>
 <li>
-  <a href="http://github.com/&lt;romoashley/p8105_final_mental_health">
+  <a href="https://github.com/romoashley/p8105_final_mental_health">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -385,20 +385,27 @@ div.tocify {
 </div>
 
 
-<p>Step1: import the tidy dataset</p>
+<div id="step1-import-the-tidy-dataset" class="section level2">
+<h2>Step1: import the tidy dataset</h2>
 <pre class="r"><code>library(tidyverse)
 
 tidydata = 
   read.csv(&quot;data/tidydata.csv&quot;)</code></pre>
-<p>Step2: Separate tidy dataset into 4 subgroups based on the indicator
-category.</p>
+</div>
+<div
+id="step2-separate-tidy-dataset-into-4-subgroups-based-on-the-indicator-category."
+class="section level2">
+<h2>Step2: Separate tidy dataset into 4 subgroups based on the indicator
+category.</h2>
 <pre class="r"><code>Indicator1=tidydata |&gt; filter(indicator==&quot;Took Prescription Medication for Mental Health&quot;)
 Indicator2=tidydata |&gt; filter(indicator==&quot;  
 Received Counseling or Therapy&quot;)
 Indicator3=tidydata |&gt; filter(indicator==&quot;Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy&quot;)
 Indicator4=tidydata |&gt; filter(indicator==&quot;  
 Needed Counseling or Therapy But Did Not Get It&quot;)</code></pre>
-<p>Step3: Apply linear model</p>
+</div>
+<div id="step3-apply-linear-model" class="section level2">
+<h2>Step3: Apply linear model</h2>
 <pre class="r"><code>library(MASS)
 fit &lt;- lm(value ~ group + subgroup + year + state, data=Indicator1)
 stepwise_fit &lt;- stepAIC(fit, direction=&quot;both&quot;)</code></pre>
@@ -434,9 +441,12 @@ stepwise_fit &lt;- stepAIC(fit, direction=&quot;both&quot;)</code></pre>
 ## &lt;none&gt;                  11093 3879.2
 ## - year      1      1773 12866 4245.5
 ## - subgroup 79     64454 75547 8486.6</code></pre>
-<p>Step4: AIC values AIC values are identical across the steps shown,
-which suggests that removal or addition of a variable did not improve
-the model’s fit.</p>
+</div>
+<div id="step4-aic-values" class="section level2">
+<h2>Step4: AIC values</h2>
+<p>AIC values are identical across the steps shown, which suggests that
+removal or addition of a variable did not improve the model’s fit.</p>
+</div>
 
 
 

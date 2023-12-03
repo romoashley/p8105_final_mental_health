@@ -165,9 +165,14 @@ Indicator4=tidydata |> filter(indicator=="Needed Counseling or Therapy But Did N
 
 ```{r}
 shapiro_test_result <- shapiro.test(pull(Indicator1,value))
+
 hist(log(Indicator1$value), breaks = "FD", main = "Histogram of Data", xlab = "Data Values")
+Indicator1_log=Indicator1 |> mutate(value=log(value))
+shapiro_test_result <- shapiro.test(pull(Indicator1_log,value))
 ```
 Shapiro-Wilk normality test result : (W = 0.93709, p-value < 2.2e-16), The p-value is extremely small (< 2.2e-16), which provides strong evidence suggest that the data does not come from a normal distribution, and hence, we reject the null hypothesis of normality at 0.05 level of significance. 
+
+The histogram looks a little bit like normal after I applied the log transformation. However, the shapiro wilk test's result is still significant to suggest this is not normally distributed.
 
 * Step2: Perform Kruskal-Wallis test: 
 
@@ -185,9 +190,14 @@ In summary, the test result is highly significant, which leads to the rejection 
 
 ```{r}
 shapiro_test_result <- shapiro.test(pull(Indicator2,value))
+
 hist(log(Indicator2$value), breaks = "FD", main = "Histogram of Data", xlab = "Data Values")
+Indicator2_log=Indicator2 |> mutate(value=log(value))
+shapiro_test_result <- shapiro.test(pull(Indicator2_log,value))
 ```
 Shapiro-Wilk normality test result : (W = 0.83846, p-value < 2.2e-16), The p-value is extremely small (< 2.2e-16), which provides strong evidence suggest that the data does not come from a normal distribution, and hence, we reject the null hypothesis of normality at 0.05 level of significance. 
+
+The histogram looks a little bit like normal after I applied the log transformation. However, the shapiro wilk test's result is still significant to suggest this is not normally distributed. 
 
 * step 4: Perform Kruskal-Wallis test: 
 
@@ -200,3 +210,18 @@ Kruskal-Wallis Chi-squared=1784.5. This is the test statistic that follows a chi
 The p-value is less than 2.2e-16. It effectively means that the p-value is extremely small, much less than the commonly used significance levels (like 0.05 or 0.01), indicating that there is a statistically significant difference in the medians across the groups.
 
 In summary, the test result is highly significant, which leads to the rejection of the null hypothesis of equal medians. Therefore, we have sufficient evidence to say that not all group medians are equal.
+
+* Step 5: Check normality for Group of people who Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy
+
+```{r}
+shapiro_test_result <- shapiro.test(pull(Indicator3,value))
+
+hist(log(Indicator3$value), breaks = "FD", main = "Histogram of Data", xlab = "Data Values")
+Indicator3_log=Indicator3 |> mutate(value=log(value))
+shapiro_test_result <- shapiro.test(pull(Indicator3_log,value))
+```
+Shapiro-Wilk normality test result : (W = 0.95871, p-value < 2.2e-16), The p-value is extremely small (< 2.2e-16), which provides strong evidence suggest that the data does not come from a normal distribution, and hence, we reject the null hypothesis of normality at 0.05 level of significance. 
+
+The histogram looks a little bit like normal after I applied the log transformation. However, the shapiro wilk test's result is still significant to suggest this is not normally distributed. 
+
+

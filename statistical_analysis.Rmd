@@ -224,4 +224,15 @@ Shapiro-Wilk normality test result : (W = 0.95871, p-value < 2.2e-16), The p-val
 
 The histogram looks a little bit like normal after I applied the log transformation. However, the shapiro wilk test's result is still significant to suggest this is not normally distributed. 
 
+* step 6: Perform Kruskal-Wallis test: 
+
+```{r}
+kruskal_result=kruskal.test(value ~ subgroup, data = Indicator3)
+```
+
+Kruskal-Wallis Chi-squared=1750.7. This is the test statistic that follows a chi-squared distribution under the null hypothesis. A value of 1750.7 is quite large, suggesting a significant difference.
+
+The p-value is less than 2.2e-16. It effectively means that the p-value is extremely small, much less than the commonly used significance levels (like 0.05 or 0.01), indicating that there is a statistically significant difference in the medians across the groups.
+
+In summary, the test result is highly significant, which leads to the rejection of the null hypothesis of equal medians. Therefore, we have sufficient evidence to say that not all group medians are equal.
 

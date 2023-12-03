@@ -413,7 +413,7 @@ avg_year |&gt;
     legend.position = &quot;bottom&quot;,
     axis.text.x = element_text(angle=90, hjust=1),
     strip.text = element_text(size = 4)) +
-  guides(color = guide_legend(nrow = 2))</code></pre>
+  guides(color = guide_legend(nrow = 4))</code></pre>
 <p><img src="EDA_AR_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <p>On average, those who took prescription medication for mental health
 and/or received counseling or therapy had a highest values while those
@@ -515,8 +515,17 @@ proportion of mental health services not received in each state.</p>
   ggplot(aes(x = state, y = estimate)) + 
   geom_point() + 
   geom_errorbar(aes(ymin = conf.low, ymax = conf.high)) + 
-  theme(axis.text.x = element_text(angle = 90, hjust = 1))</code></pre>
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(
+    x = &quot;State&quot;,
+    y = &quot;Estimate&quot;,
+    title = &quot;Proportion of Mental Health Services Not Received by States&quot;
+  )</code></pre>
 <p><img src="EDA_AR_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>The majority of states have a similar estimate of proportion of
+mental health services not received in each states. Vermont, Wyoming,
+Hawaii, and North Dakota had distinct estimates, with a lower estimate
+compared to the remaining states. Vermont had the lowest estimate.</p>
 </div>
 
 

@@ -16,7 +16,7 @@
 <script src="site_libs/header-attrs-2.24/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/united.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
@@ -335,7 +335,10 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="eda.html">National and State-Level</a>
+      <a href="EDA_AR.html">National-Level</a>
+    </li>
+    <li>
+      <a href="eda.html">State Level</a>
     </li>
     <li>
       <a href="eda_demographic.html">Demographic-Level</a>
@@ -346,13 +349,16 @@ div.tocify {
   <a href="statistical_analysis.html">Statistical Analysis</a>
 </li>
 <li>
+  <a href="linear_modeling.html">Linear Modeling</a>
+</li>
+<li>
   <a href="report.html">Final Report</a>
 </li>
 <li>
   <a href="about.html">About Us</a>
 </li>
 <li>
-  <a href="http://github.com/&lt;romoashley/p8105_final_mental_health&gt;/">
+  <a href="http://github.com/&lt;romoashley/p8105_final_mental_health">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -416,7 +422,7 @@ States.</p>
     group == &quot;Sex&quot;,
     subgroup %in% c(&quot;Male&quot;, &quot;Female&quot;)
   ) |&gt;
-  select(week_number, value, subgroup) |&gt;
+ dplyr::select(week_number, value, subgroup) |&gt;
   pivot_wider(
     names_from = &quot;subgroup&quot;,
     values_from = &quot;value&quot;) |&gt;
@@ -458,7 +464,7 @@ from 2020 to 2022 in the United States.</p>
     group == &quot;Sex&quot;,
     subgroup %in% c(&quot;Male&quot;, &quot;Female&quot;)
   ) |&gt;
-  select(week_number, value, subgroup) |&gt;
+  dplyr::select(week_number, value, subgroup) |&gt;
   pivot_wider(
     names_from = &quot;subgroup&quot;,
     values_from = &quot;value&quot;) |&gt;
@@ -494,7 +500,7 @@ gender_needed |&gt;
     state == &quot;United States&quot;,
     group == &quot;Sexual orientation&quot;,
     week_number %in% c(24:33)) |&gt;
-  select(week_number, value, subgroup) |&gt;
+  dplyr::select(week_number, value, subgroup) |&gt;
   pivot_wider(
     names_from = &quot;subgroup&quot;,
     values_from = &quot;value&quot;) |&gt;
@@ -507,9 +513,8 @@ gender_needed |&gt;
     group == &quot;Sexual orientation&quot;,
     week_number %in% c(24:33)) |&gt;
   group_by(subgroup)</code></pre>
-</div>
-<div id="check-normality" class="section level2">
-<h2>Check normality</h2>
+<div id="check-normality" class="section level3">
+<h3>Check normality</h3>
 <pre class="r"><code>ggplot(tidydata, aes(sample = value)) +
   stat_qq() +
   stat_qq_line()</code></pre>
@@ -558,18 +563,140 @@ maximum value points to a wide variation in the data, and the
 displacement of the mean towards the higher end of the range hints at
 the presence of outliers or a long tail to the right of the median.</p>
 </div>
-<div id="kruskal-wallis-test" class="section level2">
-<h2>Kruskal-Wallis test</h2>
+<div id="kruskal-wallis-test" class="section level3">
+<h3>Kruskal-Wallis test</h3>
 <pre class="r"><code>kruskal_result=kruskal.test(value ~ subgroup, data = tidydata)</code></pre>
 <p>Kruskal-Wallis Chi-squared=1680.6. This is the test statistic that
 follows a chi-squared distribution under the null hypothesis. A value of
 1680.6 is quite large, suggesting a significant difference.</p>
-<p>The p-value is less than 2.2e-16, which is a commonly used threshold
-to denote a p-value smaller than can be represented in R’s default
-numerical precision. It effectively means that the p-value is extremely
-small, much less than the commonly used significance levels (like 0.05
-or 0.01), indicating that there is a statistically significant
-difference in the medians across the groups.</p>
+<p>The p-value is less than 2.2e-16. It effectively means that the
+p-value is extremely small, much less than the commonly used
+significance levels (like 0.05 or 0.01), indicating that there is a
+statistically significant difference in the medians across the
+groups.</p>
+<p>In summary, the test result is highly significant, which leads to the
+rejection of the null hypothesis of equal medians. Therefore, we have
+sufficient evidence to say that not all group medians are equal.</p>
+</div>
+</div>
+<div id="continue-data-explorartion" class="section level2">
+<h2>Continue Data Explorartion:</h2>
+<p>Now we are going to break down the dataset into four subgroups based
+the Indicator’s categories. We are going to explore the distribution of
+each subgroup and perform the the most appropriate test.</p>
+<pre class="r"><code>Indicator1=tidydata |&gt; filter(indicator==&quot;Took Prescription Medication for Mental Health&quot;)
+Indicator2=tidydata |&gt; filter(indicator==&quot;Received Counseling or Therapy&quot;)
+Indicator3=tidydata |&gt; filter(indicator==&quot;Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy&quot;)
+Indicator4=tidydata |&gt; filter(indicator==&quot;Needed Counseling or Therapy But Did Not Get It&quot;)</code></pre>
+<ul>
+<li>Step 1: Check Normality for Group of people who Took Prescription
+Medication for Mental Health.</li>
+</ul>
+<pre class="r"><code>shapiro_test_result &lt;- shapiro.test(pull(Indicator1,value))
+
+hist(Indicator1$value, breaks = &quot;FD&quot;, main = &quot;Histogram of Data&quot;, xlab = &quot;Data Values&quot;)</code></pre>
+<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-11-1.png" width="672" />
+Shapiro-Wilk normality test result : (W = 0.93709, p-value &lt;
+2.2e-16), The p-value is extremely small (&lt; 2.2e-16), which provides
+strong evidence suggest that the data does not come from a normal
+distribution, and hence, we reject the null hypothesis of normality at
+0.05 level of significance.</p>
+<ul>
+<li>Step2: Perform Kruskal-Wallis test for indicator 1 dataset</li>
+</ul>
+<pre class="r"><code>kruskal_result=kruskal.test(value ~ subgroup, data = Indicator1)</code></pre>
+<p>Kruskal-Wallis Chi-squared=1812.7. This is the test statistic that
+follows a chi-squared distribution under the null hypothesis. A value of
+1812.7 is quite large, suggesting a significant difference.</p>
+<p>The p-value is less than 2.2e-16. It effectively means that the
+p-value is extremely small, much less than the commonly used
+significance levels (like 0.05 or 0.01), indicating that there is a
+statistically significant difference in the medians across the
+groups.</p>
+<p>In summary, the test result is highly significant, which leads to the
+rejection of the null hypothesis of equal medians. Therefore, we have
+sufficient evidence to say that not all group medians are equal.</p>
+<ul>
+<li>Step 3: Check normality for Group of people who Received Counseling
+or Therapy</li>
+</ul>
+<pre class="r"><code>shapiro_test_result &lt;- shapiro.test(pull(Indicator2,value))
+
+hist(Indicator2$value, breaks = &quot;FD&quot;, main = &quot;Histogram of Data&quot;, xlab = &quot;Data Values&quot;)</code></pre>
+<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-13-1.png" width="672" />
+Shapiro-Wilk normality test result : (W = 0.83846, p-value &lt;
+2.2e-16), The p-value is extremely small (&lt; 2.2e-16), which provides
+strong evidence suggest that the data does not come from a normal
+distribution, and hence, we reject the null hypothesis of normality at
+0.05 level of significance.</p>
+<ul>
+<li>step 4: Perform Kruskal-Wallis test for indicator 2 dataset</li>
+</ul>
+<pre class="r"><code>kruskal_result=kruskal.test(value ~ subgroup, data = Indicator2)</code></pre>
+<p>Kruskal-Wallis Chi-squared=1784.5. This is the test statistic that
+follows a chi-squared distribution under the null hypothesis. A value of
+1784.5 is quite large, suggesting a significant difference.</p>
+<p>The p-value is less than 2.2e-16. It effectively means that the
+p-value is extremely small, much less than the commonly used
+significance levels (like 0.05 or 0.01), indicating that there is a
+statistically significant difference in the medians across the
+groups.</p>
+<p>In summary, the test result is highly significant, which leads to the
+rejection of the null hypothesis of equal medians. Therefore, we have
+sufficient evidence to say that not all group medians are equal.</p>
+<ul>
+<li>Step 5: Check normality for Group of people who Took Prescription
+Medication for Mental Health And/Or Received Counseling or Therapy</li>
+</ul>
+<pre class="r"><code>shapiro_test_result &lt;- shapiro.test(pull(Indicator3,value))
+
+hist(Indicator3$value, breaks = &quot;FD&quot;, main = &quot;Histogram of Data&quot;, xlab = &quot;Data Values&quot;)</code></pre>
+<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-15-1.png" width="672" />
+Shapiro-Wilk normality test result : (W = 0.95871, p-value &lt;
+2.2e-16), The p-value is extremely small (&lt; 2.2e-16), which provides
+strong evidence suggest that the data does not come from a normal
+distribution, and hence, we reject the null hypothesis of normality at
+0.05 level of significance.</p>
+<ul>
+<li>step 6: Perform Kruskal-Wallis test for Indicator 3 dataset</li>
+</ul>
+<pre class="r"><code>kruskal_result=kruskal.test(value ~ subgroup, data = Indicator3)</code></pre>
+<p>Kruskal-Wallis Chi-squared=1750.7. This is the test statistic that
+follows a chi-squared distribution under the null hypothesis. A value of
+1750.7 is quite large, suggesting a significant difference.</p>
+<p>The p-value is less than 2.2e-16. It effectively means that the
+p-value is extremely small, much less than the commonly used
+significance levels (like 0.05 or 0.01), indicating that there is a
+statistically significant difference in the medians across the
+groups.</p>
+<p>In summary, the test result is highly significant, which leads to the
+rejection of the null hypothesis of equal medians. Therefore, we have
+sufficient evidence to say that not all group medians are equal.</p>
+<ul>
+<li>Step 7: Check normality for Group of people who Needed Counseling or
+Therapy But Did Not Get It.</li>
+</ul>
+<pre class="r"><code>shapiro_test_result &lt;- shapiro.test(pull(Indicator4,value))
+
+hist(Indicator4$value, breaks = &quot;FD&quot;, main = &quot;Histogram of Data&quot;, xlab = &quot;Data Values&quot;)</code></pre>
+<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-17-1.png" width="672" />
+Shapiro-Wilk normality test result : (W = 0.8161, p-value &lt; 2.2e-16),
+The p-value is extremely small (&lt; 2.2e-16), which provides strong
+evidence suggest that the data does not come from a normal distribution,
+and hence, we reject the null hypothesis of normality at 0.05 level of
+significance.</p>
+<ul>
+<li>step 8: Perform Kruskal-Wallis test for Indicator 4 dataset</li>
+</ul>
+<pre class="r"><code>kruskal_result=kruskal.test(value ~ subgroup, data = Indicator4)</code></pre>
+<p>Kruskal-Wallis Chi-squared=1539.6. This is the test statistic that
+follows a chi-squared distribution under the null hypothesis. A value of
+1539.6 is quite large, suggesting a significant difference.</p>
+<p>The p-value is less than 2.2e-16. It effectively means that the
+p-value is extremely small, much less than the commonly used
+significance levels (like 0.05 or 0.01), indicating that there is a
+statistically significant difference in the medians across the
+groups.</p>
 <p>In summary, the test result is highly significant, which leads to the
 rejection of the null hypothesis of equal medians. Therefore, we have
 sufficient evidence to say that not all group medians are equal.</p>

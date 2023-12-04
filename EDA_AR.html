@@ -9,16 +9,14 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="ASHLEY ROMO" />
 
-<meta name="date" content="2023-11-26" />
 
-<title>EDA_AR</title>
+<title>National Level Exploratory Data Analysis (EDA)</title>
 
 <script src="site_libs/header-attrs-2.24/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/united.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
@@ -35,6 +33,7 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
@@ -223,6 +222,9 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
 
 
@@ -333,7 +335,10 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="eda.html">National and State-Level</a>
+      <a href="EDA_AR.html">National-Level</a>
+    </li>
+    <li>
+      <a href="eda.html">State Level</a>
     </li>
     <li>
       <a href="eda_demographic.html">Demographic-Level</a>
@@ -344,13 +349,16 @@ div.tocify {
   <a href="statistical_analysis.html">Statistical Analysis</a>
 </li>
 <li>
+  <a href="linear_modeling.html">Linear Modeling</a>
+</li>
+<li>
   <a href="report.html">Final Report</a>
 </li>
 <li>
   <a href="about.html">About Us</a>
 </li>
 <li>
-  <a href="http://github.com/&lt;romoashley/p8105_final_mental_health&gt;/">
+  <a href="http://github.com/&lt;romoashley/p8105_final_mental_health">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -362,69 +370,48 @@ div.tocify {
 
 <div id="header">
 
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
 
 
-<h1 class="title toc-ignore">EDA_AR</h1>
-<h4 class="author">ASHLEY ROMO</h4>
-<h4 class="date">2023-11-26</h4>
+
+<h1 class="title toc-ignore">National Level Exploratory Data Analysis
+(EDA)</h1>
 
 </div>
 
 
-<p>Loading key packages</p>
-<pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-## ✔ dplyr     1.1.3     ✔ readr     2.1.4
-## ✔ forcats   1.0.0     ✔ stringr   1.5.0
-## ✔ ggplot2   3.4.3     ✔ tibble    3.2.1
-## ✔ lubridate 1.9.2     ✔ tidyr     1.3.0
-## ✔ purrr     1.0.2     
-## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-## ✖ dplyr::filter() masks stats::filter()
-## ✖ dplyr::lag()    masks stats::lag()
-## ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
-<p>Importing clean and tidy dataset</p>
-<pre class="r"><code>data = 
-  read.csv(&quot;data/tidydata.csv&quot;) |&gt; 
-  mutate(
-    start_dates = as.Date(start_dates)
-  )</code></pre>
-<div id="eda-for-national-average" class="section level2">
-<h2>EDA for National Average</h2>
-<pre class="r"><code>avg_year =
-  data |&gt; 
-  filter(state == &quot;United States&quot;) |&gt; 
-  select(indicator, year, week_number, value, start_dates) |&gt; 
-  group_by(year, start_dates, indicator) |&gt; 
-  summarize(
-    mean = mean(value),
-    indicator_total = n())</code></pre>
-<pre><code>## `summarise()` has grouped output by &#39;year&#39;, &#39;start_dates&#39;. You can override
-## using the `.groups` argument.</code></pre>
-<pre class="r"><code># plot average for each start date for each indicator
-avg_year |&gt; 
-  ggplot(aes(x = start_dates, y = mean, color = indicator)) +
-  geom_line() +
-  labs(
-    x = &quot;Start Date&quot;,
-    y = &quot;Average Value&quot;,
-    title = &quot;National Average (2020-2022)&quot;) +
-  theme(
-    legend.position = &quot;bottom&quot;,
-    axis.text.x = element_text(angle=90, hjust=1),
-    strip.text = element_text(size = 4)) +
-  guides(color = guide_legend(nrow = 2))</code></pre>
-<p><img src="EDA_AR_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<div id="national-average" class="section level2">
+<h2>National Average</h2>
+<p>Let’s take a look at the national average value.</p>
+<p>First, I filtered by states = United States to look only at national
+data rather then state-specific data. Next, I group by year, start date,
+and indicator to ensure I calculate the mean value for each indicator by
+start date. After calculating the mean, I plot the mean value and start
+date to showcase the mean national value over time.
+<img src="EDA_AR_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <p>On average, those who took prescription medication for mental health
 and/or received counseling or therapy had a highest values while those
-who received counseling or therapy had the lowest value.</p>
+who received counseling or therapy had the lowest value. There wide gap
+in average values between those who took prescription medication for
+mental health and those who needed counseling or therapy but did not get
+it. Overall, each indicator had a small increase in average value
+between 2020 and 2022.</p>
 </div>
 <div id="confidence-intervals" class="section level2">
 <h2>Confidence Intervals</h2>
 <p>I relabeled the observations for the variable indicator to “received”
-if they did obtain the mental health services they needed and “not
-received” if they did not obtain the mental health services they
-needed.</p>
+if they did obtain the mental health services (Took Prescription
+Medication for Mental Health, Received Counseling or Therapy they
+needed, Took Prescription Medication for Mental Health And/Or Received
+Counseling or Therapy) and “not received” if they did not obtain the
+mental health services they needed (Needed Counseling or Therapy But Did
+Not Get It).</p>
 <pre class="r"><code>received_service = 
   data |&gt; 
   mutate(
@@ -435,7 +422,8 @@ needed.</p>
       indicator == &quot;Needed Counseling or Therapy But Did Not Get It&quot; ~ &quot;not received&quot;))</code></pre>
 <p>I created a data frame where I grouped by states to determine the
 number of total services, which includes the services received as well
-as the number of services not received.</p>
+as the number of services not received, and the total number of services
+not received.</p>
 <pre class="r"><code>states_df =
   received_service |&gt; 
   select(state, indicator, resolution) |&gt; 
@@ -448,7 +436,7 @@ as the number of services not received.</p>
     services_total = as.numeric(services_total),
     services_not_received = as.numeric(services_not_received)
   )</code></pre>
-<p>Now, I focus on the state of New York. Using the
+<p>Now, I focus only on the state of New York. Using the
 <code>prop.test</code> and <code>broom::tidy</code> functions, I obtain
 an estimate and CI of the proportion of mental health services not
 received in New York (shown in the table below).</p>
@@ -506,17 +494,27 @@ each state.</p>
     tidy_tests = map(prop_tests, broom::tidy)) |&gt; 
   select(-prop_tests) |&gt; 
   unnest(tidy_tests) |&gt; 
-  select(state, estimate, conf.low, conf.high) |&gt; 
+  select(state, estimate, conf.low, conf.high) |&gt;  
   mutate(state = fct_reorder(state, estimate))</code></pre>
-<p>Lastly, below is a plot showing the estimate (and CI) of the
-proportion of mental health services not received in each state.</p>
+<p>Lastly, I plot showing the estimate (and CI) of the proportion of
+mental health services not received in each state.</p>
 <pre class="r"><code>services_states %&gt;% 
   mutate(state = fct_reorder(state, estimate)) %&gt;% 
   ggplot(aes(x = state, y = estimate)) + 
   geom_point() + 
   geom_errorbar(aes(ymin = conf.low, ymax = conf.high)) + 
-  theme(axis.text.x = element_text(angle = 90, hjust = 1))</code></pre>
-<p><img src="EDA_AR_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(
+    x = &quot;State&quot;,
+    y = &quot;Estimate&quot;,
+    title = &quot;Proportion of Mental Health Services Not Received by State&quot;
+  )</code></pre>
+<p><img src="EDA_AR_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>According to the plot, the majority of states had a similar estimate
+of proportion of mental health services not received within each state.
+However, Vermont, Wyoming, Hawaii, and North Dakota had distinct
+estimates, with a lower estimate compared to the remaining states.
+Overall, Vermont had the lowest estimate.</p>
 </div>
 
 
@@ -554,6 +552,11 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
 
 <script>
 $(document).ready(function ()  {

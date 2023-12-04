@@ -5,20 +5,24 @@ navbar:
   right:
     - text: "Exploratory Analyses"
       menu:
-        - text: "National and State-Level"  
+        - text: "National-Level"  
+          href: EDA_AR.html
+        - text: "State Level"  
           href: eda.html
         - text: "Demographic-Level"
           href: eda_demographic.html
     - text: "Statistical Analysis"
       href: statistical_analysis.html
+    - text: "Linear Modeling"
+      href: linear_modeling.html
     - text: "Final Report"
       href: report.html
     - text: "About Us"
       href: about.html
     - icon: fa-github fa-lg
-      href: http://github.com/<romoashley/p8105_final_mental_health>/
+      href: https://github.com/romoashley/p8105_final_mental_health
 output:
   html_document:
-    theme: lumen
+    theme: united
     toc: true
     toc_float: true

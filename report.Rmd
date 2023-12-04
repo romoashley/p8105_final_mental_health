@@ -54,25 +54,25 @@ rawdata =
 tidydata = 
   rawdata |> 
   janitor::clean_names() |>
-  select(-phase, -quartile_range, -suppression_flag) |>
-  mutate(
+  dplyr::select(-phase, -quartile_range, -suppression_flag) |>
+  dplyr::mutate(
     indicator = str_replace(indicator, ", Last 4 Weeks", ""),
     group = str_replace(group, "By ", "")) |>
   drop_na(value) |>
-  select(start_date = time_period_start_date, end_date = time_period_end_date, everything())
+  dplyr::select(start_date = time_period_start_date, end_date = time_period_end_date, everything())
 
 ## part 3: tidying dates
 
 tidydata =
   tidydata |>
-  mutate(
+  dplyr::mutate(
     week_number = match(time_period_label, unique(time_period_label)),
     start_dates = mdy(pull(tidydata, start_date)),
     end_dates = mdy(pull(tidydata, end_date)),
     tpl = time_period_label,
     year = as.numeric(str_extract(tpl, "\\d{4}"))) |>
   separate(col = time_period_label, into = c("week_label", "years"), sep = ", ", remove = FALSE, extra = "merge") |>
-  select(indicator, year, start_dates, end_dates, week_number, week_label = time_period_label, state, group, subgroup, value, low_ci, high_ci, confidence_interval)
+  dplyr::select(indicator, year, start_dates, end_dates, week_number, week_label = time_period_label, state, group, subgroup, value, low_ci, high_ci, confidence_interval)
 ```
 
 ### Final Data Set
@@ -97,8 +97,37 @@ The final tidy data set included 13 variables:
 
 ## Initial Questions
 
+We are interested in identifying trends over time at the national, state, and demographic level. Our initial questions were the following:
+
+* What is the national prevalence over time ? 
+* Are there are the differences among states ? Which states have the highest values and which states have the lowest values?
+* Are there differences by gender, sexuality, race/ethnicity, age, and education?
+* What is the proportion of services needed but not received by individuals in New York? 
+* What is the proportion of services needed but not received by individuals across states?
+* Can we apply a linear model to the data?
+* Is there a significant difference between gender and indicators?
+* Is there a significant difference between sexual orientation and indicators?
+
 ## Exploratory Analysis
+
+We conducted Exploratory Data Analysis (EDA) at the [national-level](EDA_AR.html), [state-level](eda.html), and [demographic-level](eda_demographic.html).
 
 ## Additional Analysis
 
+We conducted a [Two Sample T Test and ANOVA](statistical_analysis.html) to determine if there were difference across indicator categories.
+
 ## Results and Discussion
+
+#### National Level
+On average, those who took prescription medication for mental health and/or received counseling or therapy had a highest values while those who received counseling or therapy had the lowest value. There is a wide gap in average values between those who took prescription medication for mental health and those who needed counseling or therapy but did not get it. Overall, each indicator had a small increase in average value between 2020 and 2022. Additionally, the majority of states had a similar estimate of proportion of mental health services not received within each state. However, Vermont, Wyoming, Hawaii, and North Dakota had distinct estimates, with a lower estimate compared to the remaining states. Overall, Vermont had the lowest estimate. 
+
+#### State Level 
+
+
+#### Demographic Level
+Age: 
+The 18-29 age group has the highest values across all the indicators, especially for the indicator of taking prescription medication for mental health and or receiving counseling. This might be due to the pandemic, where lockdown and transition to a virtual environment cause additional pressure on this age group, and mental health services are needed to relieve the overwhelming burdens. On the other hand, the 60 and above age group has the lowest values of needed counseling or therapy but did not get it and received counseling or therapy. It might be due to a present f stigma around mental health, where there might be low reports of expressing the need for counseling or therapy.
+
+Education: 
+On average, the bachelor's degree or higher group has the highest value of taking prescription medication for mental health and/or receiving counseling. On the other hand, those who have a lower education level (high school diploma or GED and less than high school diploma groups) have the most negligible value of needed counseling or therapy but did not get it and received counseling or therapy indicators. There is a wide gap between the education levels, with higher education usually having better health outcomes than those who do not. Moreover, those with higher education are more prioritized on their health status and are more likely to access the services if needed.  
+

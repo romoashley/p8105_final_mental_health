@@ -1,6 +1,9 @@
 ---
 title: "About Us"
-output: html_document
+output: 
+  html_document:
+    toc: true
+    toc_float: true
 ---
 
 ```{r setup, include=FALSE}
@@ -9,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ### Ashley Romo
 
-![](images/ashley.jpg)
+<img src="images/ashley.jpg" style="width:50%">
 
 Ashley is a second-year MPH candidate in the Department of Epidemiology at Columbia University Mailman School of Public Health. She is pursuing a certificate in Applied Biostatistics and Public Health Data Science.
 
@@ -21,7 +24,7 @@ Caleigh is a second-year MPH candidate in the Department of Sociomedical Science
 
 ### Hsin Yi (Cindy) Tseng
 
-![](images/cindy.jpeg)
+<img src="images/cindy.jpeg" style="width:50%">
 
 Hsin Yi (Cindy) is a second-year MPH candidate in the Department of Epidemiology at Columbia University Mailman School of Public Health. She is pursuing a certificate in Applied Biostatistics and Public Health Data Science.
 
@@ -29,12 +32,14 @@ Hsin Yi (Cindy) is a second-year MPH candidate in the Department of Epidemiology
 
 ### Sarah Younes
 
+<img src="images/sarah.jpg" style="width:50%">
+
 Sarah is a second-year MPH candidate in the Department of Sociomedical Sciences at Columbia University Mailman School of Public Health. She is pursuing a certificate in Public Health Research Methods.
 
 [LinkedIn](https://www.linkedin.com/in/sarahmyounes/)
 
 ### Wen Dai
 
-![](images/wen.jpeg)
+<img src="images/wen.jpeg" style="width:50%">
 
 Wen is a second-year MPH candidate in the Department of Epidemiology at Columbia University Mailman School of Public Health. She is pursuing a certificate in Applied Biostatistics and Public Health Data Science.

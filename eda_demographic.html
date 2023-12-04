@@ -358,7 +358,7 @@ div.tocify {
   <a href="about.html">About Us</a>
 </li>
 <li>
-  <a href="http://github.com/&lt;romoashley/p8105_final_mental_health">
+  <a href="https://github.com/romoashley/p8105_final_mental_health">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -424,7 +424,7 @@ age_plot |&gt;
   scale_color_hue(h = c(100, 300)) +
   guides(color = guide_legend(nrow = 4)) # Adding the legend guide adjustment</code></pre>
 <p><img src="eda_demographic_files/figure-html/age-1.png" width="90%" /></p>
-<p>Critical findings:</p>
+<p><strong>Main findings:</strong></p>
 <p>Based on the graph, it is clear that among the age groups, 18-29 have
 the highest values across all the indicators. Especially for the
 indicator of taking prescription medication for mental health and or
@@ -477,37 +477,33 @@ ed_plot=
 #View the education plot
 ed_plot</code></pre>
 <p><img src="eda_demographic_files/figure-html/education-1.png" width="90%" /></p>
-<p>Critical findings:</p>
-<p>Among four education groups, the bachelor’s degree or higher and some
-college/ associate’s degree groups have the highest value of taking
+<p><strong>Main findings:</strong></p>
+<p>Among four education groups, the Bachelor’s degree or higher and some
+college/Associate’s degree groups have the highest rates of taking
 prescription medication for mental health and/or received counseling.
-This is because individuals with higher education typically have better
-jobs, more money, and many other benefits, including better health
-insurance, which leads to better access to quality mental health
-services than those with a lower education level. On the other hand,
-those who have a lower education level (high school diploma or GED and
-less than high school diploma groups) have the least value of needed
-counseling or therapy but did not get it and received counseling or
-therapy indicators because they might not have adequate resources to the
-services which resulting having the lowest values in term of the
-utilization of the counseling services.</p>
+This is likely because individuals with higher educational attainment
+typically have better jobs with higher salaries and better benefits such
+as health insurance with greater coverage, which leads to better access
+to quality mental health services than those with lower educational
+attainment.</p>
+<p>On the other hand, those who have a lower education level (high
+school diploma or GED and less than high school diploma groups) have the
+least value of needed counseling or therapy but did not get it and
+received counseling or therapy indicators because they might not have
+adequate resources to the services which resulting having the lowest
+values in term of the utilization of the counseling services.</p>
 </div>
 <div id="gender" class="section level2">
 <h2>Gender</h2>
-<p>Trends in mental health access by gender were stark. Women reported
-needing almost twice as much counseling or therapy for mental health as
-men, and these trends were consistent from 2020 to 2022.</p>
-<p>Women took more prescription medication for mental health and
-received more counseling or therapy for mental health than men. These
-trends slightly increased each year from 2020 to 2022.</p>
 <pre class="r"><code>tidydata |&gt;
   filter(
     group == &quot;Sex&quot;,
     state == &quot;United States&quot;) |&gt;
-  group_by(indicator, start_dates, subgroup) |&gt;
+  mutate(gender = forcats::fct_relevel(subgroup, c(&quot;Male&quot;, &quot;Female&quot;))) |&gt;
+  group_by(indicator, start_dates, gender) |&gt;
   ggplot(aes(x = start_dates, y = value, color = indicator)) +
   geom_line() +
-  facet_grid(. ~ subgroup) +
+  facet_grid(. ~ gender) +
   theme_gray() +
   theme(
     legend.position = &quot;bottom&quot;,
@@ -521,23 +517,73 @@ trends slightly increased each year from 2020 to 2022.</p>
     caption = &quot;Data was collected from August 19, 2020 to May 9, 2022&quot;,
     color = &quot;Indicator of Mental Health Access&quot;)</code></pre>
 <p><img src="eda_demographic_files/figure-html/gender-1.png" width="90%" /></p>
+<p><strong>Main findings:</strong></p>
+<p>Trends in mental health access by gender were stark. Women reported
+needing almost twice as much counseling or therapy for mental health as
+men, and these trends were consistent from 2020 to 2022. Women took more
+prescription medication for mental health and received more counseling
+or therapy for mental health than men. These trends slightly increased
+each year from 2020 to 2022.</p>
+</div>
+<div id="raceethnicity" class="section level2">
+<h2>Race/Ethnicity</h2>
+<p>The graph below explores differences in outcome variables by
+race/ethnicity.</p>
+<pre class="r"><code>tidydata |&gt;
+  filter(group == &quot;Race/Hispanic ethnicity&quot;, state == &quot;United States&quot;) |&gt;
+  mutate(race_ethnicity = forcats::fct_relevel(subgroup, c(&quot;Non-Hispanic Asian, single race&quot;, &quot;Non-Hispanic Black, single race&quot;, &quot;Hispanic or Latino&quot;, &quot;Non-Hispanic White, single race&quot;, &quot;Non-Hispanic, other races and multiple races&quot;))) |&gt;
+  mutate(
+    subgroup = replace(subgroup, subgroup == &quot;Non-Hispanic Asian, single race&quot;, &quot;Non-Hispanic Asian&quot;),
+    subgroup = replace(subgroup, subgroup == &quot;Non-Hispanic Black, single race&quot;, &quot;Non-Hispanic Black&quot;),
+    subgroup = replace(subgroup, subgroup == &quot;Non-Hispanic White, single race&quot;, &quot;Non-Hispanic White&quot;),
+    subgroup = replace(subgroup, subgroup == &quot;Non-Hispanic, other races and multiple races&quot;, &quot;Non-Hispanic Multi-racial&quot;)) |&gt;
+  group_by(indicator, start_dates, race_ethnicity) |&gt;
+  ggplot(aes(x = start_dates, y = value, color = indicator)) +
+  geom_line() +
+  facet_grid(. ~ race_ethnicity) +
+  theme_grey() +
+  theme(
+    legend.position = &quot;bottom&quot;,
+    plot.title = element_text(size = 18),
+    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+  guides(color = guide_legend(nrow = 4)) +
+  labs(
+    x = &quot;Date&quot;,
+    y = &quot;Prevalence (%)&quot;,
+    title = &quot;Differences in Mental Health Access by Race/Ethnicity&quot;,
+    caption = &quot;Data was collected from August 19, 2020 to May 9, 2022&quot;,
+    color = &quot;Indicator of Mental Health Access&quot;)</code></pre>
+<p><img src="eda_demographic_files/figure-html/race%20ethnicity-1.png" width="90%" /></p>
+<p><strong>Main findings:</strong></p>
+<p>Trends by racial and ethnic groups were stark across all three years.
+Non-Hispanic multiracial group received the most prescription medication
+and/or counseling or therapy for mental health and needed counseling or
+therapy for mental health but did not receive it more than any other
+racial/ethnic group. Their outcomes worsened over time for all
+indicators, especially among those who took prescription medication for
+mental health, which increased 28% from August 2020 to May 2022.
+Non-Hispanic Black and Hispanic/Latino groups had very similar outcomes
+across all four indicators. Non-Hispanic Asians received and needed the
+least mental health care out of all racial/ethnic groups, although there
+was occasional variation in their outcomes over time. Non-Hispanic White
+group was the most consistent in their outcomes over time, especially
+for receiving counseling or therapy. This is likely because they had
+access to mental health as needed before the pandemic hit.</p>
 </div>
 <div id="sexual-orientation" class="section level2">
 <h2>Sexual Orientation</h2>
-<p>Mental health access strongly differed by sexual orientation.
-Bisexual Americans reported the highest trends in both taking
-prescription medication and/or receiving counseling for mental health
-and needing counseling or therapy but not receiving it. Their outcomes
-showed the most variation over time. Straight Americans consistently
-reported the least unmet need for counseling or therapy.</p>
+<p>The Household Pulse Survey started asking about sexual orientation
+mid-way through data collection; as such, data for sexuality was only
+available from August 2021 to May 2022.</p>
 <pre class="r"><code>tidydata |&gt;
     filter(group == &quot;Sexual orientation&quot;,
          state == &quot;United States&quot;,
          week_number %in% c(24:33)) |&gt;
-  group_by(start_dates, subgroup, indicator) |&gt;
+  mutate(sexual_orientation = forcats::fct_relevel(subgroup, c(&quot;Straight&quot;, &quot;Gay or lesbian&quot;, &quot;Bisexual&quot;))) |&gt;
+  group_by(start_dates, sexual_orientation, indicator) |&gt;
   ggplot(aes(x = start_dates, y = value, color = indicator)) +
   geom_line() +
-  facet_grid(. ~ subgroup) +
+  facet_grid(. ~ sexual_orientation) +
   theme_grey() +
   theme(
     legend.position = &quot;bottom&quot;,
@@ -551,40 +597,15 @@ reported the least unmet need for counseling or therapy.</p>
     caption = &quot;Data was collected from August 18, 2021 to May 9, 2022&quot;,
     color = &quot;Indicator of Mental Health Access&quot;)</code></pre>
 <p><img src="eda_demographic_files/figure-html/sexuality-1.png" width="90%" /></p>
-</div>
-<div id="raceethnicity" class="section level2">
-<h2>Race/Ethnicity</h2>
-<p>The graph below explores differences in outcome variables by
-race/ethnicity. Trends by racial and ethnic groups were stark across all
-three years. Non-Hispanic Multiracial Americans, closely followed by
-non-Hispanic White Americans, received the most prescription medication
-and/or counseling or therapy for mental health. However, non-Hispanic
-multiracial Americans needed counseling or therapy for mental health but
-did not receive it.</p>
-<pre class="r"><code>tidydata |&gt;
-  filter(group == &quot;Race/Hispanic ethnicity&quot;, state == &quot;United States&quot;) |&gt;
-  mutate(
-    subgroup = replace(subgroup, subgroup == &quot;Non-Hispanic Asian, single race&quot;, &quot;Non-Hispanic Asian&quot;),
-    subgroup = replace(subgroup, subgroup == &quot;Non-Hispanic Black, single race&quot;, &quot;Non-Hispanic Black&quot;),
-    subgroup = replace(subgroup, subgroup == &quot;Non-Hispanic White, single race&quot;, &quot;Non-Hispanic White&quot;),
-    subgroup = replace(subgroup, subgroup == &quot;Non-Hispanic, other races and multiple races&quot;, &quot;Non-Hispanic Multi-racial&quot;)) |&gt;
-  group_by(indicator, start_dates, subgroup) |&gt;
-  ggplot(aes(x = start_dates, y = value, color = indicator)) +
-  geom_line() +
-  facet_grid(. ~ subgroup) +
-  theme_grey() +
-  theme(
-    legend.position = &quot;bottom&quot;,
-    plot.title = element_text(size = 18),
-    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
-  guides(color = guide_legend(nrow = 4)) +
-  labs(
-    x = &quot;Date&quot;,
-    y = &quot;Prevalence (%)&quot;,
-    title = &quot;Differences in Mental Health Access by Race&quot;,
-    caption = &quot;Data was collected from August 19, 2020 to May 9, 2022&quot;,
-    color = &quot;Indicator of Mental Health Access&quot;)</code></pre>
-<p><img src="eda_demographic_files/figure-html/race%20ethnicity-1.png" width="90%" /></p>
+<p><strong>Main findings</strong>:</p>
+<p>Mental health access strongly differed by sexual orientation.
+Individuals who identify as bisexual reported the highest trends in all
+four indicators compared with gay or lesbian and straight Americans,
+although they were closely followed by individuals who identify as gay
+or lesbian. Outcomes in mental health access for individuals who
+identify as bisexual showed the most variation over time. Individuals
+who identify as straight reported the least unmet need for counseling or
+therapy, and their outcomes were consistent over the 9-month period.</p>
 </div>
 
 

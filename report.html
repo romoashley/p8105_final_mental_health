@@ -13,7 +13,7 @@
 
 <title>Final Report</title>
 
-<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.24/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/united.min.css" rel="stylesheet" />
@@ -459,9 +459,9 @@ and we downloaded the Comma Separated Values (.csv) file.</p>
 <p>The first portion of data cleaning was the data import, which
 involved downloading and importing the .csv using <code>read_csv</code>
 and saving the raw data set.</p>
-<p>The second portion of data cleaning was renaming and cleaning
-columns. This step involved removing unnecessary columns, cleaning and
-renaming columns for clarity, and dropping missing values.</p>
+<p>The second portion of data cleaning was cleaning columns. This step
+involved removing unnecessary columns, cleaning and renaming columns for
+clarity, and dropping missing values.</p>
 <p>The third portion of data cleaning was tidying the date formats. This
 step involved converting dates to the date format using
 <code>mdy</code>, creating a new numeric <code>year</code> variable, and
@@ -543,20 +543,17 @@ range.</li>
 state, and demographic level. Our initial questions were the
 following:</p>
 <ul>
-<li>What is the national prevalence over time ?</li>
-<li>Are there are the differences among states ? Which states have the
+<li>What is the national prevalence over time?</li>
+<li>Are there are the differences among states? Which states have the
 highest values and which states have the lowest values?</li>
-<li>Are there differences by gender, sexuality, race/ethnicity, age, and
-education?</li>
+<li>Are there differences in indicators of mental health outcomes by
+demographic characteristic (age, education level, gender,
+race/ethnicity, and sexual orientation)?</li>
 <li>What is the proportion of services needed but not received by
 individuals in New York?</li>
 <li>What is the proportion of services needed but not received by
 individuals across states?</li>
 <li>Can we apply a linear model to the data?</li>
-<li>Is there a significant difference between gender and
-indicators?</li>
-<li>Is there a significant difference between sexual orientation and
-indicators?</li>
 </ul>
 </div>
 <div id="exploratory-analysis" class="section level2">

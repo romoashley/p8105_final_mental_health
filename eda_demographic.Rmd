@@ -118,7 +118,7 @@ ed_plot
 
 Among four education groups, the Bachelor's degree or higher and some college/Associate's degree groups have the highest rates of taking prescription medication for mental health and/or received counseling. This is likely because individuals with higher educational attainment typically have better jobs with higher salaries and better benefits such as health insurance with greater coverage, which leads to better access to quality mental health services than those with lower educational attainment.
 
-On the other hand, those who have a lower education level (high school diploma or GED and less than high school diploma groups) have the least value of needed counseling or therapy but did not get it and received counseling or therapy indicators because they might not have adequate resources to the services which resulting having the lowest values in term of the utilization of the counseling services.
+On the other hand, those who have a lower education level (high school diploma or GED and less than high school diploma groups) have the least value of needed counseling or therapy but did not get it and received counseling or therapy indicators because they might not have the time or money to take care of their mental health, so they do not think they will need counseling or needs receiving counseling services. 
 
 ## Gender
 

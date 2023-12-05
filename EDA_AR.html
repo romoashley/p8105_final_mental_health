@@ -11,7 +11,7 @@
 
 
 
-<title>National Level Exploratory Data Analysis (EDA)</title>
+<title>National-Level Exploratory Data Analysis (EDA)</title>
 
 <script src="site_libs/header-attrs-2.24/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -338,7 +338,7 @@ div.tocify {
       <a href="EDA_AR.html">National-Level</a>
     </li>
     <li>
-      <a href="eda.html">State Level</a>
+      <a href="eda.html">State-Level</a>
     </li>
     <li>
       <a href="eda_demographic.html">Demographic-Level</a>
@@ -349,16 +349,13 @@ div.tocify {
   <a href="statistical_analysis.html">Statistical Analysis</a>
 </li>
 <li>
-  <a href="linear_modeling.html">Linear Modeling</a>
-</li>
-<li>
   <a href="report.html">Final Report</a>
 </li>
 <li>
   <a href="about.html">About Us</a>
 </li>
 <li>
-  <a href="http://github.com/&lt;romoashley/p8105_final_mental_health">
+  <a href="https://github.com/romoashley/p8105_final_mental_health">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -380,7 +377,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">National Level Exploratory Data Analysis
+<h1 class="title toc-ignore">National-Level Exploratory Data Analysis
 (EDA)</h1>
 
 </div>
@@ -390,15 +387,15 @@ div.tocify {
 <h2>National Average</h2>
 <p>Let’s take a look at the national average value.</p>
 <p>First, I filtered by states = United States to look only at national
-data rather then state-specific data. Next, I group by year, start date,
-and indicator to ensure I calculate the mean value for each indicator by
-start date. After calculating the mean, I plot the mean value and start
-date to showcase the mean national value over time.
-<img src="EDA_AR_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+data rather then state-specific data. Next, I grouped by year, start
+date, and indicator to ensure I calculate the mean value for each
+indicator by start date. After calculating the mean, I plotted the mean
+value and start date to showcase the mean national value over time.</p>
+<p><img src="EDA_AR_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <p>On average, those who took prescription medication for mental health
-and/or received counseling or therapy had a highest values while those
-who received counseling or therapy had the lowest value. There wide gap
-in average values between those who took prescription medication for
+and/or received counseling or therapy had the highest values while those
+who received counseling or therapy had the lowest values. There wide gap
+in average value between those who took prescription medication for
 mental health and those who needed counseling or therapy but did not get
 it. Overall, each indicator had a small increase in average value
 between 2020 and 2022.</p>
@@ -407,11 +404,11 @@ between 2020 and 2022.</p>
 <h2>Confidence Intervals</h2>
 <p>I relabeled the observations for the variable indicator to “received”
 if they did obtain the mental health services (Took Prescription
-Medication for Mental Health, Received Counseling or Therapy they
-needed, Took Prescription Medication for Mental Health And/Or Received
-Counseling or Therapy) and “not received” if they did not obtain the
-mental health services they needed (Needed Counseling or Therapy But Did
-Not Get It).</p>
+Medication for Mental Health, Received Counseling or Therapy, Took
+Prescription Medication for Mental Health And/Or Received Counseling or
+Therapy) and “not received” if they did not obtain the mental health
+services they needed (Needed Counseling or Therapy But Did Not Get
+It).</p>
 <pre class="r"><code>received_service = 
   data |&gt; 
   mutate(

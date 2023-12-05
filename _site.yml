@@ -7,7 +7,7 @@ navbar:
       menu:
         - text: "National-Level"  
           href: EDA_AR.html
-        - text: "State Level"  
+        - text: "State-Level"  
           href: eda.html
         - text: "Demographic-Level"
           href: eda_demographic.html

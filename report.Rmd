@@ -9,15 +9,19 @@ output:
 
 ## Motivation
 
+<img src="images/mental_health_report.avif" style="width:50%">
+
 COVID-19 has had serious behavioral and mental health implications. One survey conducted by the Centers for Disease Control and Prevention in July 2020 found that [41%](https://www.cnn.com/2020/08/13/health/mental-health-coronavirus-pandemic-cdc-study-wellness/index.html) of respondents were struggling with mental health issues stemming from the pandemic. Different demographics have worse outcomes, such as [young people](https://www.pewresearch.org/short-reads/2023/03/02/mental-health-and-the-pandemic-what-u-s-surveys-have-found/), and these outcomes are [continuing](https://www.kff.org/mental-health/issue-brief/the-implications-of-covid-19-for-mental-health-and-substance-use/) years after the pandemic first hit.
 
 Our project aimed to explore trends and differences in indicators of mental health care access across the United States from August 2020-May 2022, as well as disaggregate data by state, age group, gender, race/ethnicity, education level, and sexual orientation.
+
 
 ## Related Work
 
 Many of us remember reading articles about the difficulty of accessing therapists and counselors during the rise of the COVID-19 pandemic in spring 2020. Providers reported month-long waiting lists that they have [never seen](https://www.cnn.com/2020/12/18/health/mental-health-care-demand-wellness/index.html) until the pandemic hit in spring 2020.
 
 Yet these trends did not taper off; instead, they continued to worsen. According to the [American Psychological Association](https://www.apa.org/news/press/releases/2021/10/mental-health-treatment-demand), the percent of psychologists who treat anxiety and depression who saw an increase in demand for anxiety or depression treatment increased by 13.5% and 20%, respectively, from 2020 to 2021. The number of psychologists who reported receiving more referrals increased from 37% in 2020 to 62% in 2021. Nearly 7 in 10 psychologists with a waiting list in 2021 reported it had grown longer since the start of the pandemic. Even through March 2022, prospective patients are [still](https://www.washingtonpost.com/health/2022/03/06/therapist-covid-burnout/) struggling to find providers who are accepting new patients or do not have month-long waiting lists.
+
 
 ## Data
 
@@ -30,6 +34,7 @@ We are using the [Mental Health Care in the Last 4 Weeks](https://catalog.data.g
 The data set includes an additional indicator that combines those who received counseling or therapy and/or took prescription medication for mental health. The percentage of participants who responded "Yes" were calculated for each of the 3 questions they were asked, as well as the additional indicator. It is  possible that participants respond "No" to each of the 3 questions they are asked, so the values for the 3 questions do not add up to 100%.
 
 Data was collected from a nationally representative sample of approximately [50,000-90,000](https://www.cdc.gov/nchs/covid19/pulse/mental-health-care.htm) participants every two weeks for a total of 38 time periods of data collection.
+
 
 ### Data Cleaning
 
@@ -75,6 +80,7 @@ tidydata =
   dplyr::select(indicator, year, start_dates, end_dates, week_number, week_label = time_period_label, state, group, subgroup, value, low_ci, high_ci, confidence_interval)
 ```
 
+
 ### Final Data Set
 
 The final tidy data set included 13 variables:
@@ -95,6 +101,7 @@ The final tidy data set included 13 variables:
 * `high_ci` (num): Upper bound of the confidence interval of the value.
 * `confidence_interval` (chr): Confidence interval as a range.
 
+
 ## Initial Questions
 
 We are interested in identifying trends over time at the national, state, and demographic level. Our initial questions were the following:
@@ -106,19 +113,24 @@ We are interested in identifying trends over time at the national, state, and de
 * What is the proportion of services needed but not received by individuals across states?
 * Can we apply a linear model to the data?
 
+
 ## Exploratory Analysis
 
 We conducted Exploratory Data Analysis (EDA) at the [national-level](EDA_AR.html), [state-level](eda.html), and [demographic-level](eda_demographic.html).
+
 
 ## Additional Analysis
 
 We conducted a [Two Sample T Test and ANOVA](statistical_analysis.html) to determine if there were difference across indicator categories.
 
+
 ## Results and Discussion
+
 
 #### National Level
 
 On average, those who took prescription medication for mental health and/or received counseling or therapy had a highest values while those who received counseling or therapy had the lowest value. There is a wide gap in average values between those who took prescription medication for mental health and those who needed counseling or therapy but did not get it. Overall, each indicator had a small increase in average value between 2020 and 2022. Additionally, the majority of states had a similar estimate of proportion of mental health services not received within each state. However, Vermont, Wyoming, Hawaii, and North Dakota had distinct estimates, with a lower estimate compared to the remaining states. Overall, Vermont had the lowest estimate. 
+
 
 #### State Level 
 
@@ -128,6 +140,7 @@ Therapy use was highest in District of Columbia, Massachusetts, Rhode Island, Ve
 When medication and therapy indicators are combined to indicate overall mental health burden, West Virginia, Utah, and Kentucky remain the highest, but are joined by Vermont and Maine. Vermont, Maine, and Utah all have high median household income, which suggests ruralness rather than income levels may drive mental health burden at the state level.
 
 Interestingly, the states with the highest prevalence of unmet therapy needs also tended to have a higher prevalence of therapy use. This could indicate that demand for therapy outpaced supply of mental health care providers even with the expansion of telehealth during the pandemic. However, West Virginia, which had a high prevalence of medication use, did not have high unmet therapy needs. This could mean that in certain states, medication use is not tied to therapy use.
+
 
 #### Demographic Level
 

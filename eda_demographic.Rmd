@@ -13,6 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r include=FALSE}
 library(tidyverse)
+library(scales)
 
 library(viridisLite)
 viridisLite::viridis(10)
@@ -67,6 +68,7 @@ age_plot |>
     title = "Differences in Mental Health Access by Age Group",
     caption = "Data was collected from August 19, 2020 to May 9, 2022",
     color = "Indicator of Mental Health Access") +
+  scale_x_date(labels = date_format("%m-%Y")) +
   theme_gray() +
   theme(
     legend.position = "bottom",
@@ -95,6 +97,7 @@ ed_plot=
   ggplot(aes(x = start_dates, y = value, color = indicator)) +
   geom_line() +
   facet_grid(. ~ ed_name) +
+  scale_x_date(labels = date_format("%m-%Y")) +
   labs(
     x = "Date",
     y = "Prevalence (%)",
@@ -138,7 +141,8 @@ tidydata |>
     plot.title = element_text(size = 18),
     axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
   guides(color = guide_legend(nrow = 4)) +
-    labs(
+  scale_x_date(labels = date_format("%m-%Y")) +
+  labs(
     x = "Date",
     y = "Prevalence (%)",
     title = "Differences in Mental Health Access by Gender",
@@ -205,6 +209,7 @@ tidydata |>
     plot.title = element_text(size = 18),
     axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
   guides(color = guide_legend(nrow = 4)) +
+  scale_x_date(labels = date_format("%m-%Y")) +
     labs(
     x = "Date",
     y = "Prevalence (%)",
@@ -215,4 +220,4 @@ tidydata |>
 
 **Main findings**:
 
-Mental health access strongly differed by sexual orientation. Individuals who identify as bisexual reported the highest trends in all four indicators compared with gay or lesbian and straight Americans, although they were closely followed by individuals who identify as gay or lesbian. This finding was initially surprising, as differences between those who identify as bisexual and those who identified as lesbian or gay were not expected, but one peer-reviewed journal [article](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2951966/) found that bisexual women showed a higher likelihood of frequent mental distress than lesbian women. Outcomes in mental health access for individuals who identify as bisexual showed the most variation over time. Individuals who identify as straight reported the least unmet need for counseling or therapy, and their outcomes were consistent over the 9-month period.
+Mental health access strongly differed by sexual orientation. Individuals who identify as bisexual reported the highest trends in all four indicators compared with gay or lesbian and straight Americans, although they were closely followed by individuals who identify as gay or lesbian. This finding was initially surprising, as differences between those who identify as bisexual and those who identified as lesbian or gay were not expected, but one peer-reviewed journal [article](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2951966/) found that bisexual women showed a higher likelihood of frequent mental distress than lesbian women. Even out of all demographic characteristics, those who identify as bisexual reported the highest rates of taking prescription medication for mental health and/or receiving counseling or therapy, as their rates reached over 50% at some time points in 2021 and 2022. Outcomes in mental health access for individuals who identify as bisexual showed the most variation over time. Individuals who identify as straight reported the least unmet need for counseling or therapy, and their outcomes were consistent over the 9-month period.

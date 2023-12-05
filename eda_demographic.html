@@ -416,6 +416,7 @@ age_plot |&gt;
     title = &quot;Differences in Mental Health Access by Age Group&quot;,
     caption = &quot;Data was collected from August 19, 2020 to May 9, 2022&quot;,
     color = &quot;Indicator of Mental Health Access&quot;) +
+  scale_x_date(labels = date_format(&quot;%m-%Y&quot;)) +
   theme_gray() +
   theme(
     legend.position = &quot;bottom&quot;,
@@ -458,6 +459,7 @@ ed_plot=
   ggplot(aes(x = start_dates, y = value, color = indicator)) +
   geom_line() +
   facet_grid(. ~ ed_name) +
+  scale_x_date(labels = date_format(&quot;%m-%Y&quot;)) +
   labs(
     x = &quot;Date&quot;,
     y = &quot;Prevalence (%)&quot;,
@@ -510,7 +512,8 @@ services.</p>
     plot.title = element_text(size = 18),
     axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
   guides(color = guide_legend(nrow = 4)) +
-    labs(
+  scale_x_date(labels = date_format(&quot;%m-%Y&quot;)) +
+  labs(
     x = &quot;Date&quot;,
     y = &quot;Prevalence (%)&quot;,
     title = &quot;Differences in Mental Health Access by Gender&quot;,
@@ -590,6 +593,7 @@ available from August 2021 to May 2022.</p>
     plot.title = element_text(size = 18),
     axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
   guides(color = guide_legend(nrow = 4)) +
+  scale_x_date(labels = date_format(&quot;%m-%Y&quot;)) +
     labs(
     x = &quot;Date&quot;,
     y = &quot;Prevalence (%)&quot;,
@@ -607,7 +611,11 @@ between those who identify as bisexual and those who identified as
 lesbian or gay were not expected, but one peer-reviewed journal <a
 href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2951966/">article</a>
 found that bisexual women showed a higher likelihood of frequent mental
-distress than lesbian women. Outcomes in mental health access for
+distress than lesbian women. Even out of all demographic
+characteristics, those who identify as bisexual reported the highest
+rates of taking prescription medication for mental health and/or
+receiving counseling or therapy, as their rates reached over 50% at some
+time points in 2021 and 2022. Outcomes in mental health access for
 individuals who identify as bisexual showed the most variation over
 time. Individuals who identify as straight reported the least unmet need
 for counseling or therapy, and their outcomes were consistent over the

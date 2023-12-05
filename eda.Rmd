@@ -111,7 +111,7 @@ print(heatmap_meds)
 
 We can also look at which states have had the greatest change in medication use. This shows that not only does WV have the highest prevalence of medication use for mental health during this period, but it also has had the highest level of change in this indicator between 2020-2022.
 
-```{r meds_change}
+```{r meds_change, message = FALSE}
 state_meds_change =
   state_df |> 
   filter(indicator == "Took Prescription Medication for Mental Health", year != "2021") |> 
@@ -131,7 +131,7 @@ state_meds_change |>
 
 Let's take a look at the trend for this indicator over time. 
 
-```{r meds_trend, fig.keep="none"}
+```{r meds_trend, fig.keep="none", message = FALSE}
 
 state_df |>
   filter(indicator == "Took Prescription Medication for Mental Health") |> 
@@ -203,7 +203,7 @@ print(heatmap_ther)
 
 We can also look at which states have had the greatest change in therapy use. This shows that NE had the highest level of change in this indicator between 2020-2022. It also had a high level of change in indicator 1.
 
-```{r ther_change}
+```{r ther_change, message = FALSE}
 state_ther_change =
   state_df |> 
   filter(indicator == "Received Counseling or Therapy", year != "2021") |> 
@@ -222,7 +222,7 @@ state_ther_change |>
 
 Let's take a look at the trend for this indicator over time. 
 
-```{r ther_trend, fig.keep="none"}
+```{r ther_trend, fig.keep="none", message = FALSE}
 state_df |>
   filter(indicator == "Received Counseling or Therapy") |> 
   group_by(state, year) |>
@@ -290,7 +290,7 @@ print(heatmap_both)
 
 We can also look at which states have had the greatest change in mental health care use. This shows that WV had the highest level of change in this indicator between 2020-2022. This makes sense, as WV had the highest change in medication use.
 
-```{r both_change}
+```{r both_change, message = FALSE}
 state_both_change =
   state_df |> 
   filter(indicator == "Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy", year != "2021") |> 
@@ -309,7 +309,7 @@ state_both_change |>
 
 Let's take a look at the trend for this indicator over time. 
 
-```{r both_trend, fig.keep="none"}
+```{r both_trend, fig.keep="none", message = FALSE}
 state_df |>
   filter(indicator == "Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy") |> 
   group_by(state, year) |>
@@ -377,7 +377,7 @@ print(heatmap_need)
 
 We can also look at which states have had the greatest change in unmet mental health care need. This shows that AK had the highest level of change in this indicator between 2020-2022.
 
-```{r need_change}
+```{r need_change, message = FALSE}
 state_need_change =
   state_df |> 
   filter(indicator == "Needed Counseling or Therapy But Did Not Get It", year != "2021") |> 
@@ -396,7 +396,7 @@ state_need_change |>
 
 Let's take a look at the trend for this indicator over time. 
 
-```{r need_trend, fig.keep="none"}
+```{r need_trend, fig.keep="none", message = FALSE}
 state_df |>
   filter(indicator == "Needed Counseling or Therapy But Did Not Get It") |> 
   group_by(state, year) |>
@@ -409,4 +409,4 @@ plot_ly(x = ~year, y = ~mean_value, color = ~state, type = "scatter", mode = "li
     yaxis = list(title = "Avg % did not receive needed therapy"))
 ```
 
-For discussion and interpretation of these results, view our [final report](report.html)
+For discussion and interpretation of these results, view our [final report](report.html).

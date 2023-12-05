@@ -13,10 +13,34 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r include = FALSE}
 library(tidyverse)
+library(modelr)
+library(mgcv)
+library(MASS) # for stepAIC
+library(dplyr)
+
+knitr::opts_chunk$set(
+	echo = TRUE,
+	warning = FALSE,
+	fig.width = 8, 
+  fig.height = 6,
+  out.width = "90%"
+)
+
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+
 
 tidydata = 
   read.csv("data/tidydata.csv")
 ```
+
 
 ## Independent Samples T-tests
 
@@ -249,5 +273,51 @@ Kruskal-Wallis Chi-squared=1539.6. This is the test statistic that follows a chi
 The p-value is less than 2.2e-16. It effectively means that the p-value is extremely small, much less than the commonly used significance levels (like 0.05 or 0.01), indicating that there is a statistically significant difference in the medians across the groups.
 
 In summary, the test result is highly significant, which leads to the rejection of the null hypothesis of equal medians. Therefore, we have sufficient evidence to say that not all group medians are equal.
+
+## Linear Modeling
+
+### Step 1 
+Import the tidy dataset
+```{r}
+library(tidyverse)
+
+tidydata = 
+  read.csv("data/tidydata.csv")
+```
+
+### Step 2 
+Separate tidy dataset into 4 subgroups based on the indicator category.
+```{r}
+Indicator1=tidydata |> filter(indicator=="Took Prescription Medication for Mental Health")
+Indicator2=tidydata |> filter(indicator=="Received Counseling or Therapy")
+Indicator3=tidydata |> filter(indicator=="Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy")
+Indicator4=tidydata |> filter(indicator=="Needed Counseling or Therapy But Did Not Get It")
+```
+
+### Step 3 
+Apply linear model
+```{r}
+
+fit <- lm(value ~ group + subgroup + year + state, data=Indicator1)
+stepwise_fit <- stepAIC(fit, direction="both")
+
+fit <- lm(value ~ group + subgroup + year + state, data=Indicator2)
+stepwise_fit <- stepAIC(fit, direction="both")
+
+fit <- lm(value ~ group + subgroup + year + state, data=Indicator3)
+stepwise_fit <- stepAIC(fit, direction="both")
+
+fit <- lm(value ~ group + subgroup + year + state, data=Indicator4)
+stepwise_fit <- stepAIC(fit, direction="both")
+
+```
+
+### Step 4 
+AIC values are identical across the steps shown, which suggests that removal or addition of a variable did not improve the model's fit. 
+
+
+
+
+
 
 

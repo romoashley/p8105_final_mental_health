@@ -515,9 +515,9 @@ gender_needed |&gt;
 <pre class="r"><code>ggplot(tidydata, aes(sample = value)) +
   stat_qq() +
   stat_qq_line()</code></pre>
-<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-6-1.png" width="90%" /></p>
 <pre class="r"><code> hist(tidydata$value, breaks = &quot;FD&quot;, main = &quot;Histogram of Data&quot;, xlab = &quot;Data Values&quot;)</code></pre>
-<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-6-2.png" width="672" />
+<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-6-2.png" width="90%" />
 The plot appears to be a Q-Q (quantile-quantile) plot showing that the
 data deviates from the expected normal distribution, particularly in the
 tails, indicating the presence of outliers or a heavy-tailed
@@ -535,9 +535,9 @@ data, hinting at varied underlying characteristics or groups.</p>
 <pre class="r"><code>ggplot(tidydata, aes(sample = log(value))) +
   stat_qq() +
   stat_qq_line()</code></pre>
-<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-7-1.png" width="90%" /></p>
 <pre class="r"><code> hist(log(tidydata$value), breaks = &quot;FD&quot;, main = &quot;Histogram of Data&quot;, xlab = &quot;Data Values&quot;)</code></pre>
-<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-7-2.png" width="672" />
+<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-7-2.png" width="90%" />
 Despite the application of a logarithmic transformation to the data, the
 resulting distribution does not conform to normality. This is evidenced
 by the Q-Q plot, which exhibits significant deviations from the line of
@@ -592,7 +592,7 @@ Medication for Mental Health.</li>
 <pre class="r"><code>shapiro_test_result &lt;- shapiro.test(pull(Indicator1,value))
 
 hist(Indicator1$value, breaks = &quot;FD&quot;, main = &quot;Histogram of Data&quot;, xlab = &quot;Data Values&quot;)</code></pre>
-<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-11-1.png" width="672" />
+<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-11-1.png" width="90%" />
 Shapiro-Wilk normality test result : (W = 0.93709, p-value &lt;
 2.2e-16), The p-value is extremely small (&lt; 2.2e-16), which provides
 strong evidence suggest that the data does not come from a normal
@@ -620,7 +620,7 @@ or Therapy</li>
 <pre class="r"><code>shapiro_test_result &lt;- shapiro.test(pull(Indicator2,value))
 
 hist(Indicator2$value, breaks = &quot;FD&quot;, main = &quot;Histogram of Data&quot;, xlab = &quot;Data Values&quot;)</code></pre>
-<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-13-1.png" width="672" />
+<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-13-1.png" width="90%" />
 Shapiro-Wilk normality test result : (W = 0.83846, p-value &lt;
 2.2e-16), The p-value is extremely small (&lt; 2.2e-16), which provides
 strong evidence suggest that the data does not come from a normal
@@ -648,7 +648,7 @@ Medication for Mental Health And/Or Received Counseling or Therapy</li>
 <pre class="r"><code>shapiro_test_result &lt;- shapiro.test(pull(Indicator3,value))
 
 hist(Indicator3$value, breaks = &quot;FD&quot;, main = &quot;Histogram of Data&quot;, xlab = &quot;Data Values&quot;)</code></pre>
-<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-15-1.png" width="672" />
+<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-15-1.png" width="90%" />
 Shapiro-Wilk normality test result : (W = 0.95871, p-value &lt;
 2.2e-16), The p-value is extremely small (&lt; 2.2e-16), which provides
 strong evidence suggest that the data does not come from a normal
@@ -676,7 +676,7 @@ Therapy But Did Not Get It.</li>
 <pre class="r"><code>shapiro_test_result &lt;- shapiro.test(pull(Indicator4,value))
 
 hist(Indicator4$value, breaks = &quot;FD&quot;, main = &quot;Histogram of Data&quot;, xlab = &quot;Data Values&quot;)</code></pre>
-<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-17-1.png" width="672" />
+<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-17-1.png" width="90%" />
 Shapiro-Wilk normality test result : (W = 0.8161, p-value &lt; 2.2e-16),
 The p-value is extremely small (&lt; 2.2e-16), which provides strong
 evidence suggest that the data does not come from a normal distribution,
@@ -697,6 +697,103 @@ groups.</p>
 <p>In summary, the test result is highly significant, which leads to the
 rejection of the null hypothesis of equal medians. Therefore, we have
 sufficient evidence to say that not all group medians are equal.</p>
+</div>
+<div id="linear-modeling" class="section level2">
+<h2>Linear Modeling</h2>
+<div id="step-1" class="section level3">
+<h3>Step 1</h3>
+<p>Import the tidy dataset</p>
+<pre class="r"><code>library(tidyverse)
+
+tidydata = 
+  read.csv(&quot;data/tidydata.csv&quot;)</code></pre>
+</div>
+<div id="step-2" class="section level3">
+<h3>Step 2</h3>
+<p>Separate tidy dataset into 4 subgroups based on the indicator
+category.</p>
+<pre class="r"><code>Indicator1=tidydata |&gt; filter(indicator==&quot;Took Prescription Medication for Mental Health&quot;)
+Indicator2=tidydata |&gt; filter(indicator==&quot;Received Counseling or Therapy&quot;)
+Indicator3=tidydata |&gt; filter(indicator==&quot;Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy&quot;)
+Indicator4=tidydata |&gt; filter(indicator==&quot;Needed Counseling or Therapy But Did Not Get It&quot;)</code></pre>
+</div>
+<div id="step-3" class="section level3">
+<h3>Step 3</h3>
+<p>Apply linear model</p>
+<pre class="r"><code>fit &lt;- lm(value ~ group + subgroup + year + state, data=Indicator1)
+stepwise_fit &lt;- stepAIC(fit, direction=&quot;both&quot;)</code></pre>
+<pre><code>## Start:  AIC=3614.67
+## value ~ group + subgroup + year + state
+## 
+## 
+## Step:  AIC=3614.67
+## value ~ group + subgroup + year
+## 
+## 
+## Step:  AIC=3614.67
+## value ~ subgroup + year
+## 
+##            Df Sum of Sq   RSS    AIC
+## &lt;none&gt;                   9973 3614.7
+## - year      1      1300 11273 3917.1
+## - subgroup 79     54300 64273 8085.1</code></pre>
+<pre class="r"><code>fit &lt;- lm(value ~ group + subgroup + year + state, data=Indicator2)
+stepwise_fit &lt;- stepAIC(fit, direction=&quot;both&quot;)</code></pre>
+<pre><code>## Start:  AIC=1848.9
+## value ~ group + subgroup + year + state
+## 
+## 
+## Step:  AIC=1848.9
+## value ~ group + subgroup + year
+## 
+## 
+## Step:  AIC=1848.9
+## value ~ subgroup + year
+## 
+##            Df Sum of Sq   RSS    AIC
+## &lt;none&gt;                   4894 1848.9
+## - year      1     635.1  5529 2149.0
+## - subgroup 79   30155.9 35050 6565.7</code></pre>
+<pre class="r"><code>fit &lt;- lm(value ~ group + subgroup + year + state, data=Indicator3)
+stepwise_fit &lt;- stepAIC(fit, direction=&quot;both&quot;)</code></pre>
+<pre><code>## Start:  AIC=3879.24
+## value ~ group + subgroup + year + state
+## 
+## 
+## Step:  AIC=3879.24
+## value ~ group + subgroup + year
+## 
+## 
+## Step:  AIC=3879.24
+## value ~ subgroup + year
+## 
+##            Df Sum of Sq   RSS    AIC
+## &lt;none&gt;                  11093 3879.2
+## - year      1      1773 12866 4245.5
+## - subgroup 79     64454 75547 8486.6</code></pre>
+<pre class="r"><code>fit &lt;- lm(value ~ group + subgroup + year + state, data=Indicator4)
+stepwise_fit &lt;- stepAIC(fit, direction=&quot;both&quot;)</code></pre>
+<pre><code>## Start:  AIC=2722.17
+## value ~ group + subgroup + year + state
+## 
+## 
+## Step:  AIC=2722.17
+## value ~ group + subgroup + year
+## 
+## 
+## Step:  AIC=2722.17
+## value ~ subgroup + year
+## 
+##            Df Sum of Sq   RSS    AIC
+## &lt;none&gt;                   6964 2722.2
+## - year      1       141  7105 2769.7
+## - subgroup 79     40494 47457 7304.4</code></pre>
+</div>
+<div id="step-4" class="section level3">
+<h3>Step 4</h3>
+<p>AIC values are identical across the steps shown, which suggests that
+removal or addition of a variable did not improve the model’s fit.</p>
+</div>
 </div>
 
 

@@ -13,7 +13,7 @@
 
 <title>Statistical Analysis</title>
 
-<script src="site_libs/header-attrs-2.24/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/united.min.css" rel="stylesheet" />
@@ -382,8 +382,10 @@ div.tocify {
 </div>
 
 
-<div id="independent-samples-t-tests" class="section level2">
-<h2>Independent Samples T-tests</h2>
+<div id="bivariate-analysis" class="section level2">
+<h2>Bivariate analysis</h2>
+<div id="gender" class="section level3">
+<h3>Gender</h3>
 <p>We will first conduct independent samples t-tests to see if there is
 a statistical relationship between gender and two of our indicators of
 mental health access:</p>
@@ -402,9 +404,9 @@ normal.</p>
 significant.</p>
 <div
 id="took-prescription-medication-andor-received-counseling-or-therapy-for-mental-health"
-class="section level3">
-<h3>Took prescription medication and/or received counseling or therapy
-for mental health</h3>
+class="section level4">
+<h4>Took prescription medication and/or received counseling or therapy
+for mental health</h4>
 <p>The first independent samples t-test shows statistically significant
 differences in prescription medication and/or counseling or therapy for
 mental health rates. Men and women had statistically different mean
@@ -446,8 +448,8 @@ gender_received |&gt;
 </table>
 </div>
 <div id="needed-counseling-or-therapy-but-did-not-get-it"
-class="section level3">
-<h3>Needed counseling or therapy but did not get it</h3>
+class="section level4">
+<h4>Needed counseling or therapy but did not get it</h4>
 <p>The second independent samples t-test shows statistically significant
 differences in rates of needing counseling or therapy for mental health
 but not getting it. Men and women had statistically different mean rates
@@ -488,8 +490,13 @@ gender_needed |&gt;
 </table>
 </div>
 </div>
-<div id="anova-sexual-orientation" class="section level2">
-<h2>ANOVA: sexual orientation</h2>
+<div id="sexual-orientation" class="section level3">
+<h3>Sexual orientation</h3>
+<div
+id="took-prescription-medication-andor-received-counseling-or-therapy-for-mental-health-1"
+class="section level4">
+<h4>Took prescription medication and/or received counseling or therapy
+for mental health</h4>
 <pre class="r"><code>sexuality_received =
   tidydata |&gt;
   filter(
@@ -497,11 +504,47 @@ gender_needed |&gt;
     state == &quot;United States&quot;,
     group == &quot;Sexual orientation&quot;,
     week_number %in% c(24:33)) |&gt;
-  dplyr::select(week_number, value, subgroup) |&gt;
-  pivot_wider(
-    names_from = &quot;subgroup&quot;,
-    values_from = &quot;value&quot;) |&gt;
-  janitor::clean_names()</code></pre>
+  group_by(subgroup)
+
+anova_sexuality_received = aov(value ~ subgroup, data = sexuality_received)
+
+anova_sexuality_received |&gt;
+  broom::tidy() |&gt;
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">df</th>
+<th align="right">sumsq</th>
+<th align="right">meansq</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">subgroup</td>
+<td align="right">2</td>
+<td align="right">2470.925</td>
+<td align="right">1235.462333</td>
+<td align="right">169.3368</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Residuals</td>
+<td align="right">27</td>
+<td align="right">196.989</td>
+<td align="right">7.295889</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="needed-counseling-or-therapy-but-did-not-get-it-1"
+class="section level4">
+<h4>Needed counseling or therapy but did not get it</h4>
 <pre class="r"><code>sexuality_needed =
   tidydata |&gt;
   filter(
@@ -509,15 +552,350 @@ gender_needed |&gt;
     state == &quot;United States&quot;,
     group == &quot;Sexual orientation&quot;,
     week_number %in% c(24:33)) |&gt;
-  group_by(subgroup)</code></pre>
+  group_by(subgroup)
+
+anova_sexuality_needed = aov(value ~ subgroup, data = sexuality_needed)
+
+anova_sexuality_needed |&gt;
+  broom::tidy() |&gt;
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">df</th>
+<th align="right">sumsq</th>
+<th align="right">meansq</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">subgroup</td>
+<td align="right">2</td>
+<td align="right">2426.765</td>
+<td align="right">1213.382333</td>
+<td align="right">331.1432</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Residuals</td>
+<td align="right">27</td>
+<td align="right">98.934</td>
+<td align="right">3.664222</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="raceethnicity" class="section level3">
+<h3>Race/ethnicity</h3>
+<div
+id="took-prescription-medication-andor-received-counseling-or-therapy-for-mental-health-2"
+class="section level4">
+<h4>Took prescription medication and/or received counseling or therapy
+for mental health</h4>
+<pre class="r"><code>race_received =
+  tidydata |&gt;
+  filter(
+    indicator == &quot;Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy&quot;,
+    state == &quot;United States&quot;,
+    group == &quot;Race/Hispanic ethnicity&quot;) |&gt;
+  group_by(subgroup)
+
+anova_race_received = aov(value ~ subgroup, data = race_received)
+
+anova_race_received |&gt;
+  broom::tidy() |&gt;
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">df</th>
+<th align="right">sumsq</th>
+<th align="right">meansq</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">subgroup</td>
+<td align="right">4</td>
+<td align="right">5803.8578</td>
+<td align="right">1450.964455</td>
+<td align="right">540.9627</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Residuals</td>
+<td align="right">160</td>
+<td align="right">429.1503</td>
+<td align="right">2.682189</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="needed-counseling-or-therapy-but-did-not-get-it-2"
+class="section level4">
+<h4>Needed counseling or therapy but did not get it</h4>
+<pre class="r"><code>race_needed =
+  tidydata |&gt;
+  filter(
+    indicator == &quot;Needed Counseling or Therapy But Did Not Get It&quot;,
+    state == &quot;United States&quot;,
+    group == &quot;Race/Hispanic ethnicity&quot;) |&gt;
+  group_by(subgroup)
+
+anova_race_needed = aov(value ~ subgroup, data = race_needed)
+
+anova_race_needed |&gt;
+  broom::tidy() |&gt;
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">df</th>
+<th align="right">sumsq</th>
+<th align="right">meansq</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">subgroup</td>
+<td align="right">4</td>
+<td align="right">1604.6798</td>
+<td align="right">401.169939</td>
+<td align="right">257.8979</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Residuals</td>
+<td align="right">160</td>
+<td align="right">248.8861</td>
+<td align="right">1.555538</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="education-level" class="section level3">
+<h3>Education level</h3>
+<div
+id="took-prescription-medication-andor-received-counseling-or-therapy-for-mental-health-3"
+class="section level4">
+<h4>Took prescription medication and/or received counseling or therapy
+for mental health</h4>
+<pre class="r"><code>education_received =
+  tidydata |&gt;
+  filter(
+    indicator == &quot;Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy&quot;,
+    state == &quot;United States&quot;,
+    group == &quot;Education&quot;) |&gt;
+  group_by(subgroup)
+
+anova_education_received = aov(value ~ subgroup, data = education_received)
+
+anova_education_received |&gt;
+  broom::tidy() |&gt;
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">df</th>
+<th align="right">sumsq</th>
+<th align="right">meansq</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">subgroup</td>
+<td align="right">3</td>
+<td align="right">868.0694</td>
+<td align="right">289.356465</td>
+<td align="right">117.5739</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Residuals</td>
+<td align="right">128</td>
+<td align="right">315.0158</td>
+<td align="right">2.461061</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="needed-counseling-or-therapy-but-did-not-get-it-3"
+class="section level4">
+<h4>Needed counseling or therapy but did not get it</h4>
+<pre class="r"><code>education_needed =
+  tidydata |&gt;
+  filter(
+    indicator == &quot;Needed Counseling or Therapy But Did Not Get It&quot;,
+    state == &quot;United States&quot;,
+    group == &quot;Education&quot;) |&gt;
+  group_by(subgroup)
+
+anova_education_needed = aov(value ~ subgroup, data = education_needed)
+
+anova_education_needed |&gt;
+  broom::tidy() |&gt;
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">df</th>
+<th align="right">sumsq</th>
+<th align="right">meansq</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">subgroup</td>
+<td align="right">3</td>
+<td align="right">377.7082</td>
+<td align="right">125.90273</td>
+<td align="right">95.93904</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Residuals</td>
+<td align="right">128</td>
+<td align="right">167.9770</td>
+<td align="right">1.31232</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="raceethnicity-1" class="section level3">
+<h3>Race/ethnicity</h3>
+<div
+id="took-prescription-medication-andor-received-counseling-or-therapy-for-mental-health-4"
+class="section level4">
+<h4>Took prescription medication and/or received counseling or therapy
+for mental health</h4>
+<pre class="r"><code>age_received =
+  tidydata |&gt;
+  filter(
+    indicator == &quot;Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy&quot;,
+    state == &quot;United States&quot;,
+    group == &quot;Age&quot;) |&gt;
+  group_by(subgroup)
+
+anova_age_received = aov(value ~ subgroup, data = age_received)
+
+anova_age_received |&gt;
+  broom::tidy() |&gt;
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">df</th>
+<th align="right">sumsq</th>
+<th align="right">meansq</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">subgroup</td>
+<td align="right">6</td>
+<td align="right">3109.0192</td>
+<td align="right">518.169870</td>
+<td align="right">188.7774</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Residuals</td>
+<td align="right">224</td>
+<td align="right">614.8515</td>
+<td align="right">2.744873</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="needed-counseling-or-therapy-but-did-not-get-it-4"
+class="section level4">
+<h4>Needed counseling or therapy but did not get it</h4>
+<pre class="r"><code>age_needed =
+  tidydata |&gt;
+  filter(
+    indicator == &quot;Needed Counseling or Therapy But Did Not Get It&quot;,
+    state == &quot;United States&quot;,
+    group == &quot;Age&quot;) |&gt;
+  group_by(subgroup)
+
+anova_age_needed = aov(value ~ subgroup, data = age_needed)
+
+anova_age_needed |&gt;
+  broom::tidy() |&gt;
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">df</th>
+<th align="right">sumsq</th>
+<th align="right">meansq</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">subgroup</td>
+<td align="right">6</td>
+<td align="right">7576.9559</td>
+<td align="right">1262.82598</td>
+<td align="right">1025.088</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Residuals</td>
+<td align="right">217</td>
+<td align="right">267.3266</td>
+<td align="right">1.23192</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <div id="check-normality" class="section level3">
 <h3>Check normality</h3>
 <pre class="r"><code>ggplot(tidydata, aes(sample = value)) +
   stat_qq() +
   stat_qq_line()</code></pre>
-<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-6-1.png" width="90%" /></p>
+<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-12-1.png" width="90%" /></p>
 <pre class="r"><code> hist(tidydata$value, breaks = &quot;FD&quot;, main = &quot;Histogram of Data&quot;, xlab = &quot;Data Values&quot;)</code></pre>
-<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-6-2.png" width="90%" />
+<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-12-2.png" width="90%" />
 The plot appears to be a Q-Q (quantile-quantile) plot showing that the
 data deviates from the expected normal distribution, particularly in the
 tails, indicating the presence of outliers or a heavy-tailed
@@ -535,9 +913,9 @@ data, hinting at varied underlying characteristics or groups.</p>
 <pre class="r"><code>ggplot(tidydata, aes(sample = log(value))) +
   stat_qq() +
   stat_qq_line()</code></pre>
-<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-7-1.png" width="90%" /></p>
+<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-13-1.png" width="90%" /></p>
 <pre class="r"><code> hist(log(tidydata$value), breaks = &quot;FD&quot;, main = &quot;Histogram of Data&quot;, xlab = &quot;Data Values&quot;)</code></pre>
-<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-7-2.png" width="90%" />
+<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-13-2.png" width="90%" />
 Despite the application of a logarithmic transformation to the data, the
 resulting distribution does not conform to normality. This is evidenced
 by the Q-Q plot, which exhibits significant deviations from the line of
@@ -592,7 +970,7 @@ Medication for Mental Health.</li>
 <pre class="r"><code>shapiro_test_result &lt;- shapiro.test(pull(Indicator1,value))
 
 hist(Indicator1$value, breaks = &quot;FD&quot;, main = &quot;Histogram of Data&quot;, xlab = &quot;Data Values&quot;)</code></pre>
-<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-11-1.png" width="90%" />
+<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-17-1.png" width="90%" />
 Shapiro-Wilk normality test result : (W = 0.93709, p-value &lt;
 2.2e-16), The p-value is extremely small (&lt; 2.2e-16), which provides
 strong evidence suggest that the data does not come from a normal
@@ -620,7 +998,7 @@ or Therapy</li>
 <pre class="r"><code>shapiro_test_result &lt;- shapiro.test(pull(Indicator2,value))
 
 hist(Indicator2$value, breaks = &quot;FD&quot;, main = &quot;Histogram of Data&quot;, xlab = &quot;Data Values&quot;)</code></pre>
-<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-13-1.png" width="90%" />
+<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-19-1.png" width="90%" />
 Shapiro-Wilk normality test result : (W = 0.83846, p-value &lt;
 2.2e-16), The p-value is extremely small (&lt; 2.2e-16), which provides
 strong evidence suggest that the data does not come from a normal
@@ -648,7 +1026,7 @@ Medication for Mental Health And/Or Received Counseling or Therapy</li>
 <pre class="r"><code>shapiro_test_result &lt;- shapiro.test(pull(Indicator3,value))
 
 hist(Indicator3$value, breaks = &quot;FD&quot;, main = &quot;Histogram of Data&quot;, xlab = &quot;Data Values&quot;)</code></pre>
-<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-15-1.png" width="90%" />
+<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-21-1.png" width="90%" />
 Shapiro-Wilk normality test result : (W = 0.95871, p-value &lt;
 2.2e-16), The p-value is extremely small (&lt; 2.2e-16), which provides
 strong evidence suggest that the data does not come from a normal
@@ -676,7 +1054,7 @@ Therapy But Did Not Get It.</li>
 <pre class="r"><code>shapiro_test_result &lt;- shapiro.test(pull(Indicator4,value))
 
 hist(Indicator4$value, breaks = &quot;FD&quot;, main = &quot;Histogram of Data&quot;, xlab = &quot;Data Values&quot;)</code></pre>
-<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-17-1.png" width="90%" />
+<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-23-1.png" width="90%" />
 Shapiro-Wilk normality test result : (W = 0.8161, p-value &lt; 2.2e-16),
 The p-value is extremely small (&lt; 2.2e-16), which provides strong
 evidence suggest that the data does not come from a normal distribution,

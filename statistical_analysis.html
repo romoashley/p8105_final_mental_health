@@ -13,7 +13,7 @@
 
 <title>Statistical Analysis</title>
 
-<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.24/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/united.min.css" rel="stylesheet" />
@@ -382,8 +382,13 @@ div.tocify {
 </div>
 
 
+<p>This page shows the bivariate analyis and linear modeling we
+undertake as additional analyses to the Exploratory Data Analysis
+(EDA).</p>
+<p>P-values less than 0.05 will be considered as statistically
+significant.</p>
 <div id="bivariate-analysis" class="section level2">
-<h2>Bivariate analysis</h2>
+<h2>Bivariate Analysis</h2>
 <div id="gender" class="section level3">
 <h3>Gender</h3>
 <p>We will first conduct independent samples t-tests to see if there is
@@ -400,8 +405,6 @@ sample size (50,000-90,000) is large. The Central Limit Theorem often
 allows the t-test to be used even when the population distribution is
 not normal, because the distribution of the sample means will tend to be
 normal.</p>
-<p>P-values less than 0.05 will be considered as statistically
-significant.</p>
 <div
 id="took-prescription-medication-andor-received-counseling-or-therapy-for-mental-health"
 class="section level4">
@@ -490,10 +493,307 @@ gender_needed |&gt;
 </table>
 </div>
 </div>
-<div id="sexual-orientation" class="section level3">
-<h3>Sexual orientation</h3>
+<div id="age-group" class="section level3">
+<h3>Age Group</h3>
 <div
 id="took-prescription-medication-andor-received-counseling-or-therapy-for-mental-health-1"
+class="section level4">
+<h4>Took prescription medication and/or received counseling or therapy
+for mental health</h4>
+<pre class="r"><code>age_received =
+  tidydata |&gt;
+  filter(
+    indicator == &quot;Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy&quot;,
+    state == &quot;United States&quot;,
+    group == &quot;Age&quot;) |&gt;
+  group_by(subgroup)
+
+anova_age_received = aov(value ~ subgroup, data = age_received)
+
+anova_age_received |&gt;
+  broom::tidy() |&gt;
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">df</th>
+<th align="right">sumsq</th>
+<th align="right">meansq</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">subgroup</td>
+<td align="right">6</td>
+<td align="right">3109.0192</td>
+<td align="right">518.169870</td>
+<td align="right">188.7774</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Residuals</td>
+<td align="right">224</td>
+<td align="right">614.8515</td>
+<td align="right">2.744873</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="needed-counseling-or-therapy-but-did-not-get-it-1"
+class="section level4">
+<h4>Needed counseling or therapy but did not get it</h4>
+<pre class="r"><code>age_needed =
+  tidydata |&gt;
+  filter(
+    indicator == &quot;Needed Counseling or Therapy But Did Not Get It&quot;,
+    state == &quot;United States&quot;,
+    group == &quot;Age&quot;) |&gt;
+  group_by(subgroup)
+
+anova_age_needed = aov(value ~ subgroup, data = age_needed)
+
+anova_age_needed |&gt;
+  broom::tidy() |&gt;
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">df</th>
+<th align="right">sumsq</th>
+<th align="right">meansq</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">subgroup</td>
+<td align="right">6</td>
+<td align="right">7576.9559</td>
+<td align="right">1262.82598</td>
+<td align="right">1025.088</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Residuals</td>
+<td align="right">217</td>
+<td align="right">267.3266</td>
+<td align="right">1.23192</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="education-level" class="section level3">
+<h3>Education Level</h3>
+<div
+id="took-prescription-medication-andor-received-counseling-or-therapy-for-mental-health-2"
+class="section level4">
+<h4>Took prescription medication and/or received counseling or therapy
+for mental health</h4>
+<pre class="r"><code>education_received =
+  tidydata |&gt;
+  filter(
+    indicator == &quot;Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy&quot;,
+    state == &quot;United States&quot;,
+    group == &quot;Education&quot;) |&gt;
+  group_by(subgroup)
+
+anova_education_received = aov(value ~ subgroup, data = education_received)
+
+anova_education_received |&gt;
+  broom::tidy() |&gt;
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">df</th>
+<th align="right">sumsq</th>
+<th align="right">meansq</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">subgroup</td>
+<td align="right">3</td>
+<td align="right">868.0694</td>
+<td align="right">289.356465</td>
+<td align="right">117.5739</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Residuals</td>
+<td align="right">128</td>
+<td align="right">315.0158</td>
+<td align="right">2.461061</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="needed-counseling-or-therapy-but-did-not-get-it-2"
+class="section level4">
+<h4>Needed counseling or therapy but did not get it</h4>
+<pre class="r"><code>education_needed =
+  tidydata |&gt;
+  filter(
+    indicator == &quot;Needed Counseling or Therapy But Did Not Get It&quot;,
+    state == &quot;United States&quot;,
+    group == &quot;Education&quot;) |&gt;
+  group_by(subgroup)
+
+anova_education_needed = aov(value ~ subgroup, data = education_needed)
+
+anova_education_needed |&gt;
+  broom::tidy() |&gt;
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">df</th>
+<th align="right">sumsq</th>
+<th align="right">meansq</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">subgroup</td>
+<td align="right">3</td>
+<td align="right">377.7082</td>
+<td align="right">125.90273</td>
+<td align="right">95.93904</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Residuals</td>
+<td align="right">128</td>
+<td align="right">167.9770</td>
+<td align="right">1.31232</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="raceethnicity" class="section level3">
+<h3>Race/Ethnicity</h3>
+<div
+id="took-prescription-medication-andor-received-counseling-or-therapy-for-mental-health-3"
+class="section level4">
+<h4>Took prescription medication and/or received counseling or therapy
+for mental health</h4>
+<pre class="r"><code>race_received =
+  tidydata |&gt;
+  filter(
+    indicator == &quot;Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy&quot;,
+    state == &quot;United States&quot;,
+    group == &quot;Race/Hispanic ethnicity&quot;) |&gt;
+  group_by(subgroup)
+
+anova_race_received = aov(value ~ subgroup, data = race_received)
+
+anova_race_received |&gt;
+  broom::tidy() |&gt;
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">df</th>
+<th align="right">sumsq</th>
+<th align="right">meansq</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">subgroup</td>
+<td align="right">4</td>
+<td align="right">5803.8578</td>
+<td align="right">1450.964455</td>
+<td align="right">540.9627</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Residuals</td>
+<td align="right">160</td>
+<td align="right">429.1503</td>
+<td align="right">2.682189</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="needed-counseling-or-therapy-but-did-not-get-it-3"
+class="section level4">
+<h4>Needed counseling or therapy but did not get it</h4>
+<pre class="r"><code>race_needed =
+  tidydata |&gt;
+  filter(
+    indicator == &quot;Needed Counseling or Therapy But Did Not Get It&quot;,
+    state == &quot;United States&quot;,
+    group == &quot;Race/Hispanic ethnicity&quot;) |&gt;
+  group_by(subgroup)
+
+anova_race_needed = aov(value ~ subgroup, data = race_needed)
+
+anova_race_needed |&gt;
+  broom::tidy() |&gt;
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">df</th>
+<th align="right">sumsq</th>
+<th align="right">meansq</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">subgroup</td>
+<td align="right">4</td>
+<td align="right">1604.6798</td>
+<td align="right">401.169939</td>
+<td align="right">257.8979</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Residuals</td>
+<td align="right">160</td>
+<td align="right">248.8861</td>
+<td align="right">1.555538</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="sexual-orientation" class="section level3">
+<h3>Sexual Orientation</h3>
+<div
+id="took-prescription-medication-andor-received-counseling-or-therapy-for-mental-health-4"
 class="section level4">
 <h4>Took prescription medication and/or received counseling or therapy
 for mental health</h4>
@@ -542,7 +842,7 @@ anova_sexuality_received |&gt;
 </tbody>
 </table>
 </div>
-<div id="needed-counseling-or-therapy-but-did-not-get-it-1"
+<div id="needed-counseling-or-therapy-but-did-not-get-it-4"
 class="section level4">
 <h4>Needed counseling or therapy but did not get it</h4>
 <pre class="r"><code>sexuality_needed =
@@ -584,303 +884,6 @@ anova_sexuality_needed |&gt;
 <td align="right">27</td>
 <td align="right">98.934</td>
 <td align="right">3.664222</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div id="raceethnicity" class="section level3">
-<h3>Race/ethnicity</h3>
-<div
-id="took-prescription-medication-andor-received-counseling-or-therapy-for-mental-health-2"
-class="section level4">
-<h4>Took prescription medication and/or received counseling or therapy
-for mental health</h4>
-<pre class="r"><code>race_received =
-  tidydata |&gt;
-  filter(
-    indicator == &quot;Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy&quot;,
-    state == &quot;United States&quot;,
-    group == &quot;Race/Hispanic ethnicity&quot;) |&gt;
-  group_by(subgroup)
-
-anova_race_received = aov(value ~ subgroup, data = race_received)
-
-anova_race_received |&gt;
-  broom::tidy() |&gt;
-  knitr::kable()</code></pre>
-<table>
-<thead>
-<tr class="header">
-<th align="left">term</th>
-<th align="right">df</th>
-<th align="right">sumsq</th>
-<th align="right">meansq</th>
-<th align="right">statistic</th>
-<th align="right">p.value</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">subgroup</td>
-<td align="right">4</td>
-<td align="right">5803.8578</td>
-<td align="right">1450.964455</td>
-<td align="right">540.9627</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
-<td align="left">Residuals</td>
-<td align="right">160</td>
-<td align="right">429.1503</td>
-<td align="right">2.682189</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div id="needed-counseling-or-therapy-but-did-not-get-it-2"
-class="section level4">
-<h4>Needed counseling or therapy but did not get it</h4>
-<pre class="r"><code>race_needed =
-  tidydata |&gt;
-  filter(
-    indicator == &quot;Needed Counseling or Therapy But Did Not Get It&quot;,
-    state == &quot;United States&quot;,
-    group == &quot;Race/Hispanic ethnicity&quot;) |&gt;
-  group_by(subgroup)
-
-anova_race_needed = aov(value ~ subgroup, data = race_needed)
-
-anova_race_needed |&gt;
-  broom::tidy() |&gt;
-  knitr::kable()</code></pre>
-<table>
-<thead>
-<tr class="header">
-<th align="left">term</th>
-<th align="right">df</th>
-<th align="right">sumsq</th>
-<th align="right">meansq</th>
-<th align="right">statistic</th>
-<th align="right">p.value</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">subgroup</td>
-<td align="right">4</td>
-<td align="right">1604.6798</td>
-<td align="right">401.169939</td>
-<td align="right">257.8979</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
-<td align="left">Residuals</td>
-<td align="right">160</td>
-<td align="right">248.8861</td>
-<td align="right">1.555538</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div id="education-level" class="section level3">
-<h3>Education level</h3>
-<div
-id="took-prescription-medication-andor-received-counseling-or-therapy-for-mental-health-3"
-class="section level4">
-<h4>Took prescription medication and/or received counseling or therapy
-for mental health</h4>
-<pre class="r"><code>education_received =
-  tidydata |&gt;
-  filter(
-    indicator == &quot;Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy&quot;,
-    state == &quot;United States&quot;,
-    group == &quot;Education&quot;) |&gt;
-  group_by(subgroup)
-
-anova_education_received = aov(value ~ subgroup, data = education_received)
-
-anova_education_received |&gt;
-  broom::tidy() |&gt;
-  knitr::kable()</code></pre>
-<table>
-<thead>
-<tr class="header">
-<th align="left">term</th>
-<th align="right">df</th>
-<th align="right">sumsq</th>
-<th align="right">meansq</th>
-<th align="right">statistic</th>
-<th align="right">p.value</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">subgroup</td>
-<td align="right">3</td>
-<td align="right">868.0694</td>
-<td align="right">289.356465</td>
-<td align="right">117.5739</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
-<td align="left">Residuals</td>
-<td align="right">128</td>
-<td align="right">315.0158</td>
-<td align="right">2.461061</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div id="needed-counseling-or-therapy-but-did-not-get-it-3"
-class="section level4">
-<h4>Needed counseling or therapy but did not get it</h4>
-<pre class="r"><code>education_needed =
-  tidydata |&gt;
-  filter(
-    indicator == &quot;Needed Counseling or Therapy But Did Not Get It&quot;,
-    state == &quot;United States&quot;,
-    group == &quot;Education&quot;) |&gt;
-  group_by(subgroup)
-
-anova_education_needed = aov(value ~ subgroup, data = education_needed)
-
-anova_education_needed |&gt;
-  broom::tidy() |&gt;
-  knitr::kable()</code></pre>
-<table>
-<thead>
-<tr class="header">
-<th align="left">term</th>
-<th align="right">df</th>
-<th align="right">sumsq</th>
-<th align="right">meansq</th>
-<th align="right">statistic</th>
-<th align="right">p.value</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">subgroup</td>
-<td align="right">3</td>
-<td align="right">377.7082</td>
-<td align="right">125.90273</td>
-<td align="right">95.93904</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
-<td align="left">Residuals</td>
-<td align="right">128</td>
-<td align="right">167.9770</td>
-<td align="right">1.31232</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div id="raceethnicity-1" class="section level3">
-<h3>Race/ethnicity</h3>
-<div
-id="took-prescription-medication-andor-received-counseling-or-therapy-for-mental-health-4"
-class="section level4">
-<h4>Took prescription medication and/or received counseling or therapy
-for mental health</h4>
-<pre class="r"><code>age_received =
-  tidydata |&gt;
-  filter(
-    indicator == &quot;Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy&quot;,
-    state == &quot;United States&quot;,
-    group == &quot;Age&quot;) |&gt;
-  group_by(subgroup)
-
-anova_age_received = aov(value ~ subgroup, data = age_received)
-
-anova_age_received |&gt;
-  broom::tidy() |&gt;
-  knitr::kable()</code></pre>
-<table>
-<thead>
-<tr class="header">
-<th align="left">term</th>
-<th align="right">df</th>
-<th align="right">sumsq</th>
-<th align="right">meansq</th>
-<th align="right">statistic</th>
-<th align="right">p.value</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">subgroup</td>
-<td align="right">6</td>
-<td align="right">3109.0192</td>
-<td align="right">518.169870</td>
-<td align="right">188.7774</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
-<td align="left">Residuals</td>
-<td align="right">224</td>
-<td align="right">614.8515</td>
-<td align="right">2.744873</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div id="needed-counseling-or-therapy-but-did-not-get-it-4"
-class="section level4">
-<h4>Needed counseling or therapy but did not get it</h4>
-<pre class="r"><code>age_needed =
-  tidydata |&gt;
-  filter(
-    indicator == &quot;Needed Counseling or Therapy But Did Not Get It&quot;,
-    state == &quot;United States&quot;,
-    group == &quot;Age&quot;) |&gt;
-  group_by(subgroup)
-
-anova_age_needed = aov(value ~ subgroup, data = age_needed)
-
-anova_age_needed |&gt;
-  broom::tidy() |&gt;
-  knitr::kable()</code></pre>
-<table>
-<thead>
-<tr class="header">
-<th align="left">term</th>
-<th align="right">df</th>
-<th align="right">sumsq</th>
-<th align="right">meansq</th>
-<th align="right">statistic</th>
-<th align="right">p.value</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">subgroup</td>
-<td align="right">6</td>
-<td align="right">7576.9559</td>
-<td align="right">1262.82598</td>
-<td align="right">1025.088</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
-<td align="left">Residuals</td>
-<td align="right">217</td>
-<td align="right">267.3266</td>
-<td align="right">1.23192</td>
 <td align="right">NA</td>
 <td align="right">NA</td>
 </tr>

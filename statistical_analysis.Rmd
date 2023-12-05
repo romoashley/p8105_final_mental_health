@@ -40,8 +40,11 @@ tidydata =
   read.csv("data/tidydata.csv")
 ```
 
+This page shows the bivariate analyis and linear modeling we undertake as additional analyses to the Exploratory Data Analysis (EDA).
 
-## Bivariate analysis
+P-values less than 0.05 will be considered as statistically significant.
+
+## Bivariate Analysis
 
 ### Gender
 
@@ -51,8 +54,6 @@ We will first conduct independent samples t-tests to see if there is a statistic
 2. Needed counseling or therapy for mental health but did not get it
 
 Even though the independent samples t-test assumes normality, our sample size (50,000-90,000) is large. The Central Limit Theorem often allows the t-test to be used even when the population distribution is not normal, because the distribution of the sample means will tend to be normal.
-
-P-values less than 0.05 will be considered as statistically significant.
 
 #### Took prescription medication and/or received counseling or therapy for mental health
 
@@ -106,7 +107,121 @@ gender_needed |>
   knitr::kable()
 ```
 
-### Sexual orientation
+### Age Group
+
+#### Took prescription medication and/or received counseling or therapy for mental health
+
+```{r}
+age_received =
+  tidydata |>
+  filter(
+    indicator == "Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy",
+    state == "United States",
+    group == "Age") |>
+  group_by(subgroup)
+
+anova_age_received = aov(value ~ subgroup, data = age_received)
+
+anova_age_received |>
+  broom::tidy() |>
+  knitr::kable()
+```
+
+#### Needed counseling or therapy but did not get it
+
+```{r}
+age_needed =
+  tidydata |>
+  filter(
+    indicator == "Needed Counseling or Therapy But Did Not Get It",
+    state == "United States",
+    group == "Age") |>
+  group_by(subgroup)
+
+anova_age_needed = aov(value ~ subgroup, data = age_needed)
+
+anova_age_needed |>
+  broom::tidy() |>
+  knitr::kable()
+```
+
+### Education Level
+
+#### Took prescription medication and/or received counseling or therapy for mental health
+
+```{r}
+education_received =
+  tidydata |>
+  filter(
+    indicator == "Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy",
+    state == "United States",
+    group == "Education") |>
+  group_by(subgroup)
+
+anova_education_received = aov(value ~ subgroup, data = education_received)
+
+anova_education_received |>
+  broom::tidy() |>
+  knitr::kable()
+```
+
+#### Needed counseling or therapy but did not get it
+
+```{r}
+education_needed =
+  tidydata |>
+  filter(
+    indicator == "Needed Counseling or Therapy But Did Not Get It",
+    state == "United States",
+    group == "Education") |>
+  group_by(subgroup)
+
+anova_education_needed = aov(value ~ subgroup, data = education_needed)
+
+anova_education_needed |>
+  broom::tidy() |>
+  knitr::kable()
+```
+
+### Race/Ethnicity
+
+#### Took prescription medication and/or received counseling or therapy for mental health
+
+```{r}
+race_received =
+  tidydata |>
+  filter(
+    indicator == "Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy",
+    state == "United States",
+    group == "Race/Hispanic ethnicity") |>
+  group_by(subgroup)
+
+anova_race_received = aov(value ~ subgroup, data = race_received)
+
+anova_race_received |>
+  broom::tidy() |>
+  knitr::kable()
+```
+
+#### Needed counseling or therapy but did not get it
+
+```{r}
+race_needed =
+  tidydata |>
+  filter(
+    indicator == "Needed Counseling or Therapy But Did Not Get It",
+    state == "United States",
+    group == "Race/Hispanic ethnicity") |>
+  group_by(subgroup)
+
+anova_race_needed = aov(value ~ subgroup, data = race_needed)
+
+anova_race_needed |>
+  broom::tidy() |>
+  knitr::kable()
+```
+
+### Sexual Orientation
 
 #### Took prescription medication and/or received counseling or therapy for mental health
 
@@ -145,124 +260,6 @@ anova_sexuality_needed |>
   broom::tidy() |>
   knitr::kable()
 ```
-
-### Race/ethnicity
-
-#### Took prescription medication and/or received counseling or therapy for mental health
-
-```{r}
-race_received =
-  tidydata |>
-  filter(
-    indicator == "Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy",
-    state == "United States",
-    group == "Race/Hispanic ethnicity") |>
-  group_by(subgroup)
-
-anova_race_received = aov(value ~ subgroup, data = race_received)
-
-anova_race_received |>
-  broom::tidy() |>
-  knitr::kable()
-```
-
-#### Needed counseling or therapy but did not get it
-
-```{r}
-race_needed =
-  tidydata |>
-  filter(
-    indicator == "Needed Counseling or Therapy But Did Not Get It",
-    state == "United States",
-    group == "Race/Hispanic ethnicity") |>
-  group_by(subgroup)
-
-anova_race_needed = aov(value ~ subgroup, data = race_needed)
-
-anova_race_needed |>
-  broom::tidy() |>
-  knitr::kable()
-```
-
-
-### Education level
-
-#### Took prescription medication and/or received counseling or therapy for mental health
-
-```{r}
-education_received =
-  tidydata |>
-  filter(
-    indicator == "Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy",
-    state == "United States",
-    group == "Education") |>
-  group_by(subgroup)
-
-anova_education_received = aov(value ~ subgroup, data = education_received)
-
-anova_education_received |>
-  broom::tidy() |>
-  knitr::kable()
-```
-
-#### Needed counseling or therapy but did not get it
-
-```{r}
-education_needed =
-  tidydata |>
-  filter(
-    indicator == "Needed Counseling or Therapy But Did Not Get It",
-    state == "United States",
-    group == "Education") |>
-  group_by(subgroup)
-
-anova_education_needed = aov(value ~ subgroup, data = education_needed)
-
-anova_education_needed |>
-  broom::tidy() |>
-  knitr::kable()
-```
-
-
-### Race/ethnicity
-
-#### Took prescription medication and/or received counseling or therapy for mental health
-
-```{r}
-age_received =
-  tidydata |>
-  filter(
-    indicator == "Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy",
-    state == "United States",
-    group == "Age") |>
-  group_by(subgroup)
-
-anova_age_received = aov(value ~ subgroup, data = age_received)
-
-anova_age_received |>
-  broom::tidy() |>
-  knitr::kable()
-```
-
-#### Needed counseling or therapy but did not get it
-
-```{r}
-age_needed =
-  tidydata |>
-  filter(
-    indicator == "Needed Counseling or Therapy But Did Not Get It",
-    state == "United States",
-    group == "Age") |>
-  group_by(subgroup)
-
-anova_age_needed = aov(value ~ subgroup, data = age_needed)
-
-anova_age_needed |>
-  broom::tidy() |>
-  knitr::kable()
-```
-
-
 
 ### Check normality
 

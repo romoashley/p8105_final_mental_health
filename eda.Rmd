@@ -18,9 +18,6 @@ library(maps)
 library(plotly)
 library(purrr)
 
-library(viridisLite)
-viridisLite::viridis(10)
-
 knitr::opts_chunk$set(
 	echo = TRUE,
 	warning = FALSE,
@@ -47,14 +44,13 @@ tidydata =
 ## visualizations of US map require install of sf and maps packages
 ```
 
-
 ## Disaggregations by State
 
 This EDA will analyze mental health care access trends by state.
 
 I will first create a dataframe that only includes state-level observations.
 
-```{r}
+```{r state_df}
 state_df =
   tidydata |> 
   filter(group == "State")
@@ -66,7 +62,7 @@ Let's start with the mental health indicator "Took Prescription Medication for M
 
 The following chunk shows the top five states with the highest mean percentage of respondents who reported taking prescription medication for mental health from 2020-2022.
 
-```{r}
+```{r meds_top, message = FALSE}
 state_meds_top5 =
   state_df |> 
   filter(indicator == "Took Prescription Medication for Mental Health") |> 
@@ -83,7 +79,7 @@ Let's visualize a heat map of this indicator's prevalence by US state.
 
 First, we'll merge the filtered dataset with an existing US state map dataset to assist with mapping.
 
-```{r}
+```{r meds_map_define}
 state_meds =
   state_df |> 
   filter(indicator == "Took Prescription Medication for Mental Health") |> 
@@ -100,7 +96,7 @@ us_meds =
 
 Next, we'll plot the data using ggplot
 
-```{r}
+```{r meds_map}
 heatmap_meds=
 ggplot(us_meds)+
   geom_sf(aes(fill = mean_value), color = "white", size = 0.2)+
@@ -115,7 +111,7 @@ print(heatmap_meds)
 
 We can also look at which states have had the greatest change in medication use. This shows that not only does WV have the highest prevalence of medication use for mental health during this period, but it also has had the highest level of change in this indicator between 2020-2022.
 
-```{r}
+```{r meds_change}
 state_meds_change =
   state_df |> 
   filter(indicator == "Took Prescription Medication for Mental Health", year != "2021") |> 
@@ -135,7 +131,7 @@ state_meds_change |>
 
 Let's take a look at the trend for this indicator over time. 
 
-```{r, fig.keep="none"}
+```{r meds_trend, fig.keep="none"}
 
 state_df |>
   filter(indicator == "Took Prescription Medication for Mental Health") |> 
@@ -156,7 +152,7 @@ Now we'll look at the mental health indicator "Received Counseling or Therapy"
 
 The following chunk shows the top five states with the highest mean percentage of respondents who reported receiving counseling or therapy from 2020-2022. The state with the highest percentage during this period was District of Columbia.
 
-```{r}
+```{r ther_top, message = FALSE}
 
 state_ther_top5 =
   state_df |> 
@@ -175,7 +171,7 @@ Let's visualize a heat map of this indicator's prevalence by US state.
 
 First, we'll merge the filtered dataset with an existing US state map dataset to assist with mapping.
 
-```{r}
+```{r ther_map_define}
 state_ther =
   state_df |> 
   filter(indicator == "Received Counseling or Therapy") |> 
@@ -192,7 +188,7 @@ us_ther =
 
 Next, we'll plot the data using ggplot
 
-```{r}
+```{r ther_map}
 heatmap_ther=
 ggplot(us_ther)+
   geom_sf(aes(fill = mean_value), color = "white", size = 0.2)+
@@ -207,7 +203,7 @@ print(heatmap_ther)
 
 We can also look at which states have had the greatest change in therapy use. This shows that NE had the highest level of change in this indicator between 2020-2022. It also had a high level of change in indicator 1
 
-```{r}
+```{r ther_change}
 state_ther_change =
   state_df |> 
   filter(indicator == "Received Counseling or Therapy", year != "2021") |> 
@@ -226,7 +222,7 @@ state_ther_change |>
 
 Let's take a look at the trend for this indicator over time. 
 
-```{r, fig.keep="none"}
+```{r ther_trend, fig.keep="none"}
 state_df |>
   filter(indicator == "Received Counseling or Therapy") |> 
   group_by(state, year) |>
@@ -245,7 +241,7 @@ The third indicator we'll look at combines the first two indicators into one cat
 
 The following chunk shows the top five states with the highest mean percentage of respondents who reported mental health medication and/or therapy use from 2020-2022. The state with the highest percentage during this period was West Virginia.
 
-```{r}
+```{r both_top, message = FALSE}
 state_both_top5 =
   state_df |> 
   filter(indicator == "Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy") |> 
@@ -262,7 +258,7 @@ Let's visualize a heat map of this indicator's prevalence by US state.
 
 First, we'll merge the filtered dataset with an existing US state map dataset to assist with mapping.
 
-```{r}
+```{r both_map_define}
 state_both =
   state_df |> 
   filter(indicator == "Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy") |> 
@@ -279,7 +275,7 @@ us_both =
 
 Next, we'll plot the data using ggplot
 
-```{r}
+```{r both_map}
 heatmap_both=
 ggplot(us_both)+
   geom_sf(aes(fill = mean_value), color = "white", size = 0.2)+
@@ -294,7 +290,7 @@ print(heatmap_both)
 
 We can also look at which states have had the greatest change in mental health care use. This shows that WV had the highest level of change in this indicator between 2020-2022. This makes sense, as WV had the highest change in medication use.
 
-```{r}
+```{r both_change}
 state_both_change =
   state_df |> 
   filter(indicator == "Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy", year != "2021") |> 
@@ -313,7 +309,7 @@ state_both_change |>
 
 Let's take a look at the trend for this indicator over time. 
 
-```{r, fig.keep="none"}
+```{r both_trend, fig.keep="none"}
 state_df |>
   filter(indicator == "Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy") |> 
   group_by(state, year) |>
@@ -332,7 +328,7 @@ The last indicator we'll look at is describes gaps in mental health care access,
 
 The following chunk shows the top five states with the highest mean percentage of respondents who reported no receipt of needed counseling/therapy from 2020-2022. The state with the highest percentage during this period was Oregon. Surprisingly, District of Columbia also appeared on the top 5, even though it was the "state" with the highest level of therapy use during this period.
 
-```{r}
+```{r need_top, message = FALSE}
 state_need_top5 =
   state_df |> 
   filter(indicator == "Needed Counseling or Therapy But Did Not Get It") |> 
@@ -349,7 +345,7 @@ Let's visualize a heat map of this indicator's prevalence by US state.
 
 First, we'll merge the filtered dataset with an existing US state map dataset to assist with mapping.
 
-```{r}
+```{r need_map_define}
 state_need =
   state_df |> 
   filter(indicator == "Needed Counseling or Therapy But Did Not Get It") |> 
@@ -366,7 +362,7 @@ us_need =
 
 Next, we'll plot the data using ggplot
 
-```{r}
+```{r need_map}
 heatmap_need=
 ggplot(us_need)+
   geom_sf(aes(fill = mean_value), color = "white", size = 0.2)+
@@ -381,7 +377,7 @@ print(heatmap_need)
 
 We can also look at which states have had the greatest change in unmet mental health care need. This shows that AK had the highest level of change in this indicator between 2020-2022.
 
-```{r}
+```{r need_change}
 state_need_change =
   state_df |> 
   filter(indicator == "Needed Counseling or Therapy But Did Not Get It", year != "2021") |> 
@@ -400,7 +396,7 @@ state_need_change |>
 
 Let's take a look at the trend for this indicator over time. 
 
-```{r, fig.keep="none"}
+```{r need_trend, fig.keep="none"}
 state_df |>
   filter(indicator == "Needed Counseling or Therapy But Did Not Get It") |> 
   group_by(state, year) |>
@@ -415,7 +411,7 @@ plot_ly(x = ~year, y = ~mean_value, color = ~state, type = "scatter", mode = "li
 
 ### Discussion
 
-After analysis of the four indicators by state, we found the lowest prevalence of mental health care use in some of the most populous US states: California, New York, Texas, and Florida. Medication use prevalence was highest in West Virginia, Kentucky, Arkansas, Utah, and Oklahoma. Except for Utah, these states have high rates of [poverty](https://data.ers.usda.gov/reports.aspx?ID=17826) and low [median household income] (https://www.kff.org/other/state-indicator/median-annual-income/?activeTab=map&currentTimeframe=0&selectedDistributions=median-annual-household-income&sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D), which could drive higher rates of mental health medication use.
+After analysis of the four indicators by state, we found the lowest prevalence of mental health care use in some of the most populous US states: California, New York, Texas, and Florida. Medication use prevalence was highest in West Virginia, Kentucky, Arkansas, Utah, and Oklahoma. Except for Utah, these states have high rates of [poverty](https://data.ers.usda.gov/reports.aspx?ID=17826) and low [median household income](https://www.kff.org/other/state-indicator/median-annual-income/?activeTab=map&currentTimeframe=0&selectedDistributions=median-annual-household-income&sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D), which could drive higher rates of mental health medication use.
 
 Therapy use was highest in District of Columbia, Massachusetts, Rhode Island, Vermont, and Oregon. These states have high levels of [educational attainment](https://data.ers.usda.gov/reports.aspx?ID=17829#P9452d1b2fc324fd3ba7da7fb1edf4e99_2_240iT2) which could mean that their populations have more positive perceptions of therapy. That said, the greatest change in therapy use during the pandemic was in more rural states with lower median household income, like Nebraska and North Dakota. It’s possible that these were states that particularly benefited from expansions in telehealth for providing therapy. 
 When medication and therapy indicators are combined to indicate overall mental health burden, West Virginia, Utah, and Kentucky remain the highest, but are joined by Vermont and Maine. Vermont, Maine, and Utah all have high median household income, which suggests ruralness rather than income levels may drive mental health burden at the state level.

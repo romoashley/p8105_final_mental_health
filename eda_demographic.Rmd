@@ -121,9 +121,11 @@ ed_plot
 
 Among four education groups, the Bachelor's degree or higher and some college/Associate's degree groups have the highest rates of taking prescription medication for mental health and/or received counseling. This is likely because individuals with higher educational attainment typically have better jobs with higher salaries and better benefits such as health insurance with greater coverage, which leads to better access to quality mental health services than those with lower educational attainment.
 
-On the other hand, those who have a lower education level (high school diploma or GED and less than high school diploma groups) have the least value of needed counseling or therapy but did not get it and received counseling or therapy indicators because they might not have the time or money to take care of their mental health, so they do not think they will need counseling or needs receiving counseling services.
+On the other hand, those who have a lower education level (high school diploma or GED and less than high school diploma groups) have the lowest rates of needing counseling or therapy but not getting it and receiving counseling or therapy indicators because they might not have the time or money to take care of their mental health, so they do not think they will need counseling or needs receiving counseling services.
 
 ## Gender
+
+The line graph below shows differences in outcome variables by race/ethnicity from 2020 to 2022.
 
 ```{r gender}
 tidydata |>
@@ -156,7 +158,7 @@ Trends in mental health access by gender were stark. Women reported needing almo
 
 ## Race/Ethnicity
 
-The graph below explores differences in outcome variables by race/ethnicity.
+The line graph below explores differences in outcome variables by race/ethnicity from 2020 to 2022.
 
 ```{r race ethnicity}
 tidydata |>
@@ -191,7 +193,7 @@ Trends by racial and ethnic groups were stark across all three years. Non-Hispan
 
 ## Sexual Orientation
 
-The Household Pulse Survey started asking about sexual orientation mid-way through data collection; as such, data for sexuality was only available from August 2021 to May 2022.
+The line graph below shows differences in outcome variables by sexual orientation from 2021 to 2022, since the Household Pulse Survey started asking about sexual orientation mid-way through data collection.
 
 ```{r sexuality}
 tidydata |>
@@ -218,6 +220,6 @@ tidydata |>
     color = "Indicator of Mental Health Access")
 ```
 
-**Main findings**:
+**Main findings:**
 
 Mental health access strongly differed by sexual orientation. Individuals who identify as bisexual reported the highest trends in all four indicators compared with gay or lesbian and straight Americans, although they were closely followed by individuals who identify as gay or lesbian. This finding was initially surprising, as differences between those who identify as bisexual and those who identified as lesbian or gay were not expected, but one peer-reviewed journal [article](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2951966/) found that bisexual women showed a higher likelihood of frequent mental distress than lesbian women. Even out of all demographic characteristics, those who identify as bisexual reported the highest rates of taking prescription medication for mental health and/or receiving counseling or therapy, as their rates reached over 50% at some time points in 2021 and 2022. Outcomes in mental health access for individuals who identify as bisexual showed the most variation over time. Individuals who identify as straight reported the least unmet need for counseling or therapy, and their outcomes were consistent over the 9-month period.

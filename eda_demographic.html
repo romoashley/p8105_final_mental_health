@@ -489,14 +489,16 @@ to quality mental health services than those with lower educational
 attainment.</p>
 <p>On the other hand, those who have a lower education level (high
 school diploma or GED and less than high school diploma groups) have the
-least value of needed counseling or therapy but did not get it and
-received counseling or therapy indicators because they might not have
+lowest rates of needing counseling or therapy but not getting it and
+receiving counseling or therapy indicators because they might not have
 the time or money to take care of their mental health, so they do not
 think they will need counseling or needs receiving counseling
 services.</p>
 </div>
 <div id="gender" class="section level2">
 <h2>Gender</h2>
+<p>The line graph below shows differences in outcome variables by
+race/ethnicity from 2020 to 2022.</p>
 <pre class="r"><code>tidydata |&gt;
   filter(
     group == &quot;Sex&quot;,
@@ -530,8 +532,8 @@ each year from 2020 to 2022.</p>
 </div>
 <div id="raceethnicity" class="section level2">
 <h2>Race/Ethnicity</h2>
-<p>The graph below explores differences in outcome variables by
-race/ethnicity.</p>
+<p>The line graph below explores differences in outcome variables by
+race/ethnicity from 2020 to 2022.</p>
 <pre class="r"><code>tidydata |&gt;
   filter(group == &quot;Race/Hispanic ethnicity&quot;, state == &quot;United States&quot;) |&gt;
   mutate(race_ethnicity = forcats::fct_relevel(subgroup, c(&quot;Non-Hispanic Asian, single race&quot;, &quot;Non-Hispanic Black, single race&quot;, &quot;Hispanic or Latino&quot;, &quot;Non-Hispanic White, single race&quot;, &quot;Non-Hispanic, other races and multiple races&quot;))) |&gt;
@@ -575,9 +577,9 @@ access to mental health as needed before the pandemic hit.</p>
 </div>
 <div id="sexual-orientation" class="section level2">
 <h2>Sexual Orientation</h2>
-<p>The Household Pulse Survey started asking about sexual orientation
-mid-way through data collection; as such, data for sexuality was only
-available from August 2021 to May 2022.</p>
+<p>The line graph below shows differences in outcome variables by sexual
+orientation from 2021 to 2022, since the Household Pulse Survey started
+asking about sexual orientation mid-way through data collection.</p>
 <pre class="r"><code>tidydata |&gt;
     filter(group == &quot;Sexual orientation&quot;,
          state == &quot;United States&quot;,
@@ -601,7 +603,7 @@ available from August 2021 to May 2022.</p>
     caption = &quot;Data was collected from August 18, 2021 to May 9, 2022&quot;,
     color = &quot;Indicator of Mental Health Access&quot;)</code></pre>
 <p><img src="eda_demographic_files/figure-html/sexuality-1.png" width="90%" /></p>
-<p><strong>Main findings</strong>:</p>
+<p><strong>Main findings:</strong></p>
 <p>Mental health access strongly differed by sexual orientation.
 Individuals who identify as bisexual reported the highest trends in all
 four indicators compared with gay or lesbian and straight Americans,

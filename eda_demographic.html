@@ -11,9 +11,9 @@
 
 
 
-<title>EDA by Demopgrahics</title>
+<title>Demopgrahic-Level Exploratory Data Analysis (EDA)</title>
 
-<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.24/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/united.min.css" rel="stylesheet" />
@@ -380,22 +380,23 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">EDA by Demopgrahics</h1>
+<h1 class="title toc-ignore">Demopgrahic-Level Exploratory Data Analysis
+(EDA)</h1>
 
 </div>
 
 
 <p>This page explores trends in mental health access by demographic
-characteristics: age group, education level, gender, sexual orientation,
-and race/ethnicity.</p>
+characteristics: age group, education level, gender, race/ethnicity, and
+sexual orientation.</p>
 <div id="age-group" class="section level2">
 <h2>Age Group</h2>
-<p>I started by filtering the tidy dataset to only include age and
-residence in the United States. Then, I renamed the “80 years and above”
-subgroup to 80+ years. Afterward, I plotted the age group graph;
-however, because the start_date variable overlapped, the legend was
-difficult to view when I plotted the graph. As a result, I rotated the
-x-axis labels vertically and stacked the legend to two columns.</p>
+<p>I started by filtering the tidy data set to only include age and
+national-level data. Then, I renamed the “80 years and above” subgroup
+to 80+ years. Afterward, I plotted the age group graph; however, because
+the start_date variable overlapped, the legend was difficult to view
+when I plotted the graph. As a result, I rotated the x-axis labels
+vertically and stacked the legend to two columns.</p>
 <pre class="r"><code>#Filtering the dataset to age and united states
 age_plot &lt;- tidydata |&gt; 
   filter(group == &quot;Age&quot;, state == &quot;United States&quot;)
@@ -429,26 +430,25 @@ age_plot |&gt;
 the highest values across all the indicators. Especially for the
 indicator of taking prescription medication for mental health and or
 receiving counseling, followed by the 30-39 age group, then 40-49 years.
-Since the data is captured from 2021 to 2022 during the pandemic,
-lockdown and transition to a virtual environment might cause tremendous
-pressure on these age groups. In addition, limited access to social life
-might burden the 18-29 age group. In addition, it is surprising to see
-that age groups from 60 and above have the lowest values of needed
-counseling or therapy but did not get it and received counseling or
-therapy. Maybe many of them are in their retirement, or this age group
-has a stigma around mental health because they might have a negative
-impression about having mental health issues. Therefore, they are less
-likely to admit they need counseling or therapy.</p>
+Since the data is captured from 2020 to 2022 during the pandemic,
+lockdown and a sudden transition to a virtual environment might cause
+tremendous pressure on these age groups. In addition, limited access to
+social life might burden the 18-29 age group. Furthermore, it is
+surprising to see that age groups from 60 and above have the lowest
+values of needed counseling or therapy but did not get it and received
+counseling or therapy. It is possible that many of them are in their
+retirement, or this age group has a negative stigma around mental health
+and are thus less likely to admit needing counseling or therapy for
+mental health.</p>
 </div>
 <div id="education-level" class="section level2">
 <h2>Education Level</h2>
-<p>I began by filtering the tidy dataset to only age and participants
-residing in the United States. In the next step, I re-leveled the
-education subgroup by creating a new variable, ed_name. Afterward, I
-used the new variable, ed_name, to create an education plot. Similar to
-the age plot, the x-axis labels and legend are difficult to view. So, I
-adjusted the x-axis labels to vertical and stacked the legend columns
-into two columns.</p>
+<p>I began by filtering the tidy data set to only age and national-level
+data. In the next step, I re-leveled the education subgroup by creating
+a new variable, ed_name. Afterward, I used the new variable, ed_name, to
+create an education plot. Similar to the age plot, the x-axis labels and
+legend are difficult to view, so I adjusted the x-axis labels to
+vertical and stacked the legend columns into two columns.</p>
 <pre class="r"><code>#Filtering the dataset to age and united states, re-level the subgroup, and plot the education plot 
 ed_plot= 
   tidydata |&gt;
@@ -602,10 +602,16 @@ available from August 2021 to May 2022.</p>
 Individuals who identify as bisexual reported the highest trends in all
 four indicators compared with gay or lesbian and straight Americans,
 although they were closely followed by individuals who identify as gay
-or lesbian. Outcomes in mental health access for individuals who
-identify as bisexual showed the most variation over time. Individuals
-who identify as straight reported the least unmet need for counseling or
-therapy, and their outcomes were consistent over the 9-month period.</p>
+or lesbian. This finding was initially surprising, as differences
+between those who identify as bisexual and those who identified as
+lesbian or gay were not expected, but one peer-reviewed journal <a
+href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2951966/">article</a>
+found that bisexual women showed a higher likelihood of frequent mental
+distress than lesbian women. Outcomes in mental health access for
+individuals who identify as bisexual showed the most variation over
+time. Individuals who identify as straight reported the least unmet need
+for counseling or therapy, and their outcomes were consistent over the
+9-month period.</p>
 </div>
 
 

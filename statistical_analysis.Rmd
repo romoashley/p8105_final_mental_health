@@ -36,13 +36,14 @@ options(
 scale_colour_discrete = scale_colour_viridis_d
 scale_fill_discrete = scale_fill_viridis_d
 
-
 tidydata = 
   read.csv("data/tidydata.csv")
 ```
 
 
-## Independent Samples T-tests
+## Bivariate analysis
+
+### Gender
 
 We will first conduct independent samples t-tests to see if there is a statistical relationship between gender and two of our indicators of mental health access:
 
@@ -53,7 +54,7 @@ Even though the independent samples t-test assumes normality, our sample size (5
 
 P-values less than 0.05 will be considered as statistically significant.
 
-### Took prescription medication and/or received counseling or therapy for mental health
+#### Took prescription medication and/or received counseling or therapy for mental health
 
 The first independent samples t-test shows statistically significant differences in prescription medication and/or counseling or therapy for mental health rates. Men and women had statistically different mean rates of taking prescription medication for mental health and/or receiving counseling or therapy from 2020 to 2022 in the United States.
 
@@ -79,7 +80,7 @@ gender_received |>
   knitr::kable()
 ```
 
-### Needed counseling or therapy but did not get it
+#### Needed counseling or therapy but did not get it
 
 The second independent samples t-test shows statistically significant differences in rates of needing counseling or therapy for mental health but not getting it. Men and women had statistically different mean rates of needing counseling or therapy for mental health but not getting it from 2020 to 2022 in the United States.
 
@@ -105,7 +106,9 @@ gender_needed |>
   knitr::kable()
 ```
 
-## ANOVA: sexual orientation
+### Sexual orientation
+
+#### Took prescription medication and/or received counseling or therapy for mental health
 
 ```{r}
 sexuality_received =
@@ -115,12 +118,16 @@ sexuality_received =
     state == "United States",
     group == "Sexual orientation",
     week_number %in% c(24:33)) |>
-  dplyr::select(week_number, value, subgroup) |>
-  pivot_wider(
-    names_from = "subgroup",
-    values_from = "value") |>
-  janitor::clean_names()
+  group_by(subgroup)
+
+anova_sexuality_received = aov(value ~ subgroup, data = sexuality_received)
+
+anova_sexuality_received |>
+  broom::tidy() |>
+  knitr::kable()
 ```
+
+#### Needed counseling or therapy but did not get it
 
 ```{r}
 sexuality_needed =
@@ -131,7 +138,52 @@ sexuality_needed =
     group == "Sexual orientation",
     week_number %in% c(24:33)) |>
   group_by(subgroup)
+
+anova_sexuality_needed = aov(value ~ subgroup, data = sexuality_needed)
+
+anova_sexuality_needed |>
+  broom::tidy() |>
+  knitr::kable()
 ```
+
+### Race/ethnicity
+
+#### Took prescription medication and/or received counseling or therapy for mental health
+
+```{r}
+race_received =
+  tidydata |>
+  filter(
+    indicator == "Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy",
+    state == "United States",
+    group == "Race/Hispanic ethnicity") |>
+  group_by(subgroup)
+
+anova_race_received = aov(value ~ subgroup, data = race_received)
+
+anova_race_received |>
+  broom::tidy() |>
+  knitr::kable()
+```
+
+#### Needed counseling or therapy but did not get it
+
+```{r}
+race_needed =
+  tidydata |>
+  filter(
+    indicator == "Needed Counseling or Therapy But Did Not Get It",
+    state == "United States",
+    group == "Race/Hispanic ethnicity") |>
+  group_by(subgroup)
+
+anova_race_needed = aov(value ~ subgroup, data = race_needed)
+
+anova_race_needed |>
+  broom::tidy() |>
+  knitr::kable()
+```
+
 
 ### Check normality
 
@@ -314,10 +366,3 @@ stepwise_fit <- stepAIC(fit, direction="both")
 
 ### Step 4 
 AIC values are identical across the steps shown, which suggests that removal or addition of a variable did not improve the model's fit. 
-
-
-
-
-
-
-

@@ -90,8 +90,7 @@ I began by filtering the tidy dataset to only age and participants residing in t
 ed_plot= 
   tidydata |>
   filter(group == "Education", state == "United States") |> 
-   mutate(ed_name = forcats::fct_relevel(subgroup, c("Bachelor's degree or higher",
-                                                     "Some college/Associate's degree", "High school diploma or GED", "Less than a high school diploma"))) |> 
+   mutate(ed_name = forcats::fct_relevel(subgroup, c("Less than a high school diploma", "High school diploma or GED", "Some college/Associate's degree", "Bachelor's degree or higher"))) |> 
   group_by(start_dates, ed_name, indicator) |> 
   ggplot(aes(x = start_dates, y = value, color = indicator)) +
   geom_line() +

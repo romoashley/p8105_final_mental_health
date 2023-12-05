@@ -13,7 +13,7 @@
 
 <title>EDA by Demopgrahics</title>
 
-<script src="site_libs/header-attrs-2.24/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/united.min.css" rel="stylesheet" />
@@ -453,8 +453,7 @@ into two columns.</p>
 ed_plot= 
   tidydata |&gt;
   filter(group == &quot;Education&quot;, state == &quot;United States&quot;) |&gt; 
-   mutate(ed_name = forcats::fct_relevel(subgroup, c(&quot;Bachelor&#39;s degree or higher&quot;,
-                                                     &quot;Some college/Associate&#39;s degree&quot;, &quot;High school diploma or GED&quot;, &quot;Less than a high school diploma&quot;))) |&gt; 
+   mutate(ed_name = forcats::fct_relevel(subgroup, c(&quot;Less than a high school diploma&quot;, &quot;High school diploma or GED&quot;, &quot;Some college/Associate&#39;s degree&quot;, &quot;Bachelor&#39;s degree or higher&quot;))) |&gt; 
   group_by(start_dates, ed_name, indicator) |&gt; 
   ggplot(aes(x = start_dates, y = value, color = indicator)) +
   geom_line() +

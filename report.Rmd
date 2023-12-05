@@ -125,18 +125,18 @@ We conducted Exploratory Data Analysis (EDA) at the [national-level](EDA_AR.html
 
 ## Additional Analysis
 
-We conducted a [Two Sample T Test and ANOVA](statistical_analysis.html) to determine if there were difference across indicator categories.
+We conducted a [independent samples t-tests and ANOVA](statistical_analysis.html) to determine if there were statisitcally significant differences in access to mental health for each demographic characteristic.
 
 
 ## Results and Discussion
 
 
-#### National Level
+#### National-Level
 
 On average, those who took prescription medication for mental health and/or received counseling or therapy had a highest values while those who received counseling or therapy had the lowest value. There is a wide gap in average values between those who took prescription medication for mental health and those who needed counseling or therapy but did not get it. Overall, each indicator had a small increase in average value between 2020 and 2022. Additionally, the majority of states had a similar estimate of proportion of mental health services not received within each state. However, Vermont, Wyoming, Hawaii, and North Dakota had distinct estimates, with a lower estimate compared to the remaining states. Overall, Vermont had the lowest estimate. 
 
 
-#### State Level 
+#### State-Level 
 
 After analysis of the four indicators by state, we found the lowest prevalence of mental health care use in some of the most populous US states: California, New York, Texas, and Florida. Medication use prevalence was highest in West Virginia, Kentucky, Arkansas, Utah, and Oklahoma. Except for Utah, these states have high rates of [poverty](https://data.ers.usda.gov/reports.aspx?ID=17826) and low [median household income](https://www.kff.org/other/state-indicator/median-annual-income/?activeTab=map&currentTimeframe=0&selectedDistributions=median-annual-household-income&sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D), which could drive higher rates of mental health medication use.
 
@@ -146,12 +146,12 @@ When medication and therapy indicators are combined to indicate overall mental h
 Interestingly, the states with the highest prevalence of unmet therapy needs also tended to have a higher prevalence of therapy use. This could indicate that demand for therapy outpaced supply of mental health care providers even with the expansion of telehealth during the pandemic. However, West Virginia, which had a high prevalence of medication use, did not have high unmet therapy needs. This could mean that in certain states, medication use is not tied to therapy use.
 
 
-#### Demographic Level
+#### Demographic-Level
 
-Age: 
+Age:
 The 18-29 age group has the highest values across all the indicators, especially for the indicator of taking prescription medication for mental health and or receiving counseling. This might be due to the pandemic, where lockdown and transition to a virtual environment cause additional pressure on this age group, and mental health services are needed to relieve the overwhelming burdens. On the other hand, the 60 and above age group has the lowest values of needed counseling or therapy but did not get it and received counseling or therapy. It might be due to a present f stigma around mental health, where there might be low reports of expressing the need for counseling or therapy.
 
-Education: 
+Education:
 On average, the bachelor's degree or higher group has the highest value of taking prescription medication for mental health and/or receiving counseling. On the other hand, those who have a lower education levels (high school diploma or GED and less than high school diploma groups) have the least value of needed counseling or therapy but did not get it and received counseling or therapy indicators.
 
 Gender:
@@ -162,3 +162,9 @@ Non-Hispanic multiracial group received the most prescription medication and/or 
 
 Sexual orientation:
 Out of all demographic characteristics, those who identify as bisexual reported the highest rates of taking prescription medication for mental health and/or receiving counseling or therapy, as their rates reached over 50% at some time points in 2021 and 2022. Individuals who identify as bisexual reported the highest trends in all four indicators compared with gay or lesbian and straight Americans, although they were closely followed by individuals who identify as gay or lesbian. Outcomes in mental health access for individuals who identify as bisexual showed the most variation over time. Individuals who identify as straight reported the least unmet need for counseling or therapy, and their outcomes were consistent over time.
+
+#### Additional Analyses
+
+## Conclusion
+
+Our findings reflect the increasing demand for therapists and counselors that inspired our work.

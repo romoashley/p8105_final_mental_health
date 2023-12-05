@@ -6,6 +6,8 @@ output:
     toc_float: true
 ---
 
+<img src="images/mental_health_intro.jpeg" style="width:50%">
+
 Welcome to our final project for our Data Science I course! Our project explores trends in mental health access in the United States since the COVID-19 pandemic, as well as differences in mental health access by various demographic characteristics. We used existing data from the Household Pulse Survey, which is a nationally representative quantitative survey. Our data cleaning and analysis were conducted in RStudio.
 
 We value transparency and reproducibility; as such, our R code is linked in our GitHub repository, which can be found by clicking [this link](https://github.com/romoashley/p8105_final_mental_health) or by clicking the icon on the top right navigation menu.

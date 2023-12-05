@@ -1,5 +1,5 @@
 ---
-title: "National Level Exploratory Data Analysis (EDA)"
+title: "National-Level Exploratory Data Analysis (EDA)"
 output:
   html_document:
     toc: true
@@ -23,10 +23,12 @@ data =
   )
 ```
 
-## National Average 
+## National Average
+
 Let's take a look at the national average value. 
 
-First, I filtered by states = United States to look only at national data rather then state-specific data. Next, I group by year, start date, and indicator to ensure I calculate the mean value for each indicator by start date. After calculating the mean, I plot the mean value and start date to showcase the mean national value over time. 
+First, I filtered by states = United States to look only at national data rather then state-specific data. Next, I grouped by year, start date, and indicator to ensure I calculate the mean value for each indicator by start date. After calculating the mean, I plotted the mean value and start date to showcase the mean national value over time.
+
 ```{r message = FALSE, echo = FALSE}
 avg_year =
   data |> 
@@ -53,11 +55,12 @@ avg_year |>
   guides(color = guide_legend(nrow = 4))
 ```
 
-On average, those who took prescription medication for mental health and/or received counseling or therapy had a highest values while those who received counseling or therapy had the lowest value. There wide gap in average values between those who took prescription medication for mental health and those who needed counseling or therapy but did not get it. Overall, each indicator had a small increase in average value between 2020 and 2022. 
+On average, those who took prescription medication for mental health and/or received counseling or therapy had the highest values while those who received counseling or therapy had the lowest values. There wide gap in average value between those who took prescription medication for mental health and those who needed counseling or therapy but did not get it. Overall, each indicator had a small increase in average value between 2020 and 2022.
 
 ## Confidence Intervals
 
-I relabeled the observations for the variable indicator to "received" if they did obtain the mental health services (Took Prescription Medication for Mental Health, Received Counseling or Therapy they needed, Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy) and "not received" if they did not obtain the mental health services they needed (Needed Counseling or Therapy But Did Not Get It).
+I relabeled the observations for the variable indicator to "received" if they did obtain the mental health services (Took Prescription Medication for Mental Health, Received Counseling or Therapy, Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy) and "not received" if they did not obtain the mental health services they needed (Needed Counseling or Therapy But Did Not Get It).
+
 ```{r}
 received_service = 
   data |> 
@@ -69,7 +72,8 @@ received_service =
       indicator == "Needed Counseling or Therapy But Did Not Get It" ~ "not received"))
 ```
 
-I created a data frame where I grouped by states to determine the number of total services, which includes the services received as well as the number of services not received, and the total number of services not received. 
+I created a data frame where I grouped by states to determine the number of total services, which includes the services received as well as the number of services not received, and the total number of services not received.
+
 ```{r}
 states_df =
   received_service |> 
@@ -97,8 +101,8 @@ broom::tidy(ny_test) %>%
   knitr::kable(digits = 3)
 ```
 
+I apply prop.test and broom:tidy to obtain estimates and confidence intervals for the proportion of mental health services not received for each state.
 
-I apply prop.test and broom:tidy to obtain estimates and confidence intervals for the proportion of mental health services not received for each state. 
 ```{r}
 services_states =
   states_df |> 
@@ -112,6 +116,7 @@ services_states =
 ```
 
 Lastly, I plot showing the estimate (and CI) of the proportion of mental health services not received in each state.
+
 ```{r}
 services_states %>% 
   mutate(state = fct_reorder(state, estimate)) %>% 
@@ -127,4 +132,3 @@ services_states %>%
 ```
 
 According to the plot, the majority of states had a similar estimate of proportion of mental health services not received within each state. However, Vermont, Wyoming, Hawaii, and North Dakota had distinct estimates, with a lower estimate compared to the remaining states. Overall, Vermont had the lowest estimate.
-

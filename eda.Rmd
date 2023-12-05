@@ -1,5 +1,5 @@
 ---
-title: "State Level Exploratory Data Analysis (EDA)"
+title: "State-Level Exploratory Data Analysis (EDA)"
 output:
   html_document:
     toc: true
@@ -56,9 +56,9 @@ state_df =
   filter(group == "State")
 ```
 
-### Indicator 1: Took prescription
+### Indicator 1: Took Prescription
 
-Let's start with the mental health indicator "Took Prescription Medication for Mental Health"
+Let's start with the mental health indicator "Took Prescription Medication for Mental Health."
 
 The following chunk shows the top five states with the highest mean percentage of respondents who reported taking prescription medication for mental health from 2020-2022.
 
@@ -94,7 +94,7 @@ us_meds =
   merge(usa, state_meds, by.x = "ID", by.y = "state", all.x = TRUE)
 ```
 
-Next, we'll plot the data using ggplot
+Next, we'll plot the data using ggplot.
 
 ```{r meds_map}
 heatmap_meds=
@@ -148,7 +148,7 @@ plot_ly(x = ~year, y = ~mean_value, color = ~state, type = "scatter", mode = "li
 
 ### Indicator 2: Received Counseling or Therapy
 
-Now we'll look at the mental health indicator "Received Counseling or Therapy"
+Now we'll look at the mental health indicator "Received Counseling or Therapy."
 
 The following chunk shows the top five states with the highest mean percentage of respondents who reported receiving counseling or therapy from 2020-2022. The state with the highest percentage during this period was District of Columbia.
 
@@ -186,7 +186,7 @@ us_ther =
   merge(usa, state_ther, by.x = "ID", by.y = "state", all.x = TRUE)
 ```
 
-Next, we'll plot the data using ggplot
+Next, we'll plot the data using ggplot.
 
 ```{r ther_map}
 heatmap_ther=
@@ -201,7 +201,7 @@ ggplot(us_ther)+
 print(heatmap_ther)
 ```
 
-We can also look at which states have had the greatest change in therapy use. This shows that NE had the highest level of change in this indicator between 2020-2022. It also had a high level of change in indicator 1
+We can also look at which states have had the greatest change in therapy use. This shows that NE had the highest level of change in this indicator between 2020-2022. It also had a high level of change in indicator 1.
 
 ```{r ther_change}
 state_ther_change =
@@ -235,7 +235,7 @@ plot_ly(x = ~year, y = ~mean_value, color = ~state, type = "scatter", mode = "li
     yaxis = list(title = "Average % received therapy"))
 ```
 
-### Indicator 3: "Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy"
+### Indicator 3: Took Prescription Medication And/Or Received Counseling or Therapy
 
 The third indicator we'll look at combines the first two indicators into one category. This can help give a snapshot of overall mental health care need.
 
@@ -273,7 +273,7 @@ us_both =
   merge(usa, state_both, by.x = "ID", by.y = "state", all.x = TRUE)
 ```
 
-Next, we'll plot the data using ggplot
+Next, we'll plot the data using ggplot.
 
 ```{r both_map}
 heatmap_both=
@@ -324,7 +324,7 @@ plot_ly(x = ~year, y = ~mean_value, color = ~state, type = "scatter", mode = "li
 
 ### Indicator 4: Needed Counseling or Therapy But Did Not Get It
 
-The last indicator we'll look at is describes gaps in mental health care access, specifically counseling and therapy. 
+The last indicator we'll look at is describes gaps in mental health care access, specifically counseling and therapy.
 
 The following chunk shows the top five states with the highest mean percentage of respondents who reported no receipt of needed counseling/therapy from 2020-2022. The state with the highest percentage during this period was Oregon. Surprisingly, District of Columbia also appeared on the top 5, even though it was the "state" with the highest level of therapy use during this period.
 
@@ -360,7 +360,7 @@ us_need =
   merge(usa, state_need, by.x = "ID", by.y = "state", all.x = TRUE)
 ```
 
-Next, we'll plot the data using ggplot
+Next, we'll plot the data using ggplot.
 
 ```{r need_map}
 heatmap_need=
@@ -408,6 +408,5 @@ plot_ly(x = ~year, y = ~mean_value, color = ~state, type = "scatter", mode = "li
     xaxis = list(title = "Year"),
     yaxis = list(title = "Avg % did not receive needed therapy"))
 ```
-
 
 For discussion and interpretation of these results, view our [final report](report.html)

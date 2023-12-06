@@ -23,9 +23,9 @@ data =
   )
 ```
 
-## National Average
+## Prevalence 
 
-Let's take a look at the national average value. 
+Let's take a look at the prevalence. 
 
 First, I filtered by states = United States to look only at national data rather then state-specific data. Next, I grouped by year, start date, and indicator to ensure I calculate the mean value for each indicator by start date. After calculating the mean, I plotted the mean value and start date to showcase the mean national value over time.
 
@@ -44,8 +44,8 @@ avg_year |>
   ggplot(aes(x = start_dates, y = mean, color = indicator)) +
   geom_line() +
   labs(
-    x = "Start Date",
-    y = "Average Value",
+    x = "Date",
+    y = "Prevalence",
     title = "National Average (2020-2022)",
     color = "Indicator") +
   theme(

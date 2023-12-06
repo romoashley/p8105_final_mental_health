@@ -13,7 +13,7 @@
 
 <title>Demograhic-Level Exploratory Data Analysis (EDA)</title>
 
-<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.24/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/united.min.css" rel="stylesheet" />
@@ -420,7 +420,6 @@ age_plot |&gt;
     plot.title = element_text(size = 18),
     axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)  # Rotate x-axis labels vertically
   ) +
-  scale_color_hue(h = c(100, 300)) +
   guides(color = guide_legend(nrow = 4)) # Adding the legend guide adjustment</code></pre>
 <p><img src="eda_demographic_files/figure-html/age-1.png" width="90%" /></p>
 <p><strong>Main findings:</strong></p>
@@ -469,7 +468,6 @@ ed_plot=
     plot.title = element_text(size = 18),
     axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)  # Rotate x-axis labels vertically
   ) +
-  scale_color_hue(h = c(100, 300)) +
   guides(color = guide_legend(nrow = 4)) # Adding the legend guide adjustment
 
 #View the education plot

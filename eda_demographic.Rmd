@@ -29,12 +29,12 @@ knitr::opts_chunk$set(
 theme_set(theme_minimal() + theme(legend.position = "bottom"))
 
 options(
-  ggplot2.continuous.colour = "viridis",
-  ggplot2.continuous.fill = "viridis"
+  ggplot2.continuous.colour = heat.colors(256),
+  ggplot2.continuous.fill = heat.colors(256)
 )
 
-scale_colour_discrete = scale_colour_viridis_d
-scale_fill_discrete = scale_fill_viridis_d
+scale_colour_discrete = scale_color_manual(values = heat.colors(256))
+scale_fill_discrete = scale_fill_manual(values = heat.colors(256))
 
 tidydata = 
   read.csv("data/tidydata.csv") |>
@@ -75,7 +75,6 @@ age_plot |>
     plot.title = element_text(size = 18),
     axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)  # Rotate x-axis labels vertically
   ) +
-  scale_color_hue(h = c(100, 300)) +
   guides(color = guide_legend(nrow = 4)) # Adding the legend guide adjustment
 ```
 
@@ -110,7 +109,6 @@ ed_plot=
     plot.title = element_text(size = 18),
     axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)  # Rotate x-axis labels vertically
   ) +
-  scale_color_hue(h = c(100, 300)) +
   guides(color = guide_legend(nrow = 4)) # Adding the legend guide adjustment
 
 #View the education plot

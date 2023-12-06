@@ -13,7 +13,7 @@
 
 <title>Final Report</title>
 
-<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.24/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/united.min.css" rel="stylesheet" />
@@ -397,8 +397,8 @@ href="https://www.kff.org/mental-health/issue-brief/the-implications-of-covid-19
 years after the pandemic first hit.</p>
 <p>Our project aimed to explore trends and differences in indicators of
 mental health care access across the United States from August 2020-May
-2022, as well as disaggregate data by state, age group, gender,
-race/ethnicity, education level, and sexual orientation.</p>
+2022, as well as disaggregate data by state, age group, education level,
+gender, race/ethnicity, and sexual orientation.</p>
 </div>
 <div id="related-work" class="section level2">
 <h2>Related Work</h2>
@@ -547,15 +547,18 @@ following:</p>
 <li>What is the national prevalence over time?</li>
 <li>Are there are the differences among states? Which states have the
 highest values and which states have the lowest values?</li>
-<li>Are there differences in indicators of mental health outcomes by
-demographic characteristic (age, education level, gender,
-race/ethnicity, and sexual orientation)?</li>
 <li>What is the proportion of services needed but not received by
 individuals in New York?</li>
 <li>What is the proportion of services needed but not received by
 individuals across states?</li>
+<li>Are there differences in indicators of mental health outcomes by
+demographic characteristic (age, education level, gender,
+race/ethnicity, and sexual orientation)? Are they statistically
+significant?</li>
 <li>Can we apply a linear model to the data?</li>
 </ul>
+<p>We were able to answer all of these questions through our
+analyses.</p>
 </div>
 <div id="exploratory-analysis" class="section level2">
 <h2>Exploratory Analysis</h2>
@@ -563,8 +566,8 @@ individuals across states?</li>
 href="EDA_AR.html">national-level</a>, <a
 href="eda.html">state-level</a>, and <a
 href="eda_demographic.html">demographic-level</a>.</p>
-<div id="national" class="section level4">
-<h4>National</h4>
+<div id="national-level" class="section level4">
+<h4>National-Level</h4>
 <p>To look at the prevalence in the United States, I filter for United
 States to focus national data rather then state-specific data. Next, I
 grouped by year, start date, and indicator to ensure I calculate the
@@ -580,13 +583,13 @@ those who received counseling or therapy with the lowest prevalence.</p>
 <div id="additional-analysis" class="section level2">
 <h2>Additional Analysis</h2>
 <p>We conducted a <a href="statistical_analysis.html">independent
-samples t-tests and ANOVA</a> to determine if there were statisitcally
+samples t-tests and ANOVA</a> to determine if there were statistically
 significant differences in access to mental health for each demographic
 characteristic.</p>
 </div>
-<div id="results-and-discussion" class="section level2">
-<h2>Results and Discussion</h2>
-<div id="national-level" class="section level4">
+<div id="discussion" class="section level2">
+<h2>Discussion</h2>
+<div id="national-level-1" class="section level4">
 <h4>National-Level</h4>
 <p>On average, those who took prescription medication for mental health
 and/or received counseling or therapy had the highest values while those

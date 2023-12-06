@@ -329,3 +329,7 @@ stepwise_fit <- stepAIC(fit, direction="both")
 ```
 
 AIC values are identical across the steps shown, which suggests that removal or addition of a variable did not improve the model's fit.
+
+In an attempt to use a linear model, we used the stepwise function to see if adding the variabel "subgroup" was useful in identifying the best linear model for our dataset. Upon further analysis, we realized that the stepwise approached was ineffective given that all our predictors are under one variable: subgroup. The AIC values confirmed this as they were identical across each step.
+
+We attempted to rearranged the data using the pivot_wider function to isolate each predictor to a distinct variable rather thab having all of our predictors under the subgroup variable. However, we came across challenges. First, the data for each predictor has a different value for each week. Second, the number the predictors differed across weeks. Given that our data set is grouped data, we were unable to organize our dataset in a way that allowed us to isolated predictors and apply a linear model. 

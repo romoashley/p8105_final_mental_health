@@ -382,40 +382,43 @@ div.tocify {
 </div>
 
 
-<p>This page shows the bivariate analyis and linear modeling we
-undertake as additional analyses to the Exploratory Data Analysis
+<p>This page shows the bivariate analysis and linear modeling we
+undertook as additional analyses to the Exploratory Data Analysis
 (EDA).</p>
-<p>P-values less than 0.05 will be considered as statistically
-significant.</p>
 <div id="bivariate-analysis" class="section level2">
 <h2>Bivariate Analysis</h2>
-<div id="gender" class="section level3">
-<h3>Gender</h3>
-<p>We will first conduct independent samples t-tests to see if there is
-a statistical relationship between gender and two of our indicators of
-mental health access:</p>
+<p>We will conduct bivariate analysis to see if there is a statistical
+relationship between each demographic characteristic and two of our
+indicators of mental health access:</p>
 <ol style="list-style-type: decimal">
 <li>Took prescription medication and/or received counseling or therapy
 for mental health</li>
 <li>Needed counseling or therapy for mental health but did not get
-it</li>
+it.</li>
 </ol>
-<p>Even though the independent samples t-test assumes normality, our
-sample size (50,000-90,000) is large. The Central Limit Theorem often
-allows the t-test to be used even when the population distribution is
-not normal, because the distribution of the sample means will tend to be
-normal.</p>
+<p>In other words, we will test whether group means for each demographic
+characteristic are statistically different for each indicator of mental
+health access. P-values less than 0.05 will be considered as
+statistically significant.</p>
+<p>Since gender is binary, we will run an independent samples t-test.
+The remaining demographic characteristics (age group, education level,
+race/ethnicity, and sexual orientation) all have three or more
+categories, so we will run one-way ANOVA tests within them.</p>
+<p>Even though these tests assume normality, our sample size
+(50,000-90,000) is large. The Central Limit Theorem allows these
+statistical tests to be used even when the population distribution is
+not normal because the distribution of the sample means will tend to be
+normal in such large sample sizes.</p>
+<div id="gender" class="section level3">
+<h3>Gender</h3>
+<p>We will first conduct independent samples t-tests to see if there is
+a statistical relationship between gender and each of the two
+aforementioned indicators of mental health access.</p>
 <div
 id="took-prescription-medication-andor-received-counseling-or-therapy-for-mental-health"
 class="section level4">
 <h4>Took prescription medication and/or received counseling or therapy
 for mental health</h4>
-<p>The first independent samples t-test shows statistically significant
-differences in prescription medication and/or counseling or therapy for
-mental health rates. Men and women had statistically different mean
-rates of taking prescription medication for mental health and/or
-receiving counseling or therapy from 2020 to 2022 in the United
-States.</p>
 <pre class="r"><code>gender_received =
   tidydata |&gt;
   filter(
@@ -449,15 +452,16 @@ gender_received |&gt;
 </tr>
 </tbody>
 </table>
+<p>The first independent samples t-test above shows statistically
+significant differences in mean prescription medication and/or
+counseling or therapy for mental health rates between men and women. In
+other words, men and women had statistically different mean rates of
+taking prescription medication for mental health and/or receiving
+counseling or therapy from 2020 to 2022 in the United States.</p>
 </div>
 <div id="needed-counseling-or-therapy-but-did-not-get-it"
 class="section level4">
 <h4>Needed counseling or therapy but did not get it</h4>
-<p>The second independent samples t-test shows statistically significant
-differences in rates of needing counseling or therapy for mental health
-but not getting it. Men and women had statistically different mean rates
-of needing counseling or therapy for mental health but not getting it
-from 2020 to 2022 in the United States.</p>
 <pre class="r"><code>gender_needed =
   tidydata |&gt;
   filter(
@@ -491,10 +495,19 @@ gender_needed |&gt;
 </tr>
 </tbody>
 </table>
+<p>The second independent samples t-test above shows statistically
+significant differences in mean rates of needing counseling or therapy
+for mental health but not getting it between men and women. In other
+words, men and women had statistically different mean rates of needing
+counseling or therapy for mental health but not getting it from 2020 to
+2022 in the United States.</p>
 </div>
 </div>
 <div id="age-group" class="section level3">
 <h3>Age Group</h3>
+<p>We will conduct ANOVA to see if there is a statistical relationship
+between age group and each of the two aforementioned indicators of
+mental health access.</p>
 <div
 id="took-prescription-medication-andor-received-counseling-or-therapy-for-mental-health-1"
 class="section level4">
@@ -506,7 +519,7 @@ for mental health</h4>
     indicator == &quot;Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy&quot;,
     state == &quot;United States&quot;,
     group == &quot;Age&quot;) |&gt;
-  group_by(subgroup)
+  group_by(indicator)
 
 anova_age_received = aov(value ~ subgroup, data = age_received)
 
@@ -543,6 +556,12 @@ anova_age_received |&gt;
 </tr>
 </tbody>
 </table>
+<p>The first ANOVA above shows statistically significant differences in
+mean prescription medication and/or counseling or therapy for mental
+health rates between age groups. In other words, at least one age group
+had statistically different mean rates of taking prescription medication
+for mental health and/or receiving counseling or therapy from 2020 to
+2022 in the United States.</p>
 </div>
 <div id="needed-counseling-or-therapy-but-did-not-get-it-1"
 class="section level4">
@@ -590,10 +609,19 @@ anova_age_needed |&gt;
 </tr>
 </tbody>
 </table>
+<p>The second ANOVA above shows statistically significant differences in
+mean rates of needing counseling or therapy for mental health but not
+getting it between age groups. In other words, at least one age group
+had statistically different mean rates of needing counseling or therapy
+for mental health but not getting it from 2020 to 2022 in the United
+States.</p>
 </div>
 </div>
 <div id="education-level" class="section level3">
 <h3>Education Level</h3>
+<p>We will conduct ANOVA to see if there is a statistical relationship
+between education level and each of the two aforementioned indicators of
+mental health access.</p>
 <div
 id="took-prescription-medication-andor-received-counseling-or-therapy-for-mental-health-2"
 class="section level4">
@@ -642,6 +670,12 @@ anova_education_received |&gt;
 </tr>
 </tbody>
 </table>
+<p>The first ANOVA above shows statistically significant differences in
+mean prescription medication and/or counseling or therapy for mental
+health rates between education levels. In other words, at least one
+education level had statistically different mean rates of taking
+prescription medication for mental health and/or receiving counseling or
+therapy from 2020 to 2022 in the United States.</p>
 </div>
 <div id="needed-counseling-or-therapy-but-did-not-get-it-2"
 class="section level4">
@@ -689,10 +723,19 @@ anova_education_needed |&gt;
 </tr>
 </tbody>
 </table>
+<p>The second ANOVA above shows statistically significant differences in
+mean rates of needing counseling or therapy for mental health but not
+getting it between education levels. In other words, at least one
+education level had statistically different mean rates of needing
+counseling or therapy for mental health but not getting it from 2020 to
+2022 in the United States.</p>
 </div>
 </div>
 <div id="raceethnicity" class="section level3">
 <h3>Race/Ethnicity</h3>
+<p>We will conduct ANOVA to see if there is a statistical relationship
+between race/ethnicity and each of the two aforementioned indicators of
+mental health access.</p>
 <div
 id="took-prescription-medication-andor-received-counseling-or-therapy-for-mental-health-3"
 class="section level4">
@@ -741,6 +784,12 @@ anova_race_received |&gt;
 </tr>
 </tbody>
 </table>
+<p>The first ANOVA above shows statistically significant differences in
+mean prescription medication and/or counseling or therapy for mental
+health rates between racial/ethnic groups. In other words, at least one
+racial/ethnic group had statistically different mean rates of taking
+prescription medication for mental health and/or receiving counseling or
+therapy from 2020 to 2022 in the United States.</p>
 </div>
 <div id="needed-counseling-or-therapy-but-did-not-get-it-3"
 class="section level4">
@@ -788,10 +837,19 @@ anova_race_needed |&gt;
 </tr>
 </tbody>
 </table>
+<p>The second ANOVA above shows statistically significant differences in
+mean rates of needing counseling or therapy for mental health but not
+getting it between racial/ethnic groups. In other words, at least one
+racial/ethnic group had statistically different mean rates of needing
+counseling or therapy for mental health but not getting it from 2020 to
+2022 in the United States.</p>
 </div>
 </div>
 <div id="sexual-orientation" class="section level3">
 <h3>Sexual Orientation</h3>
+<p>We will conduct ANOVA to see if there is a statistical relationship
+between sexual orientation and each of the two aforementioned indicators
+of mental health access.</p>
 <div
 id="took-prescription-medication-andor-received-counseling-or-therapy-for-mental-health-4"
 class="section level4">
@@ -841,6 +899,12 @@ anova_sexuality_received |&gt;
 </tr>
 </tbody>
 </table>
+<p>The first ANOVA above shows statistically significant differences in
+mean prescription medication and/or counseling or therapy for mental
+health rates between sexual orientation groups. In other words, at least
+one sexual orientation group had statistically different mean rates of
+taking prescription medication for mental health and/or receiving
+counseling or therapy from 2020 to 2022 in the United States.</p>
 </div>
 <div id="needed-counseling-or-therapy-but-did-not-get-it-4"
 class="section level4">
@@ -889,218 +953,33 @@ anova_sexuality_needed |&gt;
 </tr>
 </tbody>
 </table>
+<p>The second ANOVA above shows statistically significant differences in
+mean rates of needing counseling or therapy for mental health but not
+getting it between sexual orientation groups. In other words, at least
+one sexual orientation group had statistically different mean rates of
+needing counseling or therapy for mental health but not getting it from
+2020 to 2022 in the United States.</p>
 </div>
 </div>
-<div id="check-normality" class="section level3">
-<h3>Check normality</h3>
-<pre class="r"><code>ggplot(tidydata, aes(sample = value)) +
-  stat_qq() +
-  stat_qq_line()</code></pre>
-<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-12-1.png" width="90%" /></p>
-<pre class="r"><code> hist(tidydata$value, breaks = &quot;FD&quot;, main = &quot;Histogram of Data&quot;, xlab = &quot;Data Values&quot;)</code></pre>
-<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-12-2.png" width="90%" />
-The plot appears to be a Q-Q (quantile-quantile) plot showing that the
-data deviates from the expected normal distribution, particularly in the
-tails, indicating the presence of outliers or a heavy-tailed
-distribution.</p>
-<p>The histogram illustrates a bimodal frequency distribution of data
-values, with significant concentrations of observations around two
-central peaks, suggesting the presence of two subpopulations within the
-dataset. The data range from near 0 to just over 60, with the majority
-of values clustered between 5 and 30, and a notable right skew
-indicating a tail of higher values extending towards 60. This skewness
-and the thinning bars towards the right may also point to the existence
-of outliers or extreme values in the dataset. The bimodal nature and the
-distribution’s spread underscore the potential complexity within the
-data, hinting at varied underlying characteristics or groups.</p>
-<pre class="r"><code>ggplot(tidydata, aes(sample = log(value))) +
-  stat_qq() +
-  stat_qq_line()</code></pre>
-<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-13-1.png" width="90%" /></p>
-<pre class="r"><code> hist(log(tidydata$value), breaks = &quot;FD&quot;, main = &quot;Histogram of Data&quot;, xlab = &quot;Data Values&quot;)</code></pre>
-<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-13-2.png" width="90%" />
-Despite the application of a logarithmic transformation to the data, the
-resulting distribution does not conform to normality. This is evidenced
-by the Q-Q plot, which exhibits significant deviations from the line of
-normality, particularly in the tails. Such persistent non-normality
-suggests that the underlying data may not be log-normally distributed,
-or there may be influential outliers that resist transformation.
-Alternative transformations or non-parametric methods may be required to
-address these distributional issues.</p>
-<pre class="r"><code>tidydata=tidydata |&gt; mutate(subgroup=as.factor(subgroup),group=as.factor(group))
-summary(pull(tidydata, value))</code></pre>
-<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##    1.40   10.30   16.20   17.45   24.00   62.90</code></pre>
-<p>The summary statistics for the value dataset indicate a right-skewed
-distribution: the minimum value is 1.40, the first quartile is 10.30,
-the median is 16.20, and the third quartile is 24.00, with a
-considerably higher maximum value of 62.90. The mean, or average, is
-17.45, which is higher than the median, further suggesting a
-distribution with a right tail. The broad range from the minimum to the
-maximum value points to a wide variation in the data, and the
-displacement of the mean towards the higher end of the range hints at
-the presence of outliers or a long tail to the right of the median.</p>
-</div>
-<div id="kruskal-wallis-test" class="section level3">
-<h3>Kruskal-Wallis test</h3>
-<pre class="r"><code>kruskal_result=kruskal.test(value ~ subgroup, data = tidydata)</code></pre>
-<p>Kruskal-Wallis Chi-squared=1680.6. This is the test statistic that
-follows a chi-squared distribution under the null hypothesis. A value of
-1680.6 is quite large, suggesting a significant difference.</p>
-<p>The p-value is less than 2.2e-16. It effectively means that the
-p-value is extremely small, much less than the commonly used
-significance levels (like 0.05 or 0.01), indicating that there is a
-statistically significant difference in the medians across the
-groups.</p>
-<p>In summary, the test result is highly significant, which leads to the
-rejection of the null hypothesis of equal medians. Therefore, we have
-sufficient evidence to say that not all group medians are equal.</p>
-</div>
-</div>
-<div id="continue-data-explorartion" class="section level2">
-<h2>Continue Data Explorartion:</h2>
-<p>Now we are going to break down the dataset into four subgroups based
-the Indicator’s categories. We are going to explore the distribution of
-each subgroup and perform the the most appropriate test.</p>
-<pre class="r"><code>Indicator1=tidydata |&gt; filter(indicator==&quot;Took Prescription Medication for Mental Health&quot;)
-Indicator2=tidydata |&gt; filter(indicator==&quot;Received Counseling or Therapy&quot;)
-Indicator3=tidydata |&gt; filter(indicator==&quot;Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy&quot;)
-Indicator4=tidydata |&gt; filter(indicator==&quot;Needed Counseling or Therapy But Did Not Get It&quot;)</code></pre>
-<ul>
-<li>Step 1: Check Normality for Group of people who Took Prescription
-Medication for Mental Health.</li>
-</ul>
-<pre class="r"><code>shapiro_test_result &lt;- shapiro.test(pull(Indicator1,value))
-
-hist(Indicator1$value, breaks = &quot;FD&quot;, main = &quot;Histogram of Data&quot;, xlab = &quot;Data Values&quot;)</code></pre>
-<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-17-1.png" width="90%" />
-Shapiro-Wilk normality test result : (W = 0.93709, p-value &lt;
-2.2e-16), The p-value is extremely small (&lt; 2.2e-16), which provides
-strong evidence suggest that the data does not come from a normal
-distribution, and hence, we reject the null hypothesis of normality at
-0.05 level of significance.</p>
-<ul>
-<li>Step2: Perform Kruskal-Wallis test for indicator 1 dataset</li>
-</ul>
-<pre class="r"><code>kruskal_result=kruskal.test(value ~ subgroup, data = Indicator1)</code></pre>
-<p>Kruskal-Wallis Chi-squared=1812.7. This is the test statistic that
-follows a chi-squared distribution under the null hypothesis. A value of
-1812.7 is quite large, suggesting a significant difference.</p>
-<p>The p-value is less than 2.2e-16. It effectively means that the
-p-value is extremely small, much less than the commonly used
-significance levels (like 0.05 or 0.01), indicating that there is a
-statistically significant difference in the medians across the
-groups.</p>
-<p>In summary, the test result is highly significant, which leads to the
-rejection of the null hypothesis of equal medians. Therefore, we have
-sufficient evidence to say that not all group medians are equal.</p>
-<ul>
-<li>Step 3: Check normality for Group of people who Received Counseling
-or Therapy</li>
-</ul>
-<pre class="r"><code>shapiro_test_result &lt;- shapiro.test(pull(Indicator2,value))
-
-hist(Indicator2$value, breaks = &quot;FD&quot;, main = &quot;Histogram of Data&quot;, xlab = &quot;Data Values&quot;)</code></pre>
-<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-19-1.png" width="90%" />
-Shapiro-Wilk normality test result : (W = 0.83846, p-value &lt;
-2.2e-16), The p-value is extremely small (&lt; 2.2e-16), which provides
-strong evidence suggest that the data does not come from a normal
-distribution, and hence, we reject the null hypothesis of normality at
-0.05 level of significance.</p>
-<ul>
-<li>step 4: Perform Kruskal-Wallis test for indicator 2 dataset</li>
-</ul>
-<pre class="r"><code>kruskal_result=kruskal.test(value ~ subgroup, data = Indicator2)</code></pre>
-<p>Kruskal-Wallis Chi-squared=1784.5. This is the test statistic that
-follows a chi-squared distribution under the null hypothesis. A value of
-1784.5 is quite large, suggesting a significant difference.</p>
-<p>The p-value is less than 2.2e-16. It effectively means that the
-p-value is extremely small, much less than the commonly used
-significance levels (like 0.05 or 0.01), indicating that there is a
-statistically significant difference in the medians across the
-groups.</p>
-<p>In summary, the test result is highly significant, which leads to the
-rejection of the null hypothesis of equal medians. Therefore, we have
-sufficient evidence to say that not all group medians are equal.</p>
-<ul>
-<li>Step 5: Check normality for Group of people who Took Prescription
-Medication for Mental Health And/Or Received Counseling or Therapy</li>
-</ul>
-<pre class="r"><code>shapiro_test_result &lt;- shapiro.test(pull(Indicator3,value))
-
-hist(Indicator3$value, breaks = &quot;FD&quot;, main = &quot;Histogram of Data&quot;, xlab = &quot;Data Values&quot;)</code></pre>
-<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-21-1.png" width="90%" />
-Shapiro-Wilk normality test result : (W = 0.95871, p-value &lt;
-2.2e-16), The p-value is extremely small (&lt; 2.2e-16), which provides
-strong evidence suggest that the data does not come from a normal
-distribution, and hence, we reject the null hypothesis of normality at
-0.05 level of significance.</p>
-<ul>
-<li>step 6: Perform Kruskal-Wallis test for Indicator 3 dataset</li>
-</ul>
-<pre class="r"><code>kruskal_result=kruskal.test(value ~ subgroup, data = Indicator3)</code></pre>
-<p>Kruskal-Wallis Chi-squared=1750.7. This is the test statistic that
-follows a chi-squared distribution under the null hypothesis. A value of
-1750.7 is quite large, suggesting a significant difference.</p>
-<p>The p-value is less than 2.2e-16. It effectively means that the
-p-value is extremely small, much less than the commonly used
-significance levels (like 0.05 or 0.01), indicating that there is a
-statistically significant difference in the medians across the
-groups.</p>
-<p>In summary, the test result is highly significant, which leads to the
-rejection of the null hypothesis of equal medians. Therefore, we have
-sufficient evidence to say that not all group medians are equal.</p>
-<ul>
-<li>Step 7: Check normality for Group of people who Needed Counseling or
-Therapy But Did Not Get It.</li>
-</ul>
-<pre class="r"><code>shapiro_test_result &lt;- shapiro.test(pull(Indicator4,value))
-
-hist(Indicator4$value, breaks = &quot;FD&quot;, main = &quot;Histogram of Data&quot;, xlab = &quot;Data Values&quot;)</code></pre>
-<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-23-1.png" width="90%" />
-Shapiro-Wilk normality test result : (W = 0.8161, p-value &lt; 2.2e-16),
-The p-value is extremely small (&lt; 2.2e-16), which provides strong
-evidence suggest that the data does not come from a normal distribution,
-and hence, we reject the null hypothesis of normality at 0.05 level of
-significance.</p>
-<ul>
-<li>step 8: Perform Kruskal-Wallis test for Indicator 4 dataset</li>
-</ul>
-<pre class="r"><code>kruskal_result=kruskal.test(value ~ subgroup, data = Indicator4)</code></pre>
-<p>Kruskal-Wallis Chi-squared=1539.6. This is the test statistic that
-follows a chi-squared distribution under the null hypothesis. A value of
-1539.6 is quite large, suggesting a significant difference.</p>
-<p>The p-value is less than 2.2e-16. It effectively means that the
-p-value is extremely small, much less than the commonly used
-significance levels (like 0.05 or 0.01), indicating that there is a
-statistically significant difference in the medians across the
-groups.</p>
-<p>In summary, the test result is highly significant, which leads to the
-rejection of the null hypothesis of equal medians. Therefore, we have
-sufficient evidence to say that not all group medians are equal.</p>
 </div>
 <div id="linear-modeling" class="section level2">
 <h2>Linear Modeling</h2>
-<div id="step-1" class="section level3">
-<h3>Step 1</h3>
-<p>Import the tidy dataset</p>
+<p>First, we will import the tidy data set.</p>
 <pre class="r"><code>library(tidyverse)
 
 tidydata = 
   read.csv(&quot;data/tidydata.csv&quot;)</code></pre>
-</div>
-<div id="step-2" class="section level3">
-<h3>Step 2</h3>
-<p>Separate tidy dataset into 4 subgroups based on the indicator
-category.</p>
+<p>Then, we will separate the tidy data set into 4 subgroups: one for
+each indicator of mental health access.</p>
 <pre class="r"><code>Indicator1=tidydata |&gt; filter(indicator==&quot;Took Prescription Medication for Mental Health&quot;)
+
 Indicator2=tidydata |&gt; filter(indicator==&quot;Received Counseling or Therapy&quot;)
+
 Indicator3=tidydata |&gt; filter(indicator==&quot;Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy&quot;)
+
 Indicator4=tidydata |&gt; filter(indicator==&quot;Needed Counseling or Therapy But Did Not Get It&quot;)</code></pre>
-</div>
-<div id="step-3" class="section level3">
-<h3>Step 3</h3>
-<p>Apply linear model</p>
+<p>Next, we will apply a linear model for each indicator using stepwise
+regression.</p>
 <pre class="r"><code>fit &lt;- lm(value ~ group + subgroup + year + state, data=Indicator1)
 stepwise_fit &lt;- stepAIC(fit, direction=&quot;both&quot;)</code></pre>
 <pre><code>## Start:  AIC=3614.67
@@ -1169,12 +1048,8 @@ stepwise_fit &lt;- stepAIC(fit, direction=&quot;both&quot;)</code></pre>
 ## &lt;none&gt;                   6964 2722.2
 ## - year      1       141  7105 2769.7
 ## - subgroup 79     40494 47457 7304.4</code></pre>
-</div>
-<div id="step-4" class="section level3">
-<h3>Step 4</h3>
 <p>AIC values are identical across the steps shown, which suggests that
 removal or addition of a variable did not improve the model’s fit.</p>
-</div>
 </div>
 
 

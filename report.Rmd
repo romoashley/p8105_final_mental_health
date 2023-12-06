@@ -199,4 +199,4 @@ Out of all demographic characteristics, those who identify as bisexual reported 
 
 ## Conclusion
 
-Our findings reflect the increasing demand for therapists and counselors that inspired our work.
+Our findings reflect the increasing demand for therapists and counselors that inspired our work. In the future, it would be interesting to expand this analysis project to analyze the trend of accessing therapists and counselors post-pandemic. Another potential future analysis will be to compare if there is a difference in individual access to therapists and counselors and if the differences vary by demographic characteristics and levels. 

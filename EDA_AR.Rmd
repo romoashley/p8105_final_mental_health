@@ -14,6 +14,15 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r message = FALSE, echo = FALSE}
 #Loading key packages
 library(tidyverse)
+library(scales)
+
+options(
+  ggplot2.continuous.colour = heat.colors(256),
+  ggplot2.continuous.fill = heat.colors(256)
+)
+
+scale_colour_discrete = scale_color_manual(values = heat.colors(256))
+scale_fill_discrete = scale_fill_manual(values = heat.colors(256))
 
 # Importing clean and tidy dataset 
 data = 
@@ -25,7 +34,7 @@ data =
 
 ## Prevalence 
 
-Let's take a look at the prevalence. 
+Let's take a look at the national prevalence of each indicator of mental health access.
 
 First, I filtered by states = United States to look only at national data rather then state-specific data. Next, I grouped by year, start date, and indicator to ensure I calculate the mean value for each indicator by start date. After calculating the mean, I plotted the mean value and start date to showcase the mean national value over time.
 
@@ -47,7 +56,8 @@ avg_year |>
     x = "Date",
     y = "Prevalence",
     title = "National Average (2020-2022)",
-    color = "Indicator") +
+    color = "Indicator of Mental Health Access") +
+  scale_x_date(labels = date_format("%m-%Y")) +
   theme(
     legend.position = "bottom",
     axis.text.x = element_text(angle=90, hjust=1),

@@ -15,9 +15,6 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(scales)
 
-library(viridisLite)
-viridisLite::viridis(10)
-
 knitr::opts_chunk$set(
 	echo = TRUE,
 	warning = FALSE,

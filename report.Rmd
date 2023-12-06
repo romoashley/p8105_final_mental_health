@@ -122,6 +122,36 @@ We are interested in identifying trends over time at the national, state, and de
 
 We conducted Exploratory Data Analysis (EDA) at the [national-level](EDA_AR.html), [state-level](eda.html), and [demographic-level](eda_demographic.html).
 
+#### National
+
+To look at the prevalence in the United States, I filter for United States to focus national data rather then state-specific data. Next, I grouped by year, start date, and indicator to ensure I calculate the mean value for each indicator by start date. After calculating the mean, I plotted the mean value and start date to showcase the mean national value over time. The plot shows a increase in prevalence between 2020 and 2022 with those who took prescription medication for mental health and/or received counseling or therapy with the highest prevalence and those who received counseling or therapy with the lowest prevalence.
+
+```{r message = FALSE, echo = FALSE}
+avg_year =
+  tidydata|> 
+  dplyr::filter(state == "United States") |> 
+  select(indicator, year, week_number, value, start_dates) |> 
+  group_by(year, start_dates, indicator) |> 
+  dplyr::summarize(
+    mean = mean(value),
+    indicator_total = n())
+
+# plot average for each start date for each indicator
+avg_year |> 
+  ggplot(aes(x = start_dates, y = mean, color = indicator)) +
+  geom_line() +
+  labs(
+    x = "Date",
+    y = "Prevalence",
+    title = "National Average (2020-2022)",
+    color = "Indicator") +
+  theme(
+    legend.position = "bottom",
+    axis.text.x = element_text(angle=90, hjust=1),
+    strip.text = element_text(size = 4)) +
+  guides(color = guide_legend(nrow = 4))
+```
+
 
 ## Additional Analysis
 
@@ -133,7 +163,9 @@ We conducted a [independent samples t-tests and ANOVA](statistical_analysis.html
 
 #### National-Level
 
-On average, those who took prescription medication for mental health and/or received counseling or therapy had a highest values while those who received counseling or therapy had the lowest value. There is a wide gap in average values between those who took prescription medication for mental health and those who needed counseling or therapy but did not get it. Overall, each indicator had a small increase in average value between 2020 and 2022. Additionally, the majority of states had a similar estimate of proportion of mental health services not received within each state. However, Vermont, Wyoming, Hawaii, and North Dakota had distinct estimates, with a lower estimate compared to the remaining states. Overall, Vermont had the lowest estimate. 
+On average, those who took prescription medication for mental health and/or received counseling or therapy had the highest values while those who received counseling or therapy had the lowest values. Evidence suggests that having [more therapy session may improve patient outcomes](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5550525/). Therefore, those who received counseling or therapy may have a lower prevalence because they may not go to therapy or counseling as often as they would like to due to schedule conflicts or cost.
+
+Overall, each indicator had a increase in prevalence between 2020 and 2022. During the pandemic, services were restricted due to the shelter in place order. Consequently, therapist were forced to have virtual therapy sessions rather than in-person therapy sessions, which resulted in many [challenges](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8339462/) such as distractions, challenges wtih emotional connectedness, and privacy concerns. Not only were individuals living through a threatening pandemic, many individuals did not have access to mental health service they had access to before the pandemic. After the pandemic, the nation ended its shut down and services that were halted were resumed. This transition from the shut down may explain why the prevalence was low in 2020 and has increased since then.
 
 
 #### State-Level 

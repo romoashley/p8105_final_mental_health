@@ -425,39 +425,61 @@ for mental health</h4>
     indicator == &quot;Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy&quot;,
     state == &quot;United States&quot;,
     group == &quot;Sex&quot;,
-    subgroup %in% c(&quot;Male&quot;, &quot;Female&quot;)
-  ) |&gt;
- dplyr::select(week_number, value, subgroup) |&gt;
-  pivot_wider(
-    names_from = &quot;subgroup&quot;,
-    values_from = &quot;value&quot;) |&gt;
-  janitor::clean_names()
+    subgroup %in% c(&quot;Male&quot;, &quot;Female&quot;))
 
-gender_received |&gt;
-  summarise(
-    t_statistic = t.test(male, female)$statistic,
-    p_value = t.test(male, female)$p.value) |&gt;
-  knitr::kable()</code></pre>
-<table>
+ttest_gender_received = t.test(value ~ subgroup, data = gender_received) |&gt;
+  broom::tidy() |&gt;
+  knitr::kable()
+
+ttest_gender_received</code></pre>
+<table style="width:100%;">
+<colgroup>
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="7%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="21%" />
+<col width="10%" />
+</colgroup>
 <thead>
 <tr class="header">
-<th align="right">t_statistic</th>
-<th align="right">p_value</th>
+<th align="right">estimate</th>
+<th align="right">estimate1</th>
+<th align="right">estimate2</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+<th align="right">parameter</th>
+<th align="right">conf.low</th>
+<th align="right">conf.high</th>
+<th align="left">method</th>
+<th align="left">alternative</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="right">-39.52768</td>
+<td align="right">12.19697</td>
+<td align="right">30.69091</td>
+<td align="right">18.49394</td>
+<td align="right">39.52768</td>
 <td align="right">0</td>
+<td align="right">49.66069</td>
+<td align="right">11.57709</td>
+<td align="right">12.81685</td>
+<td align="left">Welch Two Sample t-test</td>
+<td align="left">two.sided</td>
 </tr>
 </tbody>
 </table>
 <p>The first independent samples t-test above shows statistically
 significant differences in mean prescription medication and/or
-counseling or therapy for mental health rates between men and women. In
-other words, men and women had statistically different mean rates of
-taking prescription medication for mental health and/or receiving
-counseling or therapy from 2020 to 2022 in the United States.</p>
+counseling or therapy for mental health rates between men and women.
+More specifically, women had statistically higher mean rates of taking
+prescription medication for mental health and/or receiving counseling or
+therapy than men from 2020 to 2022 in the United States.</p>
 </div>
 <div id="needed-counseling-or-therapy-but-did-not-get-it"
 class="section level4">
@@ -468,39 +490,61 @@ class="section level4">
     indicator == &quot;Needed Counseling or Therapy But Did Not Get It&quot;,
     state == &quot;United States&quot;,
     group == &quot;Sex&quot;,
-    subgroup %in% c(&quot;Male&quot;, &quot;Female&quot;)
-  ) |&gt;
-  dplyr::select(week_number, value, subgroup) |&gt;
-  pivot_wider(
-    names_from = &quot;subgroup&quot;,
-    values_from = &quot;value&quot;) |&gt;
-  janitor::clean_names()
+    subgroup %in% c(&quot;Male&quot;, &quot;Female&quot;))
 
-gender_needed |&gt;
-  summarise(
-    t_statistic = t.test(male, female)$statistic,
-    p_value = t.test(male, female)$p.value) |&gt;
-  knitr::kable()</code></pre>
-<table>
+ttest_gender_needed = t.test(value ~ subgroup, data = gender_needed) |&gt;
+  broom::tidy() |&gt;
+  knitr::kable()
+
+ttest_gender_needed</code></pre>
+<table style="width:100%;">
+<colgroup>
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="7%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="21%" />
+<col width="10%" />
+</colgroup>
 <thead>
 <tr class="header">
-<th align="right">t_statistic</th>
-<th align="right">p_value</th>
+<th align="right">estimate</th>
+<th align="right">estimate1</th>
+<th align="right">estimate2</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+<th align="right">parameter</th>
+<th align="right">conf.low</th>
+<th align="right">conf.high</th>
+<th align="left">method</th>
+<th align="left">alternative</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="right">-24.12529</td>
+<td align="right">5.042424</td>
+<td align="right">13.34545</td>
+<td align="right">8.30303</td>
+<td align="right">24.12529</td>
 <td align="right">0</td>
+<td align="right">63.83963</td>
+<td align="right">4.624859</td>
+<td align="right">5.45999</td>
+<td align="left">Welch Two Sample t-test</td>
+<td align="left">two.sided</td>
 </tr>
 </tbody>
 </table>
 <p>The second independent samples t-test above shows statistically
 significant differences in mean rates of needing counseling or therapy
-for mental health but not getting it between men and women. In other
-words, men and women had statistically different mean rates of needing
-counseling or therapy for mental health but not getting it from 2020 to
-2022 in the United States.</p>
+for mental health but not getting it between men and women. More
+specifically, women had statistically higher mean rates of needing
+counseling or therapy for mental health but not getting it than men from
+2020 to 2022 in the United States.</p>
 </div>
 </div>
 <div id="age-group" class="section level3">

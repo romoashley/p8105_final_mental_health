@@ -68,22 +68,16 @@ gender_received =
     indicator == "Took Prescription Medication for Mental Health And/Or Received Counseling or Therapy",
     state == "United States",
     group == "Sex",
-    subgroup %in% c("Male", "Female")
-  ) |>
- dplyr::select(week_number, value, subgroup) |>
-  pivot_wider(
-    names_from = "subgroup",
-    values_from = "value") |>
-  janitor::clean_names()
+    subgroup %in% c("Male", "Female"))
 
-gender_received |>
-  summarise(
-    t_statistic = t.test(male, female)$statistic,
-    p_value = t.test(male, female)$p.value) |>
+ttest_gender_received = t.test(value ~ subgroup, data = gender_received) |>
+  broom::tidy() |>
   knitr::kable()
+
+ttest_gender_received
 ```
 
-The first independent samples t-test above shows statistically significant differences in mean prescription medication and/or counseling or therapy for mental health rates between men and women. In other words, men and women had statistically different mean rates of taking prescription medication for mental health and/or receiving counseling or therapy from 2020 to 2022 in the United States.
+The first independent samples t-test above shows statistically significant differences in mean prescription medication and/or counseling or therapy for mental health rates between men and women. More specifically, women had statistically higher mean rates of taking prescription medication for mental health and/or receiving counseling or therapy than men from 2020 to 2022 in the United States.
 
 #### Needed counseling or therapy but did not get it
 
@@ -94,22 +88,16 @@ gender_needed =
     indicator == "Needed Counseling or Therapy But Did Not Get It",
     state == "United States",
     group == "Sex",
-    subgroup %in% c("Male", "Female")
-  ) |>
-  dplyr::select(week_number, value, subgroup) |>
-  pivot_wider(
-    names_from = "subgroup",
-    values_from = "value") |>
-  janitor::clean_names()
+    subgroup %in% c("Male", "Female"))
 
-gender_needed |>
-  summarise(
-    t_statistic = t.test(male, female)$statistic,
-    p_value = t.test(male, female)$p.value) |>
+ttest_gender_needed = t.test(value ~ subgroup, data = gender_needed) |>
+  broom::tidy() |>
   knitr::kable()
+
+ttest_gender_needed
 ```
 
-The second independent samples t-test above shows statistically significant differences in mean rates of needing counseling or therapy for mental health but not getting it between men and women. In other words, men and women had statistically different mean rates of needing counseling or therapy for mental health but not getting it from 2020 to 2022 in the United States.
+The second independent samples t-test above shows statistically significant differences in mean rates of needing counseling or therapy for mental health but not getting it between men and women. More specifically, women had statistically higher mean rates of needing counseling or therapy for mental health but not getting it than men from 2020 to 2022 in the United States.
 
 ### Age Group
 

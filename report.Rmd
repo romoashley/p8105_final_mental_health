@@ -146,6 +146,9 @@ avg_year |>
   guides(color = guide_legend(nrow = 4))
 ```
 
+## State-level
+To look at the prevalence of each indicator of mental health care utilization by state, I filtered the main dataset to only include observations at the state-level. For subsequent analyses, I used filter to select only observations for the indicator of interest. Next, I grouped by state to calculate the mean prevalence of each indicator by state, then created a table of the top 5 states by mean prevalence between 2020-2022 for each indicator. Then, I created a heat map showing mean prevalence by state for each indicator between 2020-2022 using the sf and maps packages. Next, I grouped by state and year to calculate the mean prevalence by state and year and then calculate the change in mean prevalence between 2020-2022 by state. Using this data, I created a table of the 5 states with the highest change in mean prevalence between 2020-2022 for each indicator. Lastly, I created an interactive graph for each indicator showing change in mean prevalence for each state over time using plotly. The result is 16 graphs or tables that describe state-level trends in mental health care utilization and access in the US between 2020-2022.
+
 ## Additional Analysis
 
 We conducted a [independent samples t-tests and ANOVA](statistical_analysis.html) to determine if there were statistically significant differences in access to mental health for each demographic characteristic.
@@ -162,30 +165,57 @@ Overall, each indicator had a increase in prevalence between 2020 and 2022. Duri
 
 After analysis of the four indicators by state, we found the lowest prevalence of mental health care use in some of the most populous US states: California, New York, Texas, and Florida. Medication use prevalence was highest in West Virginia, Kentucky, Arkansas, Utah, and Oklahoma. Except for Utah, these states have high rates of [poverty](https://data.ers.usda.gov/reports.aspx?ID=17826) and low [median household income](https://www.kff.org/other/state-indicator/median-annual-income/?activeTab=map&currentTimeframe=0&selectedDistributions=median-annual-household-income&sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D), which could drive higher rates of mental health medication use.
 
+<img src="images/med_map.png" style="width:100%">
+
 Therapy use was highest in District of Columbia, Massachusetts, Rhode Island, Vermont, and Oregon. These states have high levels of [educational attainment](https://data.ers.usda.gov/reports.aspx?ID=17829#P9452d1b2fc324fd3ba7da7fb1edf4e99_2_240iT2) which could mean that their populations have more positive perceptions of therapy. That said, the greatest change in therapy use during the pandemic was in more rural states with lower median household income, like Nebraska and North Dakota. It’s possible that these were states that particularly benefited from expansions in telehealth for providing therapy. 
 When medication and therapy indicators are combined to indicate overall mental health burden, West Virginia, Utah, and Kentucky remain the highest, but are joined by Vermont and Maine. Vermont, Maine, and Utah all have high median household income, which suggests ruralness rather than income levels may drive mental health burden at the state level.
 
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.keep="none"}
+library(plotly)
+
+state_df =
+  tidydata |> 
+  filter(group == "State")
+
+state_df |>
+  filter(indicator == "Received Counseling or Therapy") |> 
+  group_by(state, year) |>
+  summarize(mean_value = mean(value)) |> 
+  mutate(year = factor(year)) |> 
+plot_ly(x = ~year, y = ~mean_value, color = ~state, type = "scatter", mode = "lines+markers") |>
+  layout(
+    title = "% received counseling or therapy by state & year",
+    xaxis = list(title = "Year"),
+    yaxis = list(title = "Average % received therapy"))
+
+```
+
+
 Interestingly, the states with the highest prevalence of unmet therapy needs also tended to have a higher prevalence of therapy use. This could indicate that demand for therapy outpaced supply of mental health care providers even with the expansion of telehealth during the pandemic. However, West Virginia, which had a high prevalence of medication use, did not have high unmet therapy needs. This could mean that in certain states, medication use is not tied to therapy use.
+
+<img src="images/need_map.png" style="width:100%">
 
 #### Demographic-Level
 
-Age:
+_Age:_
 The 18-29 age group has the highest values across all the indicators, especially for the indicator of taking prescription medication for mental health and or receiving counseling. This might be due to the pandemic, where lockdown and transition to a virtual environment cause additional pressure on this age group, and mental health services are needed to relieve the overwhelming burdens. On the other hand, the 60 and above age group has the lowest values of needed counseling or therapy but did not get it and received counseling or therapy. It might be due to a present f stigma around mental health, where there might be low reports of expressing the need for counseling or therapy.
 
-Education:
+_Education:_
 On average, the bachelor's degree or higher group has the highest value of taking prescription medication for mental health and/or receiving counseling. On the other hand, those who have a lower education levels (high school diploma or GED and less than high school diploma groups) have the least value of needed counseling or therapy but did not get it and received counseling or therapy indicators.
 
-Gender:
+_Gender:_
 Women reported needing almost twice as much counseling or therapy for mental health as men, and these trends were consistent from 2020 to 2022. Women took more prescription medication for mental health and received more counseling or therapy for mental health than men. These trends slightly increased each year from 2020 to 2022.
 
-Race/ethnicity:
+_Race/ethnicity:_
 Non-Hispanic multiracial group received the most prescription medication and/or counseling or therapy for mental health and needed counseling or therapy for mental health but did not receive it more than any other racial/ethnic group. Their outcomes worsened over time for all indicators. Non-Hispanic Black and Hispanic/Latino groups had very similar outcomes across all four indicators. Non-Hispanic Asians received and needed the least mental health care out of all racial/ethnic groups. Non-Hispanic White group was the most consistent in their outcomes over time.
 
-Sexual orientation:
+_Sexual orientation:_
 Out of all demographic characteristics, those who identify as bisexual reported the highest rates of taking prescription medication for mental health and/or receiving counseling or therapy, as their rates reached over 50% at some time points in 2021 and 2022. Individuals who identify as bisexual reported the highest trends in all four indicators compared with gay or lesbian and straight Americans, although they were closely followed by individuals who identify as gay or lesbian. Outcomes in mental health access for individuals who identify as bisexual showed the most variation over time. Individuals who identify as straight reported the least unmet need for counseling or therapy, and their outcomes were consistent over time.
 
-#### Additional Analyses
 
 ## Conclusion
 
-Our findings reflect the increasing demand for therapists and counselors that inspired our work. In the future, it would be interesting to expand this analysis project to analyze the trend of accessing therapists and counselors post-pandemic. Another potential future analysis will be to compare if there is a difference in individual access to therapists and counselors and if the differences vary by demographic characteristics and levels.
+Our findings reflect the increasing demand for therapists and counselors that inspired our work. Nationally, prevalence of both mental health care utilization and unmet mental health care need increased between 2020-2022. These trends were most prominent in rural states. Our demographic analyses revealed the highest demand for mental health services among young adults, those with higher education, women, those who identified as non-Hispanic multiracial, and those who identify as bisexual. Our conclusion is that mental health care services must continue to grow to meet increasing demand since the Covid-19 pandemic. Importantly, the dataset we used may not reflect the actual prevalence of mental health disorders, because there are many people who live with undiagnosed disorders (due to lack of access to care or stigma related to receiving care) or who do live with a diagnosis but do not pursue care. This may explain the lower prevalence of mental health care utilization and unmet need among certain groups, such as older adults. Health promotion campaigns may be needed to normalize mental health care utilization and reduce stigma.
+
+In the future, it would be interesting to expand this analysis project to analyze the trend of accessing therapists and counselors post-pandemic. Another potential future analysis will be to compare if there is a difference in individual access to therapists and counselors and if the differences vary by demographic characteristics and levels. Individual-level data would also allow us to perform intersectional analyses that acknowledge the intersection of multiple identities (age, race, gender, etc.) as shaping mental health care experiences.

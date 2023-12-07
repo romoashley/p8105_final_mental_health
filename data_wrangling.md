@@ -17,7 +17,7 @@ rawdata =
 ```
 
     ## Rows: 10404 Columns: 15
-    ## ── Column specification ────────────────────────────────────────
+    ## ── Column specification ────────────────────────────────────────────────────────
     ## Delimiter: ","
     ## chr (10): Indicator, Group, State, Subgroup, Phase, Time Period Label, Time ...
     ## dbl  (5): Time Period, Value, LowCI, HighCI, Suppression Flag

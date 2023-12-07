@@ -124,7 +124,7 @@ To look at the prevalence in the United States, we filtered the data set for the
 avg_year =
   tidydata|> 
   dplyr::filter(state == "United States") |> 
-  select(indicator, year, week_number, value, start_dates) |> 
+  dplyr::select(indicator, year, week_number, value, start_dates) |> 
   group_by(year, start_dates, indicator) |> 
   dplyr::summarize(
     mean = mean(value),

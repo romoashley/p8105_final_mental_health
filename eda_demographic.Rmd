@@ -43,7 +43,9 @@ This page explores trends in mental health access by demographic characteristics
 
 ## Age Group
 
-I started by filtering the tidy data set to only include age and national-level data. Then, I renamed the "80 years and above" subgroup to 80+ years. Afterward, I plotted the age group graph; however, because the start_date variable overlapped, the legend was difficult to view when I plotted the graph. As a result, I rotated the x-axis labels vertically and stacked the legend to two columns.
+I started by filtering the tidy data set to only include age and national-level data. Then, I renamed the "80 years and above" subgroup to 80+ years. Afterward, I plotted the age group graph; however, because the `start_date` variable overlapped, the legend was difficult to view when I plotted the graph. As a result, I rotated the x-axis labels vertically, stacked the legend to four rows for visibility, and adjusted the adjusted the format of the x-axis labels.
+
+The line graph below shows differences in indicators of mental health access by age group from August 2020 to May 2022.
 
 ```{r age}
 #Filtering the dataset to age and united states
@@ -81,7 +83,9 @@ Based on the graph, it is clear that among the age groups, 18-29 have the highes
 
 ## Education Level 
 
-I began by filtering the tidy data set to only age and national-level data. In the next step, I re-leveled the education subgroup by creating a new variable, ed_name. Afterward, I used the new variable, ed_name, to create an education plot. Similar to the age plot, the x-axis labels and legend are difficult to view, so I adjusted the x-axis labels to vertical and stacked the legend columns into two columns.
+I began by filtering the tidy data set to only education groups and national-level data. In the next step, I re-leveled the education subgroup by creating a new variable, `ed_name`. Afterward, I used the new variable, `ed_name`, to create a line graph. Similar to the line graph for age, the x-axis labels and legend are difficult to view, so I adjusted the x-axis labels to be vertical (and formatted as MM-YYYY) and stacked the legend columns into four rows.
+
+The line graph below shows differences in indicators of mental health access by education level from August 2020 to May 2022.
 
 ```{r education}
 #Filtering the dataset to age and united states, re-level the subgroup, and plot the education plot 
@@ -114,13 +118,13 @@ ed_plot
 
 **Main findings:**
 
-Among four education groups, the Bachelor's degree or higher and some college/Associate's degree groups have the highest rates of taking prescription medication for mental health and/or received counseling. This is likely because individuals with higher educational attainment typically have better jobs with higher salaries and better benefits such as health insurance with greater coverage, which leads to better access to quality mental health services than those with lower educational attainment.
-
-On the other hand, those who have a lower education level (high school diploma or GED and less than high school diploma groups) have the lowest rates of needing counseling or therapy but not getting it and receiving counseling or therapy indicators because they might not have the time or money to take care of their mental health, so they do not think they will need counseling or needs receiving counseling services.
+Among all four education groups, the Bachelor's degree or higher and some college/Associate's degree groups have the highest rates of taking prescription medication for mental health and/or received counseling. This is likely because individuals with higher educational attainment typically have better jobs with higher salaries and better benefits such as health insurance with greater coverage, which leads to better access to quality mental health services than those with lower educational attainment. On the other hand, those who have a lower education level (high school diploma or GED and less than high school diploma groups) have the lowest rates of receiving counseling or therapy indicators because they might not have the time or money to take care of their mental health.
 
 ## Gender
 
-The line graph below shows differences in outcome variables by race/ethnicity from 2020 to 2022.
+I started by filtering the tidy data set to only include gender and national-level data. Next, I re-leveled my new `gender` variable to sort the data from lowest to highest rates. Afterward, I plotted the line graph, adjusting the number of rows in the legend, angle of the x-axis, and format of the x-axis labels.
+
+The line graph below shows differences in indicators of mental health access by gender from August 2020 to May 2022.
 
 ```{r gender}
 tidydata |>
@@ -153,7 +157,9 @@ Trends in mental health access by gender were stark. Women reported needing almo
 
 ## Race/Ethnicity
 
-The line graph below explores differences in outcome variables by race/ethnicity from 2020 to 2022.
+I began by filtering the tidy data set to only racial/ethnic groups and national-level data. In the next step, I re-leveled the racial/ethnic subgroups by creating a new variable, `race_ethniciy`. Afterward, I used the new variable, `race_ethnicity`, to create a line graph. I adjusted the number of rows in the legend, angle of the x-axis, and format of the x-axis labels to be MM-YYYY.
+
+The line graph below shows differences in indicators of mental health access by race/ethnicity from August 2020 to May 2022.
 
 ```{r race ethnicity}
 tidydata |>
@@ -188,7 +194,9 @@ Trends by racial and ethnic groups were stark across all three years. Non-Hispan
 
 ## Sexual Orientation
 
-The line graph below shows differences in outcome variables by sexual orientation from 2021 to 2022, since the Household Pulse Survey started asking about sexual orientation mid-way through data collection.
+I started by filtering the tidy data set to only include sexual orientation and national-level data. Since the Household Pulse Survey started asking about sexual orientation over halfway through data collection, I also filtered the `week_number`. Next, I re-leveled my new `sexual_orientation` variable to sort the data from lowest to highest rates. Afterward, I plotted the line graph, adjusting the number of rows in the legend, angle of the x-axis, and format of the x-axis labels.
+
+The line graph below shows differences in indicators of mental health acces by sexual orientation from August 2021 to May 2022.
 
 ```{r sexuality}
 tidydata |>

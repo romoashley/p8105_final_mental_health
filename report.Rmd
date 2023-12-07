@@ -150,6 +150,31 @@ avg_year |>
 
 To look at the prevalence of each indicator of mental health care utilization by state, we filtered the main data set to only include observations at the state-level. For subsequent analyses, we used filter to select only observations for the indicator of interest. Next, we grouped by state to calculate the mean prevalence of each indicator by state, then created a table of the top 5 states by mean prevalence between 2020-2022 for each indicator. Then, we created a heat map showing mean prevalence by state for each indicator between 2020-2022 using the sf and maps packages. Next, we grouped by state and year to calculate the mean prevalence by state and year and then calculate the change in mean prevalence between 2020-2022 by state. Using this data, we created a table of the 5 states with the highest change in mean prevalence between 2020-2022 for each indicator. Lastly, we created an interactive graph for each indicator showing change in mean prevalence for each state over time using plotly. The result is 16 graphs or tables that describe state-level trends in mental health care utilization and access in the United States between 2020-2022.
 
+<img src="images/med_map.png" style="width:100%">
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.keep="none"}
+library(plotly)
+
+state_df =
+  tidydata |> 
+  filter(group == "State")
+
+state_df |>
+  filter(indicator == "Received Counseling or Therapy") |> 
+  group_by(state, year) |>
+  summarize(mean_value = mean(value)) |> 
+  mutate(year = factor(year)) |> 
+plot_ly(x = ~year, y = ~mean_value, color = ~state, type = "scatter", mode = "lines+markers") |>
+  layout(
+    title = "% received counseling or therapy by state & year",
+    xaxis = list(title = "Year"),
+    yaxis = list(title = "Average % received therapy"))
+
+```
+
+
+<img src="images/need_map.png" style="width:100%">
+
 #### Demographic-Level
 
 To look at the differences in indicators of mental health care access by each of the 5 demographic groups (age group, education level, gender, race/ethnicity, and sexual orientation), we filtered the main data set to only include that demographic group and observations at the national-level. We filtered for the weeks of data collection for one demographic group, sexual orientation, because the Household Pulse Survey only started collecting data on sexual orientation over halfway through data collection. Next, we grouped the indicators by date and demographic group, and re-leveled the demographic groups to show rates from lowest to highest (or from youngest to oldest for age). Then, we created line graphs for each of the 5 demographic groups showing the trends in the 4 indicators of mental health access over time in the United States.
@@ -186,34 +211,13 @@ Overall, each indicator had a increase in prevalence between 2020 and 2022. Duri
 
 After analysis of the four indicators by state, we found the lowest prevalence of mental health care use in some of the most populous US states: California, New York, Texas, and Florida. Medication use prevalence was highest in West Virginia, Kentucky, Arkansas, Utah, and Oklahoma. Except for Utah, these states have high rates of [poverty](https://data.ers.usda.gov/reports.aspx?ID=17826) and low [median household income](https://www.kff.org/other/state-indicator/median-annual-income/?activeTab=map&currentTimeframe=0&selectedDistributions=median-annual-household-income&sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D), which could drive higher rates of mental health medication use.
 
-<img src="images/med_map.png" style="width:100%">
 
 Therapy use was highest in District of Columbia, Massachusetts, Rhode Island, Vermont, and Oregon. These states have high levels of [educational attainment](https://data.ers.usda.gov/reports.aspx?ID=17829#P9452d1b2fc324fd3ba7da7fb1edf4e99_2_240iT2) which could mean that their populations have more positive perceptions of therapy. That said, the greatest change in therapy use during the pandemic was in more rural states with lower median household income, like Nebraska and North Dakota. It is possible that these were states that particularly benefited from expansions in telehealth for providing therapy. 
 When medication and therapy indicators are combined to indicate overall mental health burden, West Virginia, Utah, and Kentucky remain the highest, but are joined by Vermont and Maine. Vermont, Maine, and Utah all have high median household income, which suggests ruralness rather than income levels may drive mental health burden at the state level.
 
-```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.keep="none"}
-library(plotly)
-
-state_df =
-  tidydata |> 
-  filter(group == "State")
-
-state_df |>
-  filter(indicator == "Received Counseling or Therapy") |> 
-  group_by(state, year) |>
-  summarize(mean_value = mean(value)) |> 
-  mutate(year = factor(year)) |> 
-plot_ly(x = ~year, y = ~mean_value, color = ~state, type = "scatter", mode = "lines+markers") |>
-  layout(
-    title = "% received counseling or therapy by state & year",
-    xaxis = list(title = "Year"),
-    yaxis = list(title = "Average % received therapy"))
-
-```
 
 Interestingly, the states with the highest prevalence of unmet therapy needs also tended to have a higher prevalence of therapy use. This could indicate that demand for therapy outpaced supply of mental health care providers even with the expansion of telehealth during the pandemic. However, West Virginia, which had a high prevalence of medication use, did not have high unmet therapy needs. This could mean that in certain states, medication use is not tied to therapy use.
 
-<img src="images/need_map.png" style="width:100%">
 
 #### Demographic-Level
 

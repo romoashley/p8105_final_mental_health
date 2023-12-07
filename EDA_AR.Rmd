@@ -16,6 +16,8 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(scales)
 
+## Setting colors and size
+
 options(
   ggplot2.continuous.colour = heat.colors(256),
   ggplot2.continuous.fill = heat.colors(256)
@@ -23,6 +25,14 @@ options(
 
 scale_colour_discrete = scale_color_manual(values = heat.colors(256))
 scale_fill_discrete = scale_fill_manual(values = heat.colors(256))
+
+knitr::opts_chunk$set(
+	echo = TRUE,
+	warning = FALSE,
+	fig.width = 9, 
+  fig.height = 7,
+  out.width = "90%"
+)
 
 # Importing clean and tidy dataset 
 data = 

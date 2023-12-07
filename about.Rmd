@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ### Ashley Romo
 
-<img src="images/ashley.jpg" style="width:30%">
+<img src="images/ashley.jpg" style="width:35%">
 
 Ashley is a second-year MPH candidate in the Department of Epidemiology at Columbia University Mailman School of Public Health. She is pursuing a certificate in Applied Biostatistics and Public Health Data Science.
 
@@ -20,7 +20,7 @@ Ashley is a second-year MPH candidate in the Department of Epidemiology at Colum
 
 ### Caleigh Dwyer
 
-<img src="images/caleigh.jpg" style="width:30%">
+<img src="images/caleigh.jpg" style="width:35%">
 
 Caleigh is a second-year MPH candidate in the Department of Sociomedical Sciences at Columbia University Mailman School of Public Health. She is pursuing a certificate in Public Health Research Methods.
 
@@ -28,7 +28,7 @@ Caleigh is a second-year MPH candidate in the Department of Sociomedical Science
 
 ### Hsin Yi (Cindy) Tseng
 
-<img src="images/cindy.jpeg" style="width:30%">
+<img src="images/cindy.jpeg" style="width:35%">
 
 Hsin Yi (Cindy) is a second-year MPH candidate in the Department of Epidemiology at Columbia University Mailman School of Public Health. She is pursuing a certificate in Applied Biostatistics and Public Health Data Science.
 
@@ -36,7 +36,7 @@ Hsin Yi (Cindy) is a second-year MPH candidate in the Department of Epidemiology
 
 ### Sarah Younes
 
-<img src="images/sarah.jpg" style="width:30%">
+<img src="images/sarah.jpg" style="width:35%">
 
 Sarah is a second-year MPH candidate in the Department of Sociomedical Sciences at Columbia University Mailman School of Public Health. She is pursuing a certificate in Public Health Research Methods.
 
@@ -44,6 +44,6 @@ Sarah is a second-year MPH candidate in the Department of Sociomedical Sciences 
 
 ### Wen Dai
 
-<img src="images/wen.jpeg" style="width:40%">
+<img src="images/wen.jpeg" style="width:35%">
 
 Wen is a second-year MPH candidate in the Department of Epidemiology at Columbia University Mailman School of Public Health. She is pursuing a certificate in Applied Biostatistics and Public Health Data Science.

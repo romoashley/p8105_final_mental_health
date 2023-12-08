@@ -22,6 +22,11 @@ We value transparency and reproducibility; as such, our R code is linked in our 
 
 Please see the screencast below for an introduction to our project and guide to navigating our website.
 
+```{r echo= FALSE}
+library("vembedr")
+embed_url("https://www.youtube.com/watch?v=epYnxbW2ixg")
+```
+
 ## Team Members
 
 * Ashley Romo (ar4459)

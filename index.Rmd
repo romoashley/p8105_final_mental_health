@@ -24,7 +24,7 @@ Please see the screencast below for an introduction to our project and guide to 
 
 ```{r echo= FALSE}
 library("vembedr")
-embed_url("https://www.youtube.com/watch?v=epYnxbW2ixg")
+embed_url("https://www.youtube.com/watch?v=epYnxbW2ixg&vq=hd2060")
 ```
 
 ## Team Members

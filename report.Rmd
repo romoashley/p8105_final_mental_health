@@ -108,7 +108,7 @@ We are interested in identifying trends over time at the national, state, and de
 * What is the proportion of services needed but not received by individuals in New York? 
 * What is the proportion of services needed but not received by individuals across states?
 * Are there differences in indicators of mental health outcomes by demographic characteristic (age, education level, gender, race/ethnicity, and sexual orientation)? Are they statistically significant?
-* Can we apply a linear model to the data?
+* What percent of the variance in indicators of mental health access do significant demographic characteristics explain?
 
 We were able to answer all of these questions through our analyses.
 

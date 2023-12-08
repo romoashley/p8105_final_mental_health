@@ -126,7 +126,7 @@ To look at the prevalence in the United States, we filtered the data set for the
 
 To look at the prevalence of each indicator of mental health care utilization by state, we filtered the main data set to only include observations at the state-level. For subsequent analyses, we used filter to select only observations for the indicator of interest. Next, we grouped by state to calculate the mean prevalence of each indicator by state, then created a table of the top 5 states by mean prevalence between 2020-2022 for each indicator. Then, we created a heat map showing mean prevalence by state for each indicator between 2020-2022 using the sf and maps packages. Next, we grouped by state and year to calculate the mean prevalence by state and year and then calculate the change in mean prevalence between 2020-2022 by state. Using this data, we created a table of the 5 states with the highest change in mean prevalence between 2020-2022 for each indicator. Lastly, we created an interactive graph for each indicator showing change in mean prevalence for each state over time using plotly. The result is 16 graphs or tables that describe state-level trends in mental health care utilization and access in the United States between 2020-2022.
 
-<img src="images/med_map.png" style="width:100%">
+<img src="images/med_map.png" style="width:80%">
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.keep="none"}
 library(plotly)
@@ -157,7 +157,7 @@ To look at the differences in indicators of mental health care access by each of
 
 The line graph for sexual orientation shows stark differences between groups.
 
-<img src="eda_demographic_files/figure-html/sexuality-1.png" style="width:100%">
+<img src="eda_demographic_files/figure-html/sexuality-1.png" style="width:80%">
 
 ## Additional Analysis
 

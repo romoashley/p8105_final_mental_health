@@ -22,6 +22,10 @@ We value transparency and reproducibility; as such, our R code is linked in our 
 
 Please see the screencast below for an introduction to our project and guide to navigating our website.
 
+<video width="320" height="240" controls>
+  <source src="image/screencast.mp4" type="video/mp4">
+</video>
+
 ## Team Members
 
 * Ashley Romo (ar4459)

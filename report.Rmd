@@ -110,7 +110,7 @@ We are interested in identifying trends over time at the national, state, and de
 * Are there differences in indicators of mental health outcomes by demographic characteristic (age, education level, gender, race/ethnicity, and sexual orientation)? Are they statistically significant?
 * What percent of the variance in indicators of mental health access do significant demographic characteristics explain?
 
-We were able to answer all of these questions through our analyses.
+We were able to answer all of these questions through our analyses except for our last question.
 
 ## Exploratory Analysis
 

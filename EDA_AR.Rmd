@@ -64,8 +64,8 @@ avg_year |>
   geom_line() +
   labs(
     x = "Date",
-    y = "Prevalence",
-    title = "National Average (2020-2022)",
+    y = "Prevalence (%)",
+    title = "National Prevalence (2020-2022)",
     color = "Indicator of Mental Health Access") +
   scale_x_date(labels = date_format("%m-%Y")) +
   theme(
